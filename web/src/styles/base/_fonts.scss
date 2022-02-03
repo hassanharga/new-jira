@@ -1,0 +1,29 @@
+/* Fonts Import */
+$font-path: '../../assets/fonts';
+@font-face {
+  font-family: 'STCForward';
+  font-style: normal;
+  font-weight: 300;
+  src: local('STCForward Light'), local('STCForward-Light'),
+    url('#{$font-path}/STCForward-Light.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'STCForward';
+  font-style: normal;
+  font-weight: 500;
+  src: local('STCForward Medium'), local('STCForward-Medium'),
+    url('#{$font-path}/STCForward-Medium.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'STCForward';
+  font-style: normal;
+  font-weight: 700;
+  src: local('STCForward Bold'), local('STCForward-Bold'), url('#{$font-path}/STCForward-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'STCForward';
+  font-style: normal;
+  font-weight: 800;
+  src: local('STCForward ExtraBold'), local('STCForward-ExtraBold'),
+    url('#{$font-path}/STCForward-ExtraBold.ttf') format('truetype');
+}
