@@ -58,8 +58,9 @@ export const getBoard: RequestHandler = async (req, res) => {
   res.send(board);
 };
 
-export const getBoards: RequestHandler = async (_req, res) => {
-  const boards = await BoardModel.find({}).limit(100);
+export const getBoards: RequestHandler = async (req, res) => {
+  const { project } = req.query as { project: string };
+  const boards = await BoardModel.find({ project: project.toString() }).populate('project');
   if (!boards) throw new ApiError('board.notCreated', statusCodes.BAD_REQUEST);
 
   res.send(boards);

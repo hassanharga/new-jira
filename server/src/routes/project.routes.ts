@@ -8,7 +8,7 @@ const router = Router();
 
 router
   .route('/')
-  .get(asyncHandler(Controllers.getProjects))
+  .get(validate(validators.getProjects), asyncHandler(Controllers.getProjects))
   .post(validate(validators.addProject), asyncHandler(Controllers.addProject))
   .put(validate(validators.updateProject), asyncHandler(Controllers.updateProject))
   .delete(validate(validators.deleteProject), asyncHandler(Controllers.deleteProject));

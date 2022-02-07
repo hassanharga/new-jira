@@ -1,1 +1,13 @@
-{}
+{
+  "projects": {
+    "name": "Projects",
+    "table": {
+      "headers": {
+        "name": "Name",
+        "key": "Key",
+        "type": "Type",
+        "lead": "Lead"
+      }
+    }
+  }
+}

@@ -10,7 +10,9 @@ import { LocalizationService } from './services/localization.service';
 export class AppComponent implements OnInit, OnDestroy {
   sub!: Subscription;
 
-  constructor(private translate: LocalizationService, private renderer: Renderer2) {}
+  constructor(private translate: LocalizationService, private renderer: Renderer2) {
+    this.translate.initTranslation();
+  }
 
   setHtmlLangAndDir() {
     this.sub = this.translate.lang.subscribe({

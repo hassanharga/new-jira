@@ -1,0 +1,6 @@
+:host {
+  width: 100%;
+  & ::ng-deep .app-dropdown {
+    width: 100%;
+  }
+}

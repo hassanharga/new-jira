@@ -35,9 +35,11 @@ export const addIssue: RequestHandler = async (req, res) => {
 export const deleteIssue: RequestHandler = async (req, res) => {
   const { id } = req.body;
   if (!isValidObjectId(id)) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
+
   const issue = await IssueModel.findById(id);
   if (!issue) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
   await issue.remove();
+
   res.send(issue);
 };
 
@@ -45,16 +47,20 @@ export const updateIssue: RequestHandler = async (req, res) => {
   const { id, releaseId, ...data } = req.body;
   if (releaseId && !isValidObjectId(releaseId)) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
   if (!isValidObjectId(id)) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
+
   const issue = await IssueModel.findByIdAndUpdate(id, data, { new: true });
   if (!issue) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
+
   res.send(issue);
 };
 
 export const getIssue: RequestHandler = async (req, res) => {
   const { id } = req.params;
   if (!isValidObjectId(id)) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
+
   const issue = await IssueModel.findById(id);
   if (!issue) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
+
   res.send(issue);
 };
 
@@ -70,9 +76,8 @@ export const getIssues: RequestHandler = async (req, res) => {
     query.status = status;
   }
 
-  const issues = await IssueModel.find({ ...query })
-    .limit(100)
-    .populate('sub');
+  const issues = await IssueModel.find({ ...query });
   if (!issues) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
+
   res.send(issues);
 };

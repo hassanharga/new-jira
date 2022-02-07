@@ -42,8 +42,11 @@ export const getProject: RequestHandler = async (req, res) => {
   res.send(project);
 };
 
-export const getProjects: RequestHandler = async (_req, res) => {
-  const projects = await ProjectModel.find({}).limit(100);
+export const getProjects: RequestHandler = async (req, res) => {
+  const { search = '' } = req.query as { search: string };
+  const query: Record<string, any> = {};
+  if (search) query.name = { $regex: search, $options: 'i' };
+  const projects = await ProjectModel.find(query);
   if (!projects) throw new ApiError('project.notCreated', statusCodes.BAD_REQUEST);
 
   res.send(projects);

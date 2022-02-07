@@ -1,1 +1,18 @@
-<p>projects works!</p>
+<p-toast></p-toast>
+<app-add-project [showModal]="showModal" (addProject)="addProject($event)"></app-add-project>
+<div class="flex flex-column align-content-center justify-content-center h-screen px-5" *ngIf="projects">
+  <div class="py-2 my-3 flex justify-content-between">
+    <app-button
+      [className]="'p-button-raised'"
+      [label]="'projects.create' | translate"
+      (handleClick)="showModal = true"
+    ></app-button>
+    <app-input [icon]="'pi-search'" (changeHandler)="searchProjects($event)"></app-input>
+  </div>
+  <app-table
+    [data]="projects"
+    [columns]="headers"
+    [caption]="'projects.name' | translate"
+    (rowClick)="handleRowData($event)"
+  ></app-table>
+</div>

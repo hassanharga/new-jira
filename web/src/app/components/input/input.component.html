@@ -1,0 +1,4 @@
+<span class="p-input-icon-right">
+  <i [class]="'pi ' + icon" *ngIf="icon"></i>
+  <input type="text" pInputText [(ngModel)]="value" [placeholder]="placeholder" (ngModelChange)="handleOnChange()" />
+</span>

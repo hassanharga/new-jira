@@ -1,0 +1,77 @@
+<p-dialog
+  (onHide)="closeModal()"
+  [header]="'projects.create' | translate"
+  [(visible)]="showModal"
+  [modal]="true"
+  [style]="{ width: '50vw', height: '48vh' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="h-full">
+    <form class="h-full" [formGroup]="form" *ngIf="form">
+      <div class="p-fluid p-formgrid grid">
+        <div class="p-field col">
+          <label class="mb-2" for="name">{{ 'projects.form.name' | translate }}</label>
+          <input
+            type="text"
+            pInputText
+            [placeholder]="'projects.form.name' | translate"
+            class="w-full px-1 py-2"
+            formControlName="name"
+            name="name"
+            id="name"
+          />
+          <div class="mt-2">
+            <small *ngIf="formData['name'].touched && formData['name'].invalid" class="p-error">{{
+              'boards.form.errors.name' | translate
+            }}</small>
+          </div>
+        </div>
+        <div class="p-field col">
+          <label class="mb-2" for="key">{{ 'projects.form.key' | translate }}</label>
+          <input
+            type="text"
+            pInputText
+            [placeholder]="'projects.form.key' | translate"
+            class="w-full px-1 py-2"
+            formControlName="key"
+            name="key"
+            id="key"
+          />
+          <div class="mt-2">
+            <small *ngIf="formData['key'].touched && formData['key'].invalid" class="p-error">{{
+              'projects.form.errors.key' | translate
+            }}</small>
+          </div>
+        </div>
+      </div>
+      <div class="p-fluid p-formgrid grid mt-4">
+        <div class="p-field col-6">
+          <label class="mb-2" for="type">{{ 'projects.form.type' | translate }}</label>
+          <p-dropdown
+            [placeholder]="'projects.form.type' | translate"
+            class="w-full py-2"
+            name="type"
+            id="type"
+            [options]="pojectTypes"
+            formControlName="type"
+          ></p-dropdown>
+
+          <div class="mt-2">
+            <small *ngIf="formData['type'].touched && formData['type'].invalid" class="p-error">{{
+              'projects.form.errors.type' | translate
+            }}</small>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <ng-template pTemplate="footer">
+    <app-button
+      [label]="'projects.create' | translate"
+      icon="pi pi-check"
+      [disabled]="!form.valid"
+      (handleClick)="onSubmit()"
+    ></app-button>
+  </ng-template>
+</p-dialog>

@@ -8,7 +8,7 @@ const router = Router();
 
 router
   .route('/')
-  .get(asyncHandler(Controllers.getBoards))
+  .get(validate(validators.getBoards), asyncHandler(Controllers.getBoards))
   .post(validate(validators.addBoard), asyncHandler(Controllers.addBoard))
   .put(validate(validators.updateBoard), asyncHandler(Controllers.updateBoard))
   .delete(validate(validators.deleteBoard), asyncHandler(Controllers.deleteBoard));

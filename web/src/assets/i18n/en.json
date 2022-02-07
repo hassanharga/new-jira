@@ -1,1 +1,44 @@
-{}
+{
+  "general": {
+    "error": "Error",
+    "success": "Success"
+  },
+  "title": "hassan",
+  "projects": {
+    "name": "Projects",
+    "create": "Create Project",
+    "form": {
+      "name": "Name",
+      "type": "Type",
+      "key": "Key",
+      "errors": {
+        "name": "Name is invalid",
+        "type": "Type is invalid",
+        "key": "Key is invalid"
+      }
+    },
+    "table": {
+      "headers": {
+        "name": "Name",
+        "key": "Key",
+        "type": "Type",
+        "lead": "Lead"
+      }
+    }
+  },
+  "boards": {
+    "create": "Create Board",
+    "links": {
+      "board": "Board",
+      "backlog": "BackLog"
+    },
+    "form": {
+      "name": "Name",
+      "type": "Type",
+      "errors": {
+        "name": "Name is invalid",
+        "type": "Type is invalid"
+      }
+    }
+  }
+}

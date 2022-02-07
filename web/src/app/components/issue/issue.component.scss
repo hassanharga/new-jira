@@ -1,0 +1,29 @@
+.issue-container {
+  min-width: 20rem;
+  .details {
+    div {
+      p {
+        margin: 1rem 0;
+        .component {
+          background: var(--surface-d);
+          color: var(--blue-600);
+          padding: 3px;
+          font-weight: lighter;
+          border-radius: 3px;
+          margin: 0 2px;
+
+          cursor: pointer;
+          &:hover {
+            text-decoration: underline;
+            color: var(--blue-800);
+          }
+        }
+      }
+    }
+  }
+  .created {
+    span {
+      font-weight: lighter;
+    }
+  }
+}

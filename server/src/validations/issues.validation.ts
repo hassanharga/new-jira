@@ -75,5 +75,5 @@ export const getIssues: schema = {
       .empty()
       .valid(...Object.keys(IssueStatus))
       .messages(messages),
-  }),
+  }).options({ allowUnknown: true }),
 };

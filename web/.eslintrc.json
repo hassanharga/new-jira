@@ -15,7 +15,10 @@
       "rules": {
         "@angular-eslint/directive-selector": ["error", { "type": "attribute", "prefix": "app", "style": "camelCase" }],
         "@angular-eslint/component-selector": ["error", { "type": "element", "prefix": "app", "style": "kebab-case" }],
-        "@angular-eslint/no-empty-lifecycle-method": ["off"]
+        "@angular-eslint/no-empty-lifecycle-method": ["off"],
+        "prettier/prettier": ["warn"],
+        "no-console": ["warn"],
+        "@typescript-eslint/no-unused-vars": ["warn"]
       }
     },
     {
@@ -30,7 +33,7 @@
       "extends": ["plugin:prettier/recommended"],
       "rules": {
         // NOTE: WE ARE OVERRIDING THE DEFAULT CONFIG TO ALWAYS SET THE PARSER TO ANGULAR (SEE BELOW)
-        "prettier/prettier": ["error", { "parser": "angular" }]
+        "prettier/prettier": ["warn", { "parser": "angular" }]
       }
     }
   ]

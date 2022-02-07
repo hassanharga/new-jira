@@ -1,0 +1,39 @@
+<p-toast></p-toast>
+<app-add-board [showModal]="showModal" (addBoard)="handelModal($event)"></app-add-board>
+
+<div class="broad-container">
+  <div class="side-menu py-5 px-3">
+    <div class="text-center project-name" *ngIf="project">
+      <h3>{{ project.name }}</h3>
+      <span>{{ project.type }}</span>
+    </div>
+    <div class="p-2 board-menu mt-5">
+      <div class="flex justify-content-around align-content-center px-1 py-3">
+        <app-drop-down
+          [options]="boards"
+          [label]="'name'"
+          [filter]="true"
+          [defaultValue]="selectedBoard"
+          placeholder="select"
+          (changeOption)="changeBoard($event)"
+        ></app-drop-down>
+        <i class="pi pi-plus-circle ml-1 cursor-pointer" (click)="showModal = true"></i>
+      </div>
+      <div class="links" *ngIf="selectedBoard">
+        <ul class="">
+          <li
+            class="my-1 px-1 py-3 cursor-pointer"
+            [routerLink]="link.link"
+            [routerLinkActive]="'active'"
+            *ngFor="let link of links"
+          >
+            {{ link.name }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="board">
+    <router-outlet></router-outlet>
+  </div>
+</div>

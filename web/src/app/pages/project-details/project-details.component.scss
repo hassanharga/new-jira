@@ -1,0 +1,45 @@
+.broad-container {
+  display: flex;
+  height: 100vh;
+  .side-menu {
+    min-width: 250px;
+    background-color: var(--surface-c);
+    .board-menu {
+      width: 100%;
+      height: auto;
+      background-color: var(--blue-200);
+      border-radius: 5px;
+
+      & > div:first-child {
+        border-radius: 5px;
+      }
+      i {
+        color: var(--text-color);
+        font-size: 1.5rem;
+        align-self: center;
+        &:hover {
+          color: var(--primary-color);
+        }
+      }
+    }
+    .links {
+      ul {
+        li {
+          border-radius: 5px;
+          color: var(--text-color);
+          &.active {
+            background-color: var(--blue-300);
+            color: var(--primary-color);
+          }
+          &:hover {
+            background-color: var(--blue-300);
+            color: var(--primary-color);
+          }
+        }
+      }
+    }
+  }
+  .board {
+    flex: 1;
+  }
+}

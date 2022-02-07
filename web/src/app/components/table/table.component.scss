@@ -1,0 +1,15 @@
+:host ::ng-deep .table-data {
+  .p-datatable-header {
+    display: none;
+  }
+  thead > tr,
+  tbody > tr {
+    &:last-child {
+      border-bottom: 2px solid var(--surface-d);
+    }
+    th,
+    td {
+      border: unset;
+    }
+  }
+}

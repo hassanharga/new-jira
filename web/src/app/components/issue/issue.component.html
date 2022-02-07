@@ -1,0 +1,36 @@
+<div class="issue-container p-2 h-full" *ngIf="issue">
+  <h1 class="title">{{ issue.name }}</h1>
+  <div class="flex justify-content-around align-content-center px-1 py-3">
+    <app-drop-down
+      [options]="options"
+      [label]="'name'"
+      placeholder="select"
+      [defaultValue]="selectedIssueStatus"
+      (changeOption)="changeOption($event)"
+    ></app-drop-down>
+  </div>
+  <div class="description px-1 py-3">
+    <span>description</span>
+    <p class="mt-2">{{ issue.description || 'None' }}</p>
+  </div>
+
+  <div class="details mt-3">
+    <app-accordion [header]="'Details'">
+      <div>
+        <p>
+          assigne: <span>{{ issue.assignee || 'unassigned' }}</span>
+        </p>
+        <p>
+          reporter: <span>{{ issue.reporter }}</span>
+        </p>
+        <p>
+          components: <span class="component" *ngFor="let comp of issue.components">{{ comp + ' ' }}</span>
+        </p>
+      </div>
+    </app-accordion>
+  </div>
+  <div class="created flex flex-column my-3">
+    <span class="my-1">Created: {{ issue.createdAt | date: 'MMMM d, y, h:mm a' }}</span>
+    <span class="my-1">Updated: {{ issue.updatedAt | date: 'MMMM d, y, h:mm a' }}</span>
+  </div>
+</div>

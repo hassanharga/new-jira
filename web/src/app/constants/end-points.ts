@@ -6,44 +6,24 @@ export type ServiceData = {
 export type ServiceKeys = keyof typeof services;
 
 export const services = {
-  getCategories: {
-    url: '/category',
+  getProjects: {
+    url: '/projects',
     type: 'GET',
   },
-  addCategory: {
-    url: '/category',
+  getProjectBoards: {
+    url: '/boards?project={project}',
+    type: 'GET',
+  },
+  addBoard: {
+    url: '/boards',
     type: 'POST',
   },
-  getCategory: {
-    url: '/category/{id}',
-    type: 'GET',
-  },
-  editCategory: {
-    url: '/category/{id}',
-    type: 'PUT',
-  },
-  deleteCategory: {
-    url: '/category/{id}',
-    type: 'DELETE',
-  },
-  getProducts: {
-    url: '/product',
-    type: 'GET',
-  },
-  addProduct: {
-    url: '/product',
+  addProject: {
+    url: '/projects',
     type: 'POST',
   },
-  getProduct: {
-    url: '/product/{id}',
+  getBoardIssues: {
+    url: '/issues/{id}',
     type: 'GET',
-  },
-  editProduct: {
-    url: '/product/{id}',
-    type: 'PUT',
-  },
-  deleteProducts: {
-    url: '/product/{id}',
-    type: 'DELETE',
   },
 } as const;

@@ -1,0 +1,22 @@
+<p-dropdown
+  [options]="options"
+  [(ngModel)]="selectedOption"
+  [optionLabel]="label"
+  [filter]="filter"
+  [filterBy]="filterBy"
+  [placeholder]="placeholder"
+  [optionValue]="optionValue"
+  styleClass="app-dropdown"
+  (onChange)="handleChange()"
+>
+  <ng-template pTemplate="selectedItem">
+    <div class="" *ngIf="selectedOption">
+      <div>{{ selectedOption[label] ? selectedOption[label] : selectedOption }}</div>
+    </div>
+  </ng-template>
+  <ng-template let-option pTemplate="item">
+    <div class="option-item">
+      <div>{{ option[label] }}</div>
+    </div>
+  </ng-template>
+</p-dropdown>

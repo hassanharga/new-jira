@@ -45,3 +45,8 @@ export const getProject: schema = {
     id: Joi.string().required().empty().messages(messages),
   }),
 };
+export const getProjects: schema = {
+  query: Joi.object({
+    search: Joi.string().empty().messages(messages),
+  }).options({ allowUnknown: true }),
+};

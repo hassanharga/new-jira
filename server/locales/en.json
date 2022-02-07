@@ -22,5 +22,6 @@
 	},
 	"\"board\" is not allowed": "\"board\" is not allowed",
 	"\"releaseId\" is not allowed": "\"releaseId\" is not allowed",
-	"\"releaseId\" is not allowed to be empty": "\"releaseId\" is not allowed to be empty"
+	"\"releaseId\" is not allowed to be empty": "\"releaseId\" is not allowed to be empty",
+	"\"lang\" is not allowed": "\"lang\" is not allowed"
 }

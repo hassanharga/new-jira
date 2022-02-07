@@ -50,5 +50,5 @@ export default (err: any, req: Request, res: Response, _next: NextFunction) => {
     // }
   }
 
-  return res.status(status).json({ message: msg, err });
+  return res.status(status).json({ msg, err });
 };

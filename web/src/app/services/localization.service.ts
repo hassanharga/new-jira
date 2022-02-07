@@ -17,8 +17,6 @@ export class LocalizationService {
 
   initTranslation() {
     const lang = this.getLanguageFromStorage();
-    // TODO remove logs
-    console.log('currentLang', lang);
     this.setLanguage(lang);
   }
 

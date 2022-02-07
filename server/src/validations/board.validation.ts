@@ -49,3 +49,9 @@ export const getBoard: schema = {
     id: Joi.string().required().empty().messages(messages),
   }),
 };
+
+export const getBoards: schema = {
+  query: Joi.object({
+    project: Joi.string().required().empty().messages(messages),
+  }).options({ allowUnknown: true }),
+};
