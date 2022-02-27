@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EMPTY, Subscription, switchMap } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { IssueService } from 'src/app/services/issue.service';
-import { Board } from 'src/app/types/board';
 import { Issue } from 'src/app/types/issue';
 
 @Component({

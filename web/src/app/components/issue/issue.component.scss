@@ -1,5 +1,26 @@
 .issue-container {
   min-width: 20rem;
+  max-width: 80vw;
+
+  .main-issue {
+    display: flex;
+    column-gap: 15px;
+    justify-content: space-between;
+    .left-side {
+      flex: 2;
+      overflow-y: auto;
+      .attachments {
+        .img {
+          width: 150px;
+          border-radius: 5px;
+          overflow: hidden;
+        }
+      }
+    }
+    .right-side {
+      flex: 1;
+    }
+  }
   .details {
     div {
       p {

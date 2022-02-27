@@ -4,7 +4,17 @@ export enum IssueType {
   bug = 'bug',
 }
 
-export const issueStatus = {
+export enum IssueStatusKeys {
+  design = 'design',
+  todo = 'todo',
+  inProgress = 'inProgress',
+  inReview = 'inReview',
+  done = 'done',
+  release = 'release',
+  reOpen = 'reOpen',
+}
+
+export const issueStatus: Record<string, string> = {
   design: 'Design',
   todo: 'To Do',
   inProgress: 'In Progress',

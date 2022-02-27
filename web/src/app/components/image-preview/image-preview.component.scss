@@ -1,0 +1,16 @@
+:host ::ng-deep p-image {
+  //   .p-component-overlay {
+  //     position: fixed;
+  //     top: 7px;
+  //     left: 10px;
+  //     width: 98%;
+  //     height: 98%;
+  //     overflow: hidden;
+  //   }
+  .p-image-toolbar {
+    z-index: 3000;
+  }
+  .p-image-preview {
+    max-width: 50vw;
+  }
+}

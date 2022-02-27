@@ -12,6 +12,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { AccordionModule } from 'primeng/accordion';
+import { ImageModule } from 'primeng/image';
 
 import { LoaderComponent } from './loader/loader.component';
 import { DropDownComponent } from './drop-down/drop-down.component';
@@ -22,6 +23,7 @@ import { InputComponent } from './input/input.component';
 import { PadgeComponent } from './padge/padge.component';
 import { IssueComponent } from './issue/issue.component';
 import { AccordionComponent } from './accordion/accordion.component';
+import { ImagePreviewComponent } from './image-preview/image-preview.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,7 @@ import { AccordionComponent } from './accordion/accordion.component';
     PadgeComponent,
     IssueComponent,
     AccordionComponent,
+    ImagePreviewComponent,
   ],
   imports: [
     CommonModule,
@@ -49,6 +52,7 @@ import { AccordionComponent } from './accordion/accordion.component';
     InputTextModule,
     ChipModule,
     AccordionModule,
+    ImageModule,
   ],
   exports: [
     TableComponent,
@@ -61,6 +65,7 @@ import { AccordionComponent } from './accordion/accordion.component';
     PadgeComponent,
     IssueComponent,
     AccordionComponent,
+    ImagePreviewComponent,
   ],
 })
 export class ComponentsModule {}

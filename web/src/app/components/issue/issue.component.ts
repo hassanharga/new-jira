@@ -8,6 +8,7 @@ import { Issue, issueStatus } from 'src/app/types/issue';
 })
 export class IssueComponent implements OnInit, OnChanges {
   @Input() issue: Issue | null = null;
+  @Input() fromBoard: boolean = false;
 
   options: { name: string; value: string }[] = [];
   selectedIssueStatus!: { name: string; value: string };
