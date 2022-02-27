@@ -4,6 +4,12 @@ export enum IssueType {
   bug = 'bug',
 }
 
+export enum IssuePriority {
+  low = 'low',
+  medium = 'medium',
+  high = 'high',
+}
+
 export enum IssueStatusKeys {
   design = 'design',
   todo = 'todo',

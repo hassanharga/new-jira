@@ -1,16 +1,28 @@
-<div class="backlog-container flex p-5 h-full">
-  <div class="tasks flex flex-column align-content-center p-3">
-    <div
-      class="tasks-card mb-1 p-1 px-3 flex justify-content-between align-content-center overflow-y-auto"
-      (click)="openIssue(issue)"
-      *ngFor="let issue of issues"
-      [ngClass]="selectedIssue && selectedIssue._id === issue._id ? 'tasks-card-active' : ''"
-    >
-      <p class="align-self-center">{{ issue.name }}</p>
-      <app-padge [label]="issue.type"></app-padge>
-    </div>
+<p-toast></p-toast>
+<div class="backlog-container flex flex-column p-5 h-full">
+  <app-add-issue [showModal]="showModal" (addIssue)="addIssue($event)"></app-add-issue>
+  <div class="actions py-3">
+    <app-button
+      [className]="'p-button-secondary'"
+      [label]="'create issue'"
+      (handleClick)="showModal = true"
+      [icon]="'pi pi-plus'"
+    ></app-button>
   </div>
-  <div class="tasks-issue" *ngIf="selectedIssue">
-    <app-issue [issue]="selectedIssue"></app-issue>
+  <div class="main flex">
+    <div class="tasks flex flex-column align-content-center p-3">
+      <div
+        class="tasks-card mb-1 p-1 px-3 flex justify-content-between align-content-center overflow-y-auto"
+        (click)="openIssue(issue)"
+        *ngFor="let issue of issues"
+        [ngClass]="selectedIssue && selectedIssue._id === issue._id ? 'tasks-card-active' : ''"
+      >
+        <p class="align-self-center">{{ issue.name }}</p>
+        <app-padge [label]="issue.type"></app-padge>
+      </div>
+    </div>
+    <div class="tasks-issue" *ngIf="selectedIssue">
+      <app-issue [issue]="selectedIssue"></app-issue>
+    </div>
   </div>
 </div>

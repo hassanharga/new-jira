@@ -11,9 +11,9 @@
       <!-- attachments from board -->
       <div class="description attachments mt-5">
         <h3>Attachments</h3>
-        <div class="mt-2">
-          <div class="img">
-            <app-image-preview [imgSrc]="'../../../assets//images/img.png'" [preview]="true"></app-image-preview>
+        <div class="flex flex-wrap mt-2">
+          <div class="img mx-2" *ngFor="let item of issue.attachments">
+            <app-image-preview [imgSrc]="item" [preview]="true"></app-image-preview>
           </div>
         </div>
       </div>

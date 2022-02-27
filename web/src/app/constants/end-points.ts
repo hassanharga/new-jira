@@ -26,4 +26,8 @@ export const services = {
     url: '/issues/{id}',
     type: 'GET',
   },
+  addIssue: {
+    url: '/issues',
+    type: 'POST',
+  },
 } as const;

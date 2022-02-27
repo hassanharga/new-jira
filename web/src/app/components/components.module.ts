@@ -13,6 +13,8 @@ import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { AccordionModule } from 'primeng/accordion';
 import { ImageModule } from 'primeng/image';
+import { EditorModule } from 'primeng/editor';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 import { LoaderComponent } from './loader/loader.component';
 import { DropDownComponent } from './drop-down/drop-down.component';
@@ -24,6 +26,7 @@ import { PadgeComponent } from './padge/padge.component';
 import { IssueComponent } from './issue/issue.component';
 import { AccordionComponent } from './accordion/accordion.component';
 import { ImagePreviewComponent } from './image-preview/image-preview.component';
+import { AddIssueComponent } from './modals/add-issue/add-issue.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +41,7 @@ import { ImagePreviewComponent } from './image-preview/image-preview.component';
     IssueComponent,
     AccordionComponent,
     ImagePreviewComponent,
+    AddIssueComponent,
   ],
   imports: [
     CommonModule,
@@ -53,6 +57,8 @@ import { ImagePreviewComponent } from './image-preview/image-preview.component';
     ChipModule,
     AccordionModule,
     ImageModule,
+    EditorModule,
+    MultiSelectModule,
   ],
   exports: [
     TableComponent,
@@ -66,6 +72,7 @@ import { ImagePreviewComponent } from './image-preview/image-preview.component';
     IssueComponent,
     AccordionComponent,
     ImagePreviewComponent,
+    AddIssueComponent,
   ],
 })
 export class ComponentsModule {}

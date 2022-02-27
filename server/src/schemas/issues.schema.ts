@@ -8,6 +8,7 @@ export interface IssueTableModel extends Issue, Document {}
 const issueSchema = new Schema<IssueTableModel>(
   {
     name: { type: String, required: true, trim: true },
+    priority: { type: String, required: true, trim: true },
     version: { type: String, required: true },
     status: { type: String, enum: Object.values(IssueStatus), default: IssueStatus.design },
     type: { type: String, required: true, enum: Object.values(IssueType) },

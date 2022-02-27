@@ -1,7 +1,10 @@
 .backlog-container {
-  column-gap: 5px;
-  & > div {
-    border: 2px solid var(--surface-d);
+  .main {
+    flex: 1;
+    column-gap: 5px;
+    & > div {
+      border: 2px solid var(--surface-d);
+    }
   }
   .tasks {
     flex: 3;

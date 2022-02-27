@@ -12,12 +12,13 @@ const messages = {
 
 const bodyData = {
   name: Joi.string().required().empty().messages(messages),
+  priority: Joi.string().required().empty().messages(messages),
   version: Joi.string().allow('').messages(messages),
-  assignee: Joi.string().empty().messages(messages),
+  assignee: Joi.string().allow('').messages(messages),
   board: Joi.string().required().hex().empty().messages(messages),
   releaseId: Joi.string().allow('').messages(messages),
   reporter: Joi.string().required().empty().messages(messages),
-  description: Joi.string().empty().messages(messages),
+  description: Joi.string().allow('').messages(messages),
   labels: Joi.array().items(Joi.string()).messages(messages),
   comments: Joi.array()
     .items(

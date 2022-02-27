@@ -3,6 +3,7 @@ import { IssueStatus, IssueType, IssueComponents } from '../constants/issue';
 
 export interface Issue {
   name: string;
+  priority: string;
   version: string;
   status: IssueStatus;
   type: IssueType;
