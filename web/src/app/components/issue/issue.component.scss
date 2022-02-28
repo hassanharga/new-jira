@@ -16,6 +16,11 @@
           overflow: hidden;
         }
       }
+      .activity {
+        .input {
+          row-gap: 5px;
+        }
+      }
     }
     .right-side {
       flex: 1;

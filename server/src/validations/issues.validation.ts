@@ -11,20 +11,20 @@ const messages = {
 };
 
 const bodyData = {
-  name: Joi.string().required().empty().messages(messages),
-  priority: Joi.string().required().empty().messages(messages),
+  name: Joi.string().empty().messages(messages),
+  priority: Joi.string().empty().messages(messages),
   version: Joi.string().allow('').messages(messages),
   assignee: Joi.string().allow('').messages(messages),
-  board: Joi.string().required().hex().empty().messages(messages),
+  board: Joi.string().hex().empty().messages(messages),
   releaseId: Joi.string().allow('').messages(messages),
-  reporter: Joi.string().required().empty().messages(messages),
+  reporter: Joi.string().empty().messages(messages),
   description: Joi.string().allow('').messages(messages),
   labels: Joi.array().items(Joi.string()).messages(messages),
   comments: Joi.array()
     .items(
       Joi.object({
-        user: Joi.string().required().empty().messages(messages),
-        comment: Joi.string().required().empty().messages(messages),
+        user: Joi.string().empty().messages(messages),
+        comment: Joi.string().empty().messages(messages),
       }),
     )
     .messages(messages),
@@ -33,7 +33,6 @@ const bodyData = {
     .valid(...Object.keys(IssueStatus))
     .messages(messages),
   type: Joi.string()
-    .required()
     .empty()
     .valid(...Object.keys(IssueType))
     .messages(messages),

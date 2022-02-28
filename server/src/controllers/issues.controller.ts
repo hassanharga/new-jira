@@ -44,12 +44,42 @@ export const deleteIssue: RequestHandler = async (req, res) => {
 };
 
 export const updateIssue: RequestHandler = async (req, res) => {
-  const { id, releaseId, ...data } = req.body;
+  const {
+    id,
+    releaseId,
+    name,
+    priority,
+    version,
+    assignee,
+    reporter,
+    description,
+    labels,
+    comments,
+    status,
+    type,
+    components,
+  } = req.body;
+  console.log('req.body', req.body);
+
   if (releaseId && !isValidObjectId(releaseId)) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
   if (!isValidObjectId(id)) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
 
-  const issue = await IssueModel.findByIdAndUpdate(id, data, { new: true });
+  const issue = await IssueModel.findById(id);
   if (!issue) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
+
+  if (priority) issue.priority = priority;
+  if (name) issue.name = name;
+  if (version) issue.version = version;
+  if (assignee) issue.assignee = assignee;
+  if (reporter) issue.reporter = reporter;
+  if (description) issue.description = description;
+  if (labels) issue.labels = labels;
+  if (status) issue.status = status;
+  if (type) issue.type = type;
+  if (components) issue.components = components;
+  if (comments) issue.comments = [...issue.comments, ...comments];
+
+  await issue.save();
 
   res.send(issue);
 };

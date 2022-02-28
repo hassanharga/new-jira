@@ -30,4 +30,8 @@ export const services = {
     url: '/issues',
     type: 'POST',
   },
+  updateIssue: {
+    url: '/issues',
+    type: 'PUT',
+  },
 } as const;

@@ -30,6 +30,7 @@
   [style]="{ width: '70vw', height: '70vw' }"
 >
   <app-issue
+    (updateIssue)="updateIssueData($event)"
     [fromBoard]="true"
     [issue]="selectedIssue"
     (onHide)="selectedIssue = null; showIssueModal = false"

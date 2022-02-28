@@ -15,10 +15,10 @@ module.exports = {
   },
   plugins: ['@typescript-eslint', 'prettier'],
   rules: {
-    semi: ['error', 'always'],
-    quotes: ['error', 'single'],
+    semi: ['warn', 'always'],
+    quotes: ['warn', 'single'],
     'import/extensions': [
-      'error',
+      'warn',
       'ignorePackages',
       {
         js: 'never',
@@ -39,7 +39,7 @@ module.exports = {
     'no-console': 0,
     'no-unused-vars': ['warn', { args: 'none' }],
     '@typescript-eslint/no-unused-vars': ['warn', { args: 'none' }],
-    'no-plusplus': ["error", { "allowForLoopAfterthoughts": true }]
+    'no-plusplus': ["warn", { "allowForLoopAfterthoughts": true }]
   },
   ignorePatterns: ['dist/*'],
 };

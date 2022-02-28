@@ -29,6 +29,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   issueStatus: string[] = [IssueStatusKeys.todo, IssueStatusKeys.inProgress, IssueStatusKeys.inReview];
 
   issues: Record<string, Issue[]> = {};
+  unorderedIssues: Issue[] = [];
 
   draggedIssue: Issue | null = null;
 
@@ -69,6 +70,21 @@ export class BoardComponent implements OnInit, OnDestroy {
   //   // this.draggedIssue = null;
   // }
 
+  async updateIssueData(data: any) {
+    console.log('updateIssueData', data);
+    if (!this.selectedIssue || !this.selectedIssue._id) return;
+    this.api.send<Issue>('updateIssue', { id: this.selectedIssue?._id, ...data }).subscribe({
+      next: (issue) => {
+        this.selectedIssue = issue;
+        const issueIdx = this.unorderedIssues.findIndex((ele) => ele._id === issue._id);
+        if (issueIdx >= 0) {
+          this.unorderedIssues[issueIdx] = issue;
+          this.filterIssues(this.unorderedIssues);
+        }
+      },
+    });
+  }
+
   private filterIssues(issues: Issue[]) {
     this.issues = issues.reduce((prev: Record<string, Issue[]>, curr) => {
       if (!prev[curr.status]) {
@@ -91,6 +107,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (res) => {
+          this.unorderedIssues = res;
           this.filterIssues(res);
         },
       });
