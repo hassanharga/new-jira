@@ -17,6 +17,8 @@ export class AddIssueComponent implements OnInit {
   issuePriority = Object.values(IssuePriority);
   components = Object.values(IssueComponents);
 
+  description = '';
+
   constructor(private fb: FormBuilder) {}
 
   closeModal() {
@@ -24,7 +26,9 @@ export class AddIssueComponent implements OnInit {
   }
   onSubmit() {
     if (this.form.valid) {
-      this.addIssue.emit({ close: true, data: this.form.value });
+      const data = { ...this.form.value, description: this.description };
+      // console.log('data', data);
+      this.addIssue.emit({ close: true, data });
     }
   }
 
@@ -35,13 +39,16 @@ export class AddIssueComponent implements OnInit {
     this.form = this.fb.group({
       name: ['', [Validators.required]],
       type: ['', [Validators.required]],
-      description: [''],
       components: [''],
       reporter: [''],
       assignee: [''],
       priority: ['', [Validators.required]],
       version: ['', [Validators.required]],
     });
+  }
+
+  handleDescription(val: string) {
+    this.description = val;
   }
 
   ngOnInit(): void {

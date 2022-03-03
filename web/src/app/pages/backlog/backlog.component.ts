@@ -18,7 +18,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
 
   boardId = '';
 
-  showModal = false;
+  showModal = true;
 
   constructor(
     private issueService: IssueService,

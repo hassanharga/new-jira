@@ -27,6 +27,8 @@ import { IssueComponent } from './issue/issue.component';
 import { AccordionComponent } from './accordion/accordion.component';
 import { ImagePreviewComponent } from './image-preview/image-preview.component';
 import { AddIssueComponent } from './modals/add-issue/add-issue.component';
+import { EditorComponent } from './editor/editor.component';
+import { NgsContenteditableModule } from '@ng-stack/contenteditable';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,7 @@ import { AddIssueComponent } from './modals/add-issue/add-issue.component';
     AccordionComponent,
     ImagePreviewComponent,
     AddIssueComponent,
+    EditorComponent,
   ],
   imports: [
     CommonModule,
@@ -59,6 +62,7 @@ import { AddIssueComponent } from './modals/add-issue/add-issue.component';
     ImageModule,
     EditorModule,
     MultiSelectModule,
+    NgsContenteditableModule,
   ],
   exports: [
     TableComponent,
@@ -73,6 +77,7 @@ import { AddIssueComponent } from './modals/add-issue/add-issue.component';
     AccordionComponent,
     ImagePreviewComponent,
     AddIssueComponent,
+    EditorComponent,
   ],
 })
 export class ComponentsModule {}
