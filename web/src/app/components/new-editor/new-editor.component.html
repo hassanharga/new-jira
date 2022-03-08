@@ -1,0 +1,12 @@
+<div class="editor">
+  <div *ngFor="let block of blocks">
+    <app-edit-block
+      [id]="block.id"
+      [html]="block.html"
+      [tag]="block.tag"
+      (addBlockHandler)="addBlockHandler($event)"
+      (updateBlockHandler)="updateBlockHandler($event)"
+      (deleteBlockHandler)="deleteBlockHandler($event)"
+    ></app-edit-block>
+  </div>
+</div>

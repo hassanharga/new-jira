@@ -1,0 +1,13 @@
+<div class="SelectMenu" #focus>
+  <div class="Items">
+    <div
+      *ngFor="let item of items; let i = index"
+      role="button"
+      tabIndex="0"
+      [ngClass]="{ Selected: selectedItem === i }"
+      (click)="selectOption(item.tag, i)"
+    >
+      {{ item.label }}
+    </div>
+  </div>
+</div>

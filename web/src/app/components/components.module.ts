@@ -29,6 +29,9 @@ import { ImagePreviewComponent } from './image-preview/image-preview.component';
 import { AddIssueComponent } from './modals/add-issue/add-issue.component';
 import { EditorComponent } from './editor/editor.component';
 import { NgsContenteditableModule } from '@ng-stack/contenteditable';
+import { NewEditorComponent } from './new-editor/new-editor.component';
+import { EditBlockComponent } from './new-editor/edit-block/edit-block.component';
+import { SelectMenuComponent } from './new-editor/select-menu/select-menu.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +48,9 @@ import { NgsContenteditableModule } from '@ng-stack/contenteditable';
     ImagePreviewComponent,
     AddIssueComponent,
     EditorComponent,
+    NewEditorComponent,
+    EditBlockComponent,
+    SelectMenuComponent,
   ],
   imports: [
     CommonModule,
@@ -78,6 +84,9 @@ import { NgsContenteditableModule } from '@ng-stack/contenteditable';
     ImagePreviewComponent,
     AddIssueComponent,
     EditorComponent,
+    NewEditorComponent,
+    EditBlockComponent,
+    SelectMenuComponent,
   ],
 })
 export class ComponentsModule {}

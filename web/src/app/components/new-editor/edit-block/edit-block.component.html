@@ -1,0 +1,41 @@
+<div style="position: relative">
+  <app-select-menu
+    *ngIf="selectMenuIsOpen"
+    (closeMenu)="closeMenu()"
+    (selectItem)="selectTag($event)"
+  ></app-select-menu>
+  <div class="Block">
+    <h1
+      propValueAccessor="innerHTML"
+      [formControl]="formElement"
+      *ngIf="tag === 'h1'"
+      editable="true"
+      (keydown)="onKeyDownHandler($event)"
+      (blur)="onBlurHandler()"
+    ></h1>
+    <h2
+      propValueAccessor="innerHTML"
+      [formControl]="formElement"
+      *ngIf="tag === 'h2'"
+      editable="true"
+      (blur)="onBlurHandler()"
+      (keydown)="onKeyDownHandler($event)"
+    ></h2>
+    <h3
+      propValueAccessor="innerHTML"
+      [formControl]="formElement"
+      *ngIf="tag === 'h3'"
+      editable="true"
+      (blur)="onBlurHandler()"
+      (keydown)="onKeyDownHandler($event)"
+    ></h3>
+    <p
+      propValueAccessor="innerHTML"
+      [formControl]="formElement"
+      *ngIf="tag === 'p'"
+      editable="true"
+      (blur)="onBlurHandler()"
+      (keydown)="onKeyDownHandler($event)"
+    ></p>
+  </div>
+</div>
