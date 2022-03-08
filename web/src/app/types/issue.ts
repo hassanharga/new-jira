@@ -1,3 +1,5 @@
+import { User } from './user';
+
 export enum IssueType {
   release = 'release',
   story = 'story',
@@ -45,13 +47,14 @@ export interface Issue {
   type: IssueType;
   components: IssueComponents[];
   description: string;
-  assignee: string;
-  reporter: string;
+  assignee: User;
+  reporter: User;
   labels: string[];
   attachments: string[];
   sub: Issue[];
   releaseId: string;
   board: string;
+  project: string;
   createdAt: string;
   updatedAt: string;
   comments: {

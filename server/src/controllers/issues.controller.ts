@@ -5,7 +5,7 @@ import IssueModel, { IssueTableModel } from '../schemas/issues.schema';
 import ApiError from '../utils/ApiError';
 
 export const addIssue: RequestHandler = async (req, res) => {
-  const { releaseId, ...data } = req.body;
+  const { releaseId, assignee, reporter, components, ...data } = req.body;
 
   if (!releaseId && !req.body.version) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
 
@@ -21,6 +21,10 @@ export const addIssue: RequestHandler = async (req, res) => {
     data.version = mainIssue.version;
   }
 
+  if (assignee) data.assignee = assignee;
+  if (reporter) data.reporter = reporter;
+  if (components) data.components = components;
+
   const issue = await IssueModel.create(data);
   if (!issue) throw new ApiError('issue.notCreated', statusCodes.BAD_REQUEST);
 
@@ -29,7 +33,11 @@ export const addIssue: RequestHandler = async (req, res) => {
     await mainIssue.save();
   }
 
-  res.send(issue);
+  let sentIssue = await IssueModel.populate(issue, { path: 'reporter', select: 'name' });
+  sentIssue = await IssueModel.populate(sentIssue, { path: 'assignee', select: 'name' });
+  sentIssue = await IssueModel.populate(sentIssue, { path: 'sub', select: 'name' });
+
+  res.send(sentIssue);
 };
 
 export const deleteIssue: RequestHandler = async (req, res) => {
@@ -59,7 +67,6 @@ export const updateIssue: RequestHandler = async (req, res) => {
     type,
     components,
   } = req.body;
-  console.log('req.body', req.body);
 
   if (releaseId && !isValidObjectId(releaseId)) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
   if (!isValidObjectId(id)) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
@@ -81,14 +88,21 @@ export const updateIssue: RequestHandler = async (req, res) => {
 
   await issue.save();
 
-  res.send(issue);
+  let sentIssue = await IssueModel.populate(issue, { path: 'reporter', select: 'name' });
+  sentIssue = await IssueModel.populate(sentIssue, { path: 'assignee', select: 'name' });
+  sentIssue = await IssueModel.populate(sentIssue, { path: 'sub', select: 'name' });
+
+  res.send(sentIssue);
 };
 
 export const getIssue: RequestHandler = async (req, res) => {
   const { id } = req.params;
   if (!isValidObjectId(id)) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
 
-  const issue = await IssueModel.findById(id);
+  const issue = await IssueModel.findById(id)
+    .populate('reporter', 'name')
+    .populate('assignee', 'name')
+    .populate('sub', 'name');
   if (!issue) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
 
   res.send(issue);
@@ -96,7 +110,7 @@ export const getIssue: RequestHandler = async (req, res) => {
 
 export const getIssues: RequestHandler = async (req, res) => {
   const { board } = req.params;
-  const { status } = req.query;
+  const { status, type } = req.query;
 
   const query: Record<string, any> = {
     board,
@@ -105,8 +119,14 @@ export const getIssues: RequestHandler = async (req, res) => {
   if (status) {
     query.status = status;
   }
+  if (type) {
+    query.type = 'release';
+  }
 
-  const issues = await IssueModel.find({ ...query });
+  const issues = await IssueModel.find({ ...query })
+    .populate('reporter', 'name')
+    .populate('assignee', 'name')
+    .populate('sub', 'name');
   if (!issues) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
 
   res.send(issues);

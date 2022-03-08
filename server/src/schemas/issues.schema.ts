@@ -14,12 +14,13 @@ const issueSchema = new Schema<IssueTableModel>(
     type: { type: String, required: true, enum: Object.values(IssueType) },
     components: { type: [String], enum: IssueComponents },
     description: { type: String, trim: true },
-    assignee: { type: String, trim: true },
-    reporter: { type: String, required: true, trim: true },
+    assignee: { type: Schema.Types.ObjectId, ref: tableNames.USERS, trim: true },
+    reporter: { type: Schema.Types.ObjectId, ref: tableNames.USERS, required: true, trim: true },
     labels: { type: [String] },
     attachments: { type: [String] },
     releaseId: { type: Schema.Types.ObjectId, ref: tableNames.ISSUES },
-    board: { type: Schema.Types.ObjectId, required: true },
+    board: { type: Schema.Types.ObjectId, ref: tableNames.BOARDS, required: true },
+    project: { type: Schema.Types.ObjectId, ref: tableNames.PROJECTS, required: true },
     comments: {
       type: [
         {

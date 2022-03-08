@@ -25,12 +25,20 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   links = [
     {
+      name: this.translate.getTranslatedWrods('boards.links.roadmap'),
+      link: 'roadmap',
+    },
+    {
       name: this.translate.getTranslatedWrods('boards.links.backlog'),
       link: 'backlog',
     },
     {
       name: this.translate.getTranslatedWrods('boards.links.board'),
       link: 'board',
+    },
+    {
+      name: this.translate.getTranslatedWrods('boards.links.features'),
+      link: 'features',
     },
   ];
 
@@ -62,6 +70,9 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   private addBoard(data: { data?: any; close: boolean }) {
     this.api.send<Board>('addBoard', { ...data, project: this.projectId }).subscribe({
       next: (board) => {
+        if (this.boards.length === 0) {
+          this.selectedBoard = board;
+        }
         this.boards.push(board);
         this.showModal = !close;
       },

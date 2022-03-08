@@ -6,12 +6,16 @@ export type ServiceData = {
 export type ServiceKeys = keyof typeof services;
 
 export const services = {
+  getUsers: {
+    url: '/users',
+    type: 'GET',
+  },
   getProjects: {
     url: '/projects',
     type: 'GET',
   },
   getProjectBoards: {
-    url: '/boards?project={project}',
+    url: '/boards',
     type: 'GET',
   },
   addBoard: {
@@ -32,6 +36,18 @@ export const services = {
   },
   updateIssue: {
     url: '/issues',
+    type: 'PUT',
+  },
+  getProjectFeatures: {
+    url: '/features',
+    type: 'GET',
+  },
+  addFeature: {
+    url: '/features',
+    type: 'POST',
+  },
+  updateFeature: {
+    url: '/features',
     type: 'PUT',
   },
 } as const;

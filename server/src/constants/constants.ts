@@ -8,4 +8,6 @@ export const tableNames = {
   PROJECTS: 'projects',
   BOARDS: 'boards',
   ISSUES: 'issues',
+  FEATURES: 'features',
+  USERS: 'users',
 };

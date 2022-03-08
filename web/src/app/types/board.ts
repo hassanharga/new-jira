@@ -8,7 +8,7 @@ export enum BoardNames {
 }
 export enum BoardTypes {
   Kanban = 'Kanban',
-  Scrum = 'Scrum',
+  // Scrum = 'Scrum',
 }
 
 export interface Board {

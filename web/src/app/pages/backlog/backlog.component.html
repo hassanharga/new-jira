@@ -1,8 +1,14 @@
 <p-toast></p-toast>
 <div class="backlog-container flex flex-column p-5 h-full">
-  <app-add-issue [showModal]="showModal" (addIssue)="addIssue($event)"></app-add-issue>
+  <app-add-issue
+    *ngIf="showModal"
+    [showModal]="showModal"
+    [relaseIssues]="issues"
+    (addIssue)="addIssue($event)"
+  ></app-add-issue>
   <div class="actions py-3">
     <app-button
+      *ngIf="boardId"
       [className]="'p-button-secondary'"
       [label]="'create issue'"
       (handleClick)="showModal = true"
@@ -22,7 +28,7 @@
       </div>
     </div>
     <div class="tasks-issue" *ngIf="selectedIssue">
-      <app-issue [issue]="selectedIssue"></app-issue>
+      <app-issue [issue]="selectedIssue" (updateIssue)="updateIssueData($event)"></app-issue>
     </div>
   </div>
 </div>

@@ -10,6 +10,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'backlog', pathMatch: 'full' },
       { path: 'board', loadChildren: () => import('../board/boards.module').then((m) => m.BoardsModule) },
       { path: 'backlog', loadChildren: () => import('../backlog/backlog.module').then((m) => m.BacklogModule) },
+      { path: 'features', loadChildren: () => import('../features/features.module').then((m) => m.FeaturesModule) },
+      { path: 'roadmap', loadChildren: () => import('../roadmap/roadmap.module').then((m) => m.RoadmapModule) },
     ],
   },
 ];

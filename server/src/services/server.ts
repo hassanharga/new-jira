@@ -1,6 +1,6 @@
 import cors from 'cors';
 import express from 'express';
-// import sanitize from 'express-mongo-sanitize';
+import sanitize from 'express-mongo-sanitize';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import i18n from 'i18n';
@@ -50,7 +50,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: false }));
 app.use(hpp());
 
 // mongo sanitize
-// app.use(sanitize());
+app.use(sanitize());
 
 // xss attack
 app.use(xss());

@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { QuillModule } from 'ngx-quill';
 
 import { TableComponent } from './table/table.component';
 import { TableModule } from 'primeng/table';
@@ -15,6 +16,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { ImageModule } from 'primeng/image';
 import { EditorModule } from 'primeng/editor';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 import { LoaderComponent } from './loader/loader.component';
 import { DropDownComponent } from './drop-down/drop-down.component';
@@ -32,6 +34,10 @@ import { NgsContenteditableModule } from '@ng-stack/contenteditable';
 import { NewEditorComponent } from './new-editor/new-editor.component';
 import { EditBlockComponent } from './new-editor/edit-block/edit-block.component';
 import { SelectMenuComponent } from './new-editor/select-menu/select-menu.component';
+import { AddFeatureComponent } from './modals/add-feature/add-feature.component';
+import { FeatureComponent } from './feature/feature.component';
+import { EditorCommandsComponent } from './editor-commands/editor-commands.component';
+import { SanitizeHtmlPipe } from '../pipes/sanitize-html.pipe';
 
 @NgModule({
   declarations: [
@@ -48,9 +54,13 @@ import { SelectMenuComponent } from './new-editor/select-menu/select-menu.compon
     ImagePreviewComponent,
     AddIssueComponent,
     EditorComponent,
+    EditorCommandsComponent,
     NewEditorComponent,
     EditBlockComponent,
     SelectMenuComponent,
+    AddFeatureComponent,
+    FeatureComponent,
+    SanitizeHtmlPipe,
   ],
   imports: [
     CommonModule,
@@ -69,6 +79,8 @@ import { SelectMenuComponent } from './new-editor/select-menu/select-menu.compon
     EditorModule,
     MultiSelectModule,
     NgsContenteditableModule,
+    TabMenuModule,
+    QuillModule.forRoot(),
   ],
   exports: [
     TableComponent,
@@ -84,9 +96,14 @@ import { SelectMenuComponent } from './new-editor/select-menu/select-menu.compon
     ImagePreviewComponent,
     AddIssueComponent,
     EditorComponent,
+    EditorCommandsComponent,
     NewEditorComponent,
     EditBlockComponent,
     SelectMenuComponent,
+    AddFeatureComponent,
+    FeatureComponent,
+    SanitizeHtmlPipe,
   ],
+  providers: [DatePipe],
 })
 export class ComponentsModule {}

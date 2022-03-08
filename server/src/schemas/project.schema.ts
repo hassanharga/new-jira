@@ -10,8 +10,7 @@ const projectSchema = new Schema<ProjectTableModel>(
     name: { type: String, required: true, unique: true, trim: true },
     description: { type: String, trim: true },
     key: { type: String, required: true, unique: true, trim: true },
-    // TODO change to objecId of user
-    lead: { type: String, required: true },
+    lead: { type: Schema.Types.ObjectId, ref: tableNames.USERS, required: true },
     type: { type: String, required: true, enum: Object.values(ProjectType), default: ProjectType.software },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },

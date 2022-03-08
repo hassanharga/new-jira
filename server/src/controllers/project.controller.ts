@@ -7,8 +7,8 @@ import ApiError from '../utils/ApiError';
 export const addProject: RequestHandler = async (req, res) => {
   const project = await ProjectModel.create(req.body);
   if (!project) throw new ApiError('project.notCreated', statusCodes.BAD_REQUEST);
-
-  res.send(project);
+  const sentProject = await ProjectModel.populate(project, { path: 'lead', select: 'name' });
+  res.send(sentProject);
 };
 
 export const deleteProject: RequestHandler = async (req, res) => {
@@ -36,7 +36,7 @@ export const getProject: RequestHandler = async (req, res) => {
   const { id } = req.params;
   if (!isValidObjectId(id)) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
 
-  const project = await ProjectModel.findById(id);
+  const project = await ProjectModel.findById(id).populate('lead', 'name');
   if (!project) throw new ApiError('project.notFound', statusCodes.BAD_REQUEST);
 
   res.send(project);
@@ -46,7 +46,7 @@ export const getProjects: RequestHandler = async (req, res) => {
   const { search = '' } = req.query as { search: string };
   const query: Record<string, any> = {};
   if (search) query.name = { $regex: search, $options: 'i' };
-  const projects = await ProjectModel.find(query);
+  const projects = await ProjectModel.find(query).populate('lead', 'name');
   if (!projects) throw new ApiError('project.notCreated', statusCodes.BAD_REQUEST);
 
   res.send(projects);

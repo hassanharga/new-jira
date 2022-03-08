@@ -14,11 +14,11 @@ import { Project } from 'src/app/types/project';
 export class ProjectsComponent implements OnInit {
   projects: Project[] = [];
 
-  headers: { key: string; header: string }[] = [
-    { key: 'name', header: this.translate.getTranslatedWrods('projects.table.headers.name') },
-    { key: 'key', header: this.translate.getTranslatedWrods('projects.table.headers.key') },
-    { key: 'type', header: this.translate.getTranslatedWrods('projects.table.headers.type') },
-    { key: 'lead', header: this.translate.getTranslatedWrods('projects.table.headers.lead') },
+  headers: { field: string; key: string; header: string }[] = [
+    { field: '', key: 'name', header: this.translate.getTranslatedWrods('projects.table.headers.name') },
+    { field: '', key: 'key', header: this.translate.getTranslatedWrods('projects.table.headers.key') },
+    { field: '', key: 'type', header: this.translate.getTranslatedWrods('projects.table.headers.type') },
+    { field: 'name', key: 'lead', header: this.translate.getTranslatedWrods('projects.table.headers.lead') },
   ];
 
   showModal = false;
@@ -45,7 +45,7 @@ export class ProjectsComponent implements OnInit {
       this.showModal = !close;
       return;
     }
-    this.api.send<Project>('addProject', { ...data, lead: '12345' }).subscribe({
+    this.api.send<Project>('addProject', { ...data }).subscribe({
       next: (project) => {
         this.projects.push(project);
         this.showModal = !close;

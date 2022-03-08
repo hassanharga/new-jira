@@ -30,7 +30,9 @@
     "create": "Create Board",
     "links": {
       "board": "Board",
-      "backlog": "BackLog"
+      "backlog": "BackLog",
+      "features": "Features",
+      "roadmap": "Roadmap"
     },
     "form": {
       "name": "Name",

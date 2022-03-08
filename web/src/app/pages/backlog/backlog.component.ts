@@ -17,8 +17,9 @@ export class BacklogComponent implements OnInit, OnDestroy {
   selectedIssue: Issue | null = null;
 
   boardId = '';
+  projectId = '';
 
-  showModal = true;
+  showModal = false;
 
   constructor(
     private issueService: IssueService,
@@ -26,6 +27,19 @@ export class BacklogComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private translate: LocalizationService,
   ) {}
+
+  async updateIssueData(data: any) {
+    if (!this.selectedIssue || !this.selectedIssue._id) return;
+    this.api.send<Issue>('updateIssue', { id: this.selectedIssue?._id, ...data }).subscribe({
+      next: (issue) => {
+        this.selectedIssue = issue;
+        const issueIdx = this.issues.findIndex((ele) => ele._id === issue._id);
+        if (issueIdx >= 0) {
+          this.issues[issueIdx] = issue;
+        }
+      },
+    });
+  }
 
   private getBacklogIssues() {
     this.sub = this.issueService
@@ -39,6 +53,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (res) => {
+          this.issueService.setIssues(res);
           this.issues = res;
         },
       });
@@ -54,8 +69,8 @@ export class BacklogComponent implements OnInit, OnDestroy {
       this.showModal = !close;
       return;
     }
-    if (!this.boardId) return;
-    const payload = { ...data, board: this.boardId };
+    if (!this.boardId || !this.projectId) return;
+    const payload = { ...data, board: this.boardId, project: this.projectId };
     this.api.send<Issue>('addIssue', payload).subscribe({
       next: (issue) => {
         this.issues.push(issue);
@@ -70,8 +85,14 @@ export class BacklogComponent implements OnInit, OnDestroy {
     });
   }
 
+  getProjectId() {
+    const projectSub = this.issueService.getProjectId().subscribe({ next: (val) => (this.projectId = val) });
+    this.sub.add(projectSub);
+  }
+
   ngOnInit(): void {
     this.getBacklogIssues();
+    this.getProjectId();
   }
 
   ngOnDestroy(): void {

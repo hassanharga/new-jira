@@ -1,0 +1,32 @@
+<p-toast></p-toast>
+<app-add-feature [showModal]="showModal" (addFeature)="addFeature($event)"></app-add-feature>
+<div class="features-container flex flex-column p-5 h-full">
+  <div class="actions py-3">
+    <app-button
+      [className]="'p-button-secondary'"
+      [label]="'Create Feature'"
+      (handleClick)="showModal = true"
+      [icon]="'pi pi-plus'"
+    ></app-button>
+  </div>
+  <div class="main flex">
+    <div class="tasks flex flex-column align-content-center p-3">
+      <div
+        class="tasks-card mb-1 p-2 flex justify-content-between align-content-center overflow-y-auto"
+        (click)="openFeature(feature)"
+        *ngFor="let feature of features"
+        [ngClass]="selectedFeature && selectedFeature._id === feature._id ? 'tasks-card-active' : ''"
+      >
+        <p class="align-self-center">{{ feature.name }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<p-dialog
+  [modal]="true"
+  [header]="selectedFeature?.name || ''"
+  [(visible)]="showFeatureModal && selectedFeature"
+  [style]="{ width: '70vw', height: '70vw' }"
+>
+  <app-feature [feature]="selectedFeature" (editFeature)="updateFeature($event)" *ngIf="selectedFeature"></app-feature>
+</p-dialog>

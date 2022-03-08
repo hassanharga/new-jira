@@ -7,7 +7,7 @@
       [label]="'projects.create' | translate"
       (handleClick)="showModal = true"
     ></app-button>
-    <app-input [icon]="'pi-search'" (changeHandler)="searchProjects($event)"></app-input>
+    <app-input [icon]="'pi-search'" placeholder="search projects" (changeHandler)="searchProjects($event)"></app-input>
   </div>
   <app-table
     [data]="projects"

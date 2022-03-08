@@ -1,44 +1,6 @@
-<div class="editor">
-  <div>
-    <div class="menu" *ngIf="currentBlock.showMenuItems">
-      <ul>
-        <li
-          class="item"
-          [ngClass]="{ selected: item.selected }"
-          *ngFor="let item of menuItems; let y = index"
-          (click)="selectTag(item.value, y)"
-        >
-          {{ item.name }}
-        </li>
-      </ul>
-    </div>
-    <h1
-      propValueAccessor="innerHTML"
-      [formControl]="formElement"
-      *ngIf="currentBlock.tag === 'h1'"
-      editable="true"
-      (keydown)="onKeyDownHandler($event)"
-    ></h1>
-    <h2
-      propValueAccessor="innerHTML"
-      [formControl]="formElement"
-      *ngIf="currentBlock.tag === 'h2'"
-      editable="true"
-      (keydown)="onKeyDownHandler($event)"
-    ></h2>
-    <h3
-      propValueAccessor="innerHTML"
-      [formControl]="formElement"
-      *ngIf="currentBlock.tag === 'h3'"
-      editable="true"
-      (keydown)="onKeyDownHandler($event)"
-    ></h3>
-    <p
-      propValueAccessor="innerHTML"
-      [formControl]="formElement"
-      *ngIf="currentBlock.tag === 'p'"
-      editable="true"
-      (keydown)="onKeyDownHandler($event)"
-    ></p>
-  </div>
-</div>
+<quill-editor
+  [(ngModel)]="description"
+  placeholder="Enter Text"
+  (ngModelChange)="changeDescripton()"
+  [modules]="modules"
+></quill-editor>

@@ -9,7 +9,7 @@
     <tr class="cursor-pointer" (click)="handleRowData(rowData)">
       <td *ngFor="let col of columns">
         <span class="p-column-title">{{ col.header }}</span>
-        {{ rowData[col.key] }}
+        {{ col.field ? rowData[col.key][col.field] : rowData[col.key] }}
       </td>
     </tr>
   </ng-template>

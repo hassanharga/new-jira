@@ -16,6 +16,7 @@ const bodyData = {
   version: Joi.string().allow('').messages(messages),
   assignee: Joi.string().allow('').messages(messages),
   board: Joi.string().hex().empty().messages(messages),
+  project: Joi.string().hex().empty().messages(messages),
   releaseId: Joi.string().allow('').messages(messages),
   reporter: Joi.string().empty().messages(messages),
   description: Joi.string().allow('').messages(messages),

@@ -12,7 +12,7 @@
       <!-- name and type -->
       <div class="p-fluid p-formgrid grid">
         <div class="p-field col">
-          <label class="mb-2" for="name">Summary</label>
+          <label class="mb-2" for="name">summary</label>
           <input type="text" pInputText class="w-full px-1 py-2" formControlName="name" name="name" id="name" />
           <div class="mt-1">
             <small *ngIf="formData['name'].touched && formData['name'].invalid" class="p-error">required</small>
@@ -37,25 +37,29 @@
       <div class="p-fluid p-formgrid grid">
         <div class="p-field col">
           <label class="mb-2" for="reporter">reporter</label>
-          <input
-            type="text"
-            pInputText
-            class="w-full px-1 py-2"
-            formControlName="reporter"
-            namer="reporter"
+          <p-dropdown
+            placeholder="reporter"
+            class="w-full py-2"
+            name="reporter"
             id="reporter"
-          />
+            optionLabel="name"
+            optionValue="_id"
+            [options]="users"
+            formControlName="reporter"
+          ></p-dropdown>
         </div>
         <div class="p-field col">
           <label class="mb-2" for="assignee">assignee</label>
-          <input
-            type="text"
-            pInputText
-            class="w-full px-1 py-2"
-            formControlName="assignee"
+          <p-dropdown
+            placeholder="assignee"
+            class="w-full py-2"
             name="assignee"
             id="assignee"
-          />
+            optionLabel="name"
+            optionValue="_id"
+            [options]="users"
+            formControlName="assignee"
+          ></p-dropdown>
         </div>
       </div>
       <!-- priority and components -->
@@ -91,8 +95,20 @@
       <!-- version -->
       <div class="p-fluid p-formgrid grid">
         <div class="p-field col-6">
-          <label class="mb-2" for="components">version</label>
+          <label class="mb-2" for="components">{{ isRelease ? 'version' : 'release' }}</label>
+          <p-dropdown
+            class="w-full py-2"
+            name="version"
+            id="version"
+            placeholder="{{ isRelease ? 'version' : 'release' }}"
+            optionLabel="version"
+            optionValue="_id"
+            [options]="relaseIssues"
+            formControlName="version"
+            *ngIf="!isRelease"
+          ></p-dropdown>
           <input
+            *ngIf="isRelease"
             type="text"
             pInputText
             class="w-full px-1 py-2"
@@ -111,16 +127,14 @@
       <div class="p-fluid p-formgrid grid mt-4">
         <div class="p-field col-12">
           <label class="mb-2" for="components">Description</label>
-          <!-- <app-new-editor> </app-new-editor> -->
-          <app-editor (handleDescription)="handleDescription($event)"> </app-editor>
-          <!-- <p-editor formControlName="description" [style]="{ height: '300px' }"></p-editor> -->
+          <app-editor (handleDescription)="handleDescription($event)" [users]="users" [issues]="issues"> </app-editor>
         </div>
       </div>
     </form>
   </div>
   <ng-template pTemplate="footer">
     <app-button
-      [label]="'create issue'"
+      [label]="isRelease ? 'create release' : 'create issue'"
       icon="pi pi-check"
       [disabled]="!form.valid"
       (handleClick)="onSubmit()"

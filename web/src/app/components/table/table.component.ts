@@ -6,7 +6,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent implements OnInit {
-  @Input() columns: { key: string; header: string }[] = [];
+  @Input() columns: { field: string; key: string; header: string }[] = [];
   @Input() data: any[] = [];
   @Input() caption: string = '';
 

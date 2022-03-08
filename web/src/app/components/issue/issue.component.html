@@ -6,7 +6,7 @@
       <!-- description from board -->
       <div class="description mt-2">
         <h3>Description</h3>
-        <div class="mt-2" [innerHTML]="issue.description || 'None'"></div>
+        <div class="mt-2" [innerHTML]="issue.description | sanitizeHtml"></div>
       </div>
       <!-- attachments from board -->
       <div class="description attachments mt-5">
@@ -51,7 +51,7 @@
       <!-- description fron backlog -->
       <div class="description px-1 py-3" *ngIf="!fromBoard">
         <h3>Description</h3>
-        <div class="mt-2" [innerHTML]="issue.description || 'None'"></div>
+        <div class="mt-2" [innerHTML]="issue.description | sanitizeHtml"></div>
       </div>
 
       <!-- deatils -->
@@ -59,10 +59,10 @@
         <app-accordion [header]="'Details'">
           <div>
             <p>
-              assigne: <span>{{ issue.assignee || 'unassigned' }}</span>
+              assigne: <span>{{ issue.assignee ? issue.assignee.name : 'unassigned' }}</span>
             </p>
             <p>
-              reporter: <span>{{ issue.reporter }}</span>
+              reporter: <span>{{ issue.reporter ? issue.reporter.name : 'unassigned' }}</span>
             </p>
             <p>
               components: <span class="component" *ngFor="let comp of issue.components">{{ comp + ' ' }}</span>

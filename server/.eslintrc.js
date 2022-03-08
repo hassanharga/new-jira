@@ -36,7 +36,7 @@ module.exports = {
     'no-return-await': 0,
     'func-names': 0,
     quotes: 0,
-    'no-console': 0,
+    'no-console': ['warn'],
     'no-unused-vars': ['warn', { args: 'none' }],
     '@typescript-eslint/no-unused-vars': ['warn', { args: 'none' }],
     'no-plusplus': ["warn", { "allowForLoopAfterthoughts": true }]

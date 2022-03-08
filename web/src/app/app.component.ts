@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { ApiService } from './services/api.service';
+import { IssueService } from './services/issue.service';
 import { LocalizationService } from './services/localization.service';
+import { User } from './types/user';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +13,13 @@ import { LocalizationService } from './services/localization.service';
 export class AppComponent implements OnInit, OnDestroy {
   sub!: Subscription;
 
-  constructor(private translate: LocalizationService, private renderer: Renderer2) {
+  // TODO remove user from here
+  constructor(
+    private translate: LocalizationService,
+    private renderer: Renderer2,
+    private api: ApiService,
+    private issueService: IssueService,
+  ) {
     this.translate.initTranslation();
   }
 
@@ -23,8 +32,15 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
+  getUsers() {
+    this.api.send<User[]>('getUsers', {}).subscribe({
+      next: (res) => this.issueService.setUsers(res),
+    });
+  }
+
   ngOnInit(): void {
     this.setHtmlLangAndDir();
+    this.getUsers();
   }
 
   ngOnDestroy(): void {

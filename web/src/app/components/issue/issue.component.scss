@@ -6,6 +6,7 @@
     display: flex;
     column-gap: 15px;
     justify-content: space-between;
+
     .left-side {
       flex: 2;
       overflow-y: auto;
@@ -16,6 +17,7 @@
           overflow: hidden;
         }
       }
+
       .activity {
         .input {
           row-gap: 5px;

@@ -1,0 +1,26 @@
+.roadmap-container {
+  .main {
+    flex: 1;
+    column-gap: 5px;
+    & > div {
+      border: 2px solid var(--surface-d);
+    }
+  }
+  .tasks {
+    flex: 3;
+    &-card {
+      border: 1px solid var(--surface-d);
+      border-radius: 5px;
+      cursor: pointer;
+      &:hover {
+        background-color: var(--surface-c);
+      }
+      &-active {
+        background-color: var(--blue-200);
+      }
+    }
+  }
+  .tasks-issue {
+    flex: 1;
+  }
+}

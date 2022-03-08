@@ -24,5 +24,8 @@
 	"\"releaseId\" is not allowed": "\"releaseId\" is not allowed",
 	"\"releaseId\" is not allowed to be empty": "\"releaseId\" is not allowed to be empty",
 	"\"lang\" is not allowed": "\"lang\" is not allowed",
-	"\"priority\" is not allowed": "\"priority\" is not allowed"
+	"\"priority\" is not allowed": "\"priority\" is not allowed",
+	"\"components\" must be an array": "\"components\" must be an array",
+	"\"createdAt\" is not allowed": "\"createdAt\" is not allowed",
+	"\"user\" is not allowed": "\"user\" is not allowed"
 }

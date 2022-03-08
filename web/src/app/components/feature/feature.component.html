@@ -1,0 +1,41 @@
+<p-tabMenu [model]="items" [activeItem]="activeItem"></p-tabMenu>
+<div class="feature-container p-3">
+  <div class="draft flex flex-column align-items-start" *ngIf="dropDownOptions.length > 0; else empty">
+    <div class="left">
+      <app-drop-down
+        [options]="dropDownOptions"
+        [label]="'createdAt'"
+        placeholder="select"
+        [defaultValue]="selectedDraft"
+        (changeOption)="changeOption($event)"
+      ></app-drop-down>
+    </div>
+    <div class="right">
+      <div class="card">
+        <h2 class="user py-2">{{ selectedDraft?.user?.name }}</h2>
+        <div class="description mb-3" [innerHTML]="selectedDraft?.description | sanitizeHtml"></div>
+      </div>
+      <app-button
+        *ngIf="activeItem.id === 'draft'"
+        [label]="'publish change'"
+        [className]="'p-button-raised'"
+        (handleClick)="publishChange()"
+      ></app-button>
+    </div>
+  </div>
+
+  <!-- empty msg if no history -->
+  <ng-template #empty>
+    <div class="edit flex align-items-center" [ngClass]="{ 'flex-column': showEditInput }">
+      <app-button [label]="'edit page'" [className]="'p-button-raised'" (handleClick)="editPage()"></app-button>
+      <span *ngIf="!showEditInput">nothing to show</span>
+      <app-editor
+        (handleDescription)="handleDescription($event)"
+        [users]="users"
+        [issues]="issues"
+        *ngIf="showEditInput"
+      >
+      </app-editor>
+    </div>
+  </ng-template>
+</div>
