@@ -110,11 +110,15 @@ export const getIssue: RequestHandler = async (req, res) => {
 
 export const getIssues: RequestHandler = async (req, res) => {
   const { board } = req.params;
-  const { status, type } = req.query;
+  if (!isValidObjectId(board)) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
+
+  const { status, type, search = '' } = req.query;
 
   const query: Record<string, any> = {
     board,
   };
+
+  if (search) query.name = { $regex: search, $options: 'i' };
 
   if (status) {
     query.status = status;

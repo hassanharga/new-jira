@@ -49,11 +49,12 @@ export const getUser: RequestHandler = async (req, res) => {
   res.send(user);
 };
 
-export const getUsers: RequestHandler = async (_req, res) => {
-  // const { project } = req.query;
-  // if (!isValidObjectId(project)) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
+export const getUsers: RequestHandler = async (req, res) => {
+  const { search = '' } = req.query as { search: string };
+  const query: Record<string, any> = {};
+  if (search) query.name = { $regex: search, $options: 'i' };
 
-  const Users = await UserModel.find({});
+  const Users = await UserModel.find(query);
   if (!Users) throw new ApiError('User.notFound', statusCodes.BAD_REQUEST);
 
   res.send(Users);

@@ -1,6 +1,9 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { QuillEditorComponent, QuillModules } from 'ngx-quill';
 import 'quill-mention';
+import { EMPTY, lastValueFrom } from 'rxjs';
+import { ApiService } from 'src/app/services/api.service';
+import { IssueService } from 'src/app/services/issue.service';
 import { Issue } from 'src/app/types/issue';
 import { User } from 'src/app/types/user';
 
@@ -9,9 +12,7 @@ import { User } from 'src/app/types/user';
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss'],
 })
-export class EditorComponent implements OnInit, OnChanges {
-  @Input() issues: Issue[] = [];
-  @Input() users: User[] = [];
+export class EditorComponent implements OnInit {
   @Output() handleDescription = new EventEmitter<string>();
 
   @ViewChild(QuillEditorComponent, { static: true }) editor!: QuillEditorComponent;
@@ -28,13 +29,15 @@ export class EditorComponent implements OnInit, OnChanges {
         // necessary because quill-mention triggers changes as 'api' instead of 'user'
         editor.insertText(editor.getLength() - 1, '', 'user');
       },
-      source: (searchTerm: any, renderList: any, mentionChar: any) => {
-        let values;
+      source: async (searchTerm: any, renderList: any, mentionChar: any) => {
+        let values: any[] = [];
 
         if (mentionChar === '@') {
-          values = this.users;
+          const data = (await lastValueFrom(this.searchUsers(searchTerm))) || [];
+          values = this.mapUsers(data);
         } else {
-          values = this.issues;
+          const data = (await lastValueFrom(this.searchIssues(searchTerm))) || [];
+          values = this.mapIssues(data);
         }
 
         if (searchTerm.length === 0) {
@@ -43,7 +46,7 @@ export class EditorComponent implements OnInit, OnChanges {
           const matches: any[] = [];
 
           values.forEach((entry) => {
-            if (entry.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1) {
+            if (entry.value.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1) {
               matches.push(entry);
             }
           });
@@ -53,23 +56,32 @@ export class EditorComponent implements OnInit, OnChanges {
     },
   };
 
-  constructor() {}
+  constructor(private api: ApiService, private issueService: IssueService) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes && changes['issues'] && changes['issues'].currentValue.length > 0) {
-      this.issues = this.issues.map((ele) => ({
-        ...ele,
-        value: ele.name,
-        link: `/projects/${ele.project}/board?issue=${ele._id}`,
-      }));
-    }
-    if (changes && changes['users'] && changes['users'].currentValue.length > 0) {
-      this.users = this.users.map((ele) => ({ ...ele, value: ele.name, link: `/users?user=${ele._id}` }));
-    }
+  private mapUsers(users: User[]) {
+    return users.map((ele) => ({ ...ele, value: ele.name, link: `/users?user=${ele._id}` }));
+  }
+
+  private mapIssues(issues: Issue[]) {
+    return issues.map((ele) => ({ ...ele, value: ele.name, link: `/projects/${ele.project}/board?issue=${ele._id}` }));
   }
 
   changeDescripton() {
     this.handleDescription.emit(this.description);
+  }
+
+  private searchUsers(value?: string) {
+    const options: Record<string, any> = {};
+    if (value) options['search'] = value;
+    return this.api.send<User[]>('getUsers', options);
+  }
+
+  private searchIssues(value?: string) {
+    const boardId = this.issueService.boardId;
+    if (!boardId) return EMPTY;
+    const options: Record<string, any> = { id: boardId };
+    if (value) options['search'] = value;
+    return this.api.send<Issue[]>('getBoardIssues', options);
   }
 
   ngOnInit(): void {}

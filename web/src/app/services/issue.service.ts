@@ -17,6 +17,8 @@ export class IssueService {
   private users = new BehaviorSubject<User[]>([]);
   private issues = new BehaviorSubject<Issue[]>([]);
 
+  boardId = '';
+
   constructor() {}
 
   setIssues(issues: Issue[]) {
@@ -34,6 +36,7 @@ export class IssueService {
 
   setBoard(board: Board) {
     this.board.next(board);
+    this.boardId = board._id;
   }
 
   setProjectId(id: string) {

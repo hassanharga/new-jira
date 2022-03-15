@@ -29,13 +29,7 @@
     <div class="edit flex align-items-center" [ngClass]="{ 'flex-column': showEditInput }">
       <app-button [label]="'edit page'" [className]="'p-button-raised'" (handleClick)="editPage()"></app-button>
       <span *ngIf="!showEditInput">nothing to show</span>
-      <app-editor
-        (handleDescription)="handleDescription($event)"
-        [users]="users"
-        [issues]="issues"
-        *ngIf="showEditInput"
-      >
-      </app-editor>
+      <app-editor (handleDescription)="handleDescription($event)" *ngIf="showEditInput"> </app-editor>
     </div>
   </ng-template>
 </div>

@@ -3,8 +3,6 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { MenuItem } from 'primeng/api';
 import { IssueService } from 'src/app/services/issue.service';
 import { Feature, FeatureHistory } from 'src/app/types/feature';
-import { Issue } from 'src/app/types/issue';
-import { User } from 'src/app/types/user';
 import { escapeHtml } from 'src/app/utils/excapeHtml';
 
 @Component({
@@ -25,9 +23,6 @@ export class FeatureComponent implements OnInit, OnChanges {
   dropDownOptions: FeatureHistory[] = [];
 
   selectedDraft: FeatureHistory | null = null;
-
-  users: User[] = [];
-  issues: Issue[] = [];
 
   showEditInput = false;
   description = '';
@@ -98,22 +93,7 @@ export class FeatureComponent implements OnInit, OnChanges {
     this.selectedDraft = this.dropDownOptions[this.dropDownOptions.length - 1];
   }
 
-  getUsers() {
-    this.issueService.getUsers().subscribe({
-      next: (users) => (this.users = users),
-    });
-  }
-
-  getIssues() {
-    this.issueService.getIssues().subscribe({
-      next: (issues) => (this.issues = issues),
-    });
-  }
-
   ngOnInit(): void {
-    this.getUsers();
-    this.getIssues();
-
     this.items = [
       { label: 'Production', id: 'production', command: this.setActiveItem.bind(this) },
       { label: 'Draft', id: 'draft', command: this.setActiveItem.bind(this) },

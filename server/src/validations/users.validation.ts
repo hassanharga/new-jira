@@ -43,5 +43,6 @@ export const getUser: schema = {
 export const getUsers: schema = {
   query: Joi.object({
     project: Joi.string().empty().messages(messages),
+    search: Joi.string().empty().messages(messages),
   }).options({ allowUnknown: true }),
 };

@@ -70,6 +70,7 @@ export const getIssue: schema = {
 export const getIssues: schema = {
   params: Joi.object({
     board: Joi.string().empty().messages(messages),
+    search: Joi.string().empty().messages(messages),
   }),
   query: Joi.object({
     status: Joi.string()

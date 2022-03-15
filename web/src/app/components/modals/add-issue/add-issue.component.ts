@@ -24,7 +24,6 @@ export class AddIssueComponent implements OnInit {
   components = Object.values(IssueComponents);
 
   users: User[] = [];
-  issues: Issue[] = [];
 
   description = '';
 
@@ -73,12 +72,6 @@ export class AddIssueComponent implements OnInit {
   getUsers() {
     this.issueService.getUsers().subscribe({
       next: (users) => (this.users = users),
-    });
-  }
-
-  getIssues() {
-    this.issueService.getIssues().subscribe({
-      next: (issues) => (this.issues = issues),
     });
   }
 
