@@ -2,11 +2,11 @@ import { NextFunction, Request, Response } from 'express';
 import { ValidationError } from 'express-validation';
 import statusCodes from 'http-status-codes';
 import ApiError from './ApiError';
+import logger from './logger';
 
 export default (err: any, req: Request, res: Response, _next: NextFunction) => {
   let status = statusCodes.INTERNAL_SERVER_ERROR;
   let msg = '';
-  console.log(`err[errorHandler]`, err);
   // Api error
   if (err instanceof ApiError) {
     msg = req.__(err.message);
@@ -49,6 +49,6 @@ export default (err: any, req: Request, res: Response, _next: NextFunction) => {
     // } else {
     // }
   }
-
+  logger.error(`error[errorHandler]: ${JSON.stringify({ msg, err }, null, 3)}`);
   return res.status(status).json({ msg, err });
 };

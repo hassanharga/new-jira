@@ -4,13 +4,14 @@ import sanitize from 'express-mongo-sanitize';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import i18n from 'i18n';
-import morgan from 'morgan';
+// import morgan from 'morgan';
 // @ts-ignore
 import xss from 'xss-clean';
-import { isDevelopment } from '../constants/constants';
+// import { isDevelopment } from '../constants/constants';
 // import { userAuth } from '../middlewares/userAuth';
 import routes from '../routes';
 import errorHandler from '../utils/errorHandler';
+import morganMiddleware from '../middlewares/httpLogger';
 
 const app = express();
 
@@ -56,9 +57,8 @@ app.use(sanitize());
 app.use(xss());
 
 // log routes
-if (isDevelopment) {
-  app.use(morgan('dev'));
-}
+
+app.use(morganMiddleware);
 
 // app.use(userAuth);
 
