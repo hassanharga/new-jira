@@ -1,5 +1,5 @@
 <div class="issue-container p-2 h-full" *ngIf="issue">
-  <h1 class="title">{{ issue.name }}</h1>
+  <h1 class="title">{{ (issue.cbuNumber ? 'CBU-' + issue.cbuNumber : '') + ' ' + issue.name }}</h1>
 
   <div class="main-issue">
     <div class="left-side px-1 py-3" *ngIf="fromBoard">

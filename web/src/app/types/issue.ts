@@ -44,6 +44,7 @@ export interface Issue {
   name: string;
   version: string;
   key: string;
+  cbuNumber: string;
   status: keyof typeof issueStatus;
   type: IssueType;
   components: IssueComponents[];

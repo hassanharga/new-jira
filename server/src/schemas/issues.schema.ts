@@ -10,6 +10,7 @@ const issueSchema = new Schema<IssueTableModel>(
     name: { type: String, required: true, trim: true },
     priority: { type: String, trim: true },
     key: { type: String, trim: true, unique: true },
+    cbuNumber: { type: String, trim: true },
     version: { type: String, required: true },
     status: { type: String, enum: Object.values(IssueStatus), default: IssueStatus.design },
     type: { type: String, required: true, enum: Object.values(IssueType) },

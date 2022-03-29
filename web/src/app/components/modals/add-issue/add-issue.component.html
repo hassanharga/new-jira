@@ -92,7 +92,7 @@
           ></p-multiSelect>
         </div>
       </div>
-      <!-- version -->
+      <!-- version and cbu number-->
       <div class="p-fluid p-formgrid grid">
         <div class="p-field col-6">
           <label class="mb-2" for="components">{{ isRelease ? 'version' : 'release' }}</label>
@@ -119,6 +119,22 @@
           <div class="mt-1">
             <small *ngIf="formData['version'].touched && formData['version'].invalid" class="p-error"
               >version required</small
+            >
+          </div>
+        </div>
+        <div class="p-field col-6" *ngIf="!isRelease">
+          <label class="mb-2" for="components">CBU Number</label>
+          <input
+            type="text"
+            pInputText
+            class="w-full px-1 py-2"
+            formControlName="cbuNumber"
+            namer="cbuNumber"
+            id="cbuNumber"
+          />
+          <div class="mt-1">
+            <small *ngIf="formData['cbuNumber'].touched && formData['cbuNumber'].invalid" class="p-error"
+              >cbu number required</small
             >
           </div>
         </div>

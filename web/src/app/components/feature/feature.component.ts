@@ -1,8 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { IssueService } from 'src/app/services/issue.service';
 import { Feature, FeatureHistory } from 'src/app/types/feature';
+import { Issue } from 'src/app/types/issue';
 import { escapeHtml } from 'src/app/utils/excapeHtml';
 
 @Component({
@@ -12,6 +12,8 @@ import { escapeHtml } from 'src/app/utils/excapeHtml';
 })
 export class FeatureComponent implements OnInit, OnChanges {
   @Input() feature: Feature | null = null;
+  @Input() resetDraft = false;
+  @Input() releases: Issue[] = [];
   @Output() editFeature = new EventEmitter();
 
   items!: MenuItem[];
@@ -26,12 +28,14 @@ export class FeatureComponent implements OnInit, OnChanges {
 
   showEditInput = false;
   description = '';
+  release = '';
 
-  constructor(private datePipe: DatePipe, private issueService: IssueService) {}
+  constructor(private datePipe: DatePipe) {}
 
   editPage() {
     if (this.showEditInput) {
-      this.editFeature.emit({ description: escapeHtml(this.description) });
+      if (!this.release) return;
+      this.editFeature.emit({ description: escapeHtml(this.description), release: this.release });
       this.description = '';
     }
     this.showEditInput = !this.showEditInput;
@@ -45,10 +49,13 @@ export class FeatureComponent implements OnInit, OnChanges {
     this.description = val;
   }
 
+  handleRelease(val: Issue) {
+    this.release = val._id;
+  }
+
   publishChange() {
     if (!this.selectedDraft) return;
     this.editFeature.emit({ id: this.selectedDraft._id, type: this.activeItem.id });
-    this.selectedDraft = null;
   }
 
   private prepareOptions(drafts: FeatureHistory[], type: 'draft' | 'production') {
@@ -67,7 +74,11 @@ export class FeatureComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // console.log('ngOnChanges', changes);
+    console.log('ngOnChanges', changes);
+    if (changes['resetDraft'] && changes['resetDraft'].currentValue) {
+      this.selectedDraft = null;
+    }
+
     if (!changes['feature'].currentValue) return;
     const feature = changes['feature'].currentValue as Feature;
     // console.log('feature[ngOnChanges]', feature);

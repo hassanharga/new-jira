@@ -5,6 +5,7 @@ export interface Issue {
   name: string;
   priority: string;
   key: string;
+  cbuNumber: string;
   version: string;
   status: IssueStatus;
   type: IssueType;

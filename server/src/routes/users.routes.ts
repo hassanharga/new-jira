@@ -13,4 +13,7 @@ router
   .put(validate(validators.updateUser), asyncHandler(Controllers.updateUser))
   .delete(validate(validators.deleteUser), asyncHandler(Controllers.deleteUser));
 
+router.route('/:id').get(validate(validators.getUser), asyncHandler(Controllers.getUser));
+
 export default router;
+

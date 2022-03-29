@@ -27,7 +27,8 @@ export class BoardComponent implements OnInit, OnDestroy {
   //   { name: IssueStatusKeys.done, dragName: 'doneDrap', dropName: 'inReviewDrap' },
   // ];
 
-  issueStatus: string[] = [IssueStatusKeys.todo, IssueStatusKeys.inProgress, IssueStatusKeys.inReview];
+  boardIssueStatus: string[] = [IssueStatusKeys.todo, IssueStatusKeys.inProgress, IssueStatusKeys.inReview];
+  allIssueStatus = issueStatus;
 
   issues: Record<string, Issue[]> = {};
   unorderedIssues: Issue[] = [];
@@ -119,12 +120,27 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.showIssueModal = true;
   }
 
+  getSingleIssue() {
+    const paramSub = this.activeRoute.queryParams
+      .pipe(
+        switchMap(({ issue }) => {
+          if (!issue) return EMPTY;
+          return this.api.send<Issue>('getIssueDetails', { id: issue });
+        }),
+      )
+      .subscribe({
+        next: (issue) => {
+          this.selectedIssue = issue;
+          this.showIssueModal = true;
+        },
+      });
+
+    this.sub.add(paramSub);
+  }
+
   ngOnInit(): void {
     this.getBoardIssues();
-
-    this.activeRoute.queryParams.subscribe({
-      next: ({ issue }) => console.log('issue', issue),
-    });
+    this.getSingleIssue();
   }
 
   ngOnDestroy(): void {

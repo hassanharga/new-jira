@@ -1,8 +1,9 @@
 import { RequestHandler } from 'express';
 import statusCodes from 'http-status-codes';
 import { isValidObjectId } from 'mongoose';
-import { IssueType } from '../constants/issue';
+import { IssueStatus, IssueType } from '../constants/issue';
 import IssueModel, { IssueTableModel } from '../schemas/issues.schema';
+import FeatureModel from '../schemas/feature.schema';
 import ProjectModel from '../schemas/project.schema';
 import ApiError from '../utils/ApiError';
 
@@ -98,6 +99,19 @@ export const updateIssue: RequestHandler = async (req, res) => {
 
   await issue.save();
 
+  if (status === IssueStatus.done && issue.type === IssueType.release) {
+    const features = await FeatureModel.find({ 'drafts.release': issue._id });
+    console.log('features', features.length);
+    for (const feature of features) {
+      const draftIdx = feature.drafts.findIndex((ele) => ele.release.toString() === issue._id.toString());
+      if (draftIdx >= 0) {
+        const draft = feature.drafts.splice(draftIdx, 1)[0];
+        feature.history.push(draft);
+        await feature.save();
+      }
+    }
+  }
+
   let sentIssue = await IssueModel.populate(issue, { path: 'reporter', select: 'name' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'assignee', select: 'name' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'sub', select: 'name' });
@@ -115,6 +129,7 @@ export const getIssue: RequestHandler = async (req, res) => {
     .populate('assignee', 'name')
     .populate('sub', 'name')
     .populate('comments.user', 'name');
+
   if (!issue) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
 
   res.send(issue);
@@ -122,6 +137,7 @@ export const getIssue: RequestHandler = async (req, res) => {
 
 export const getIssues: RequestHandler = async (req, res) => {
   const { board } = req.params;
+
   if (!isValidObjectId(board)) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
 
   const { status, type, search = '' } = req.query;
@@ -135,6 +151,7 @@ export const getIssues: RequestHandler = async (req, res) => {
   if (status) {
     query.status = status;
   }
+
   if (type) {
     query.type = IssueType.release;
   }

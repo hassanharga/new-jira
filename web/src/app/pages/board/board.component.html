@@ -1,16 +1,16 @@
 <div class="board-container flex flex-column p-5 h-full">
   <div class="actions">actions</div>
   <div class="issues-types flex">
-    <div class="todo flex flex-column" *ngFor="let status of issueStatus">
+    <div class="todo flex flex-column" *ngFor="let status of boardIssueStatus">
       <div class="section-type mb-3 shadow-1 p-1">
-        <span>{{ status }}</span>
+        <span>{{ allIssueStatus[status] }}</span>
         <span>{{ issues[status] ? issues[status].length : 0 }}</span>
       </div>
       <div class="issues">
         <ng-container *ngIf="issues[status]">
           <div class="issue shadow-3 mb-3" *ngFor="let issue of issues[status]" (click)="openIssueModal(issue)">
             <div class="description">
-              <p>{{ issue.name }}</p>
+              <p>{{ issue.cbuNumber || '' + ' ' + issue.name }}</p>
             </div>
             <div class="details flex justify-content-between align-content-center mt-2">
               <p>{{ issue.type }}</p>

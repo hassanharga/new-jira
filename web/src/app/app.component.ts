@@ -13,7 +13,6 @@ import { User } from './types/user';
 export class AppComponent implements OnInit, OnDestroy {
   sub!: Subscription;
 
-  // TODO remove user from here
   constructor(
     private translate: LocalizationService,
     private renderer: Renderer2,
@@ -32,6 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
+  // TODO remove user from here
   getUsers() {
     this.api.send<User[]>('getUsers', {}).subscribe({
       next: (res) => this.issueService.setUsers(res),

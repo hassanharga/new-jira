@@ -10,6 +10,10 @@ export const services = {
     url: '/users',
     type: 'GET',
   },
+  getUser: {
+    url: '/users/{id}',
+    type: 'GET',
+  },
   getProjects: {
     url: '/projects',
     type: 'GET',
@@ -27,6 +31,10 @@ export const services = {
     type: 'POST',
   },
   getBoardIssues: {
+    url: '/issues/board/{id}',
+    type: 'GET',
+  },
+  getIssueDetails: {
     url: '/issues/{id}',
     type: 'GET',
   },

@@ -1,31 +1,26 @@
 {
-	"errorMsg": {
-		"badCredentials": "errorMsg.badCredentials",
-		"serverError": "errorMsg.serverError"
-	},
-	"validation": {
-		"field": {
-			"duplicate": "field is duplicate: {{field}}"
-		}
-	},
-	"issue": {
-		"notCreated": "issue.notCreated",
-		"notFound": "issue.notFound"
-	},
-	"\"version\" is not allowed": "\"version\" is not allowed",
-	"project": {
-		"notFound": "project.notFound"
-	},
-	"board": {
-		"notFound": "board.notFound",
-		"exists": "board.exists"
-	},
-	"\"board\" is not allowed": "\"board\" is not allowed",
-	"\"releaseId\" is not allowed": "\"releaseId\" is not allowed",
-	"\"releaseId\" is not allowed to be empty": "\"releaseId\" is not allowed to be empty",
-	"\"lang\" is not allowed": "\"lang\" is not allowed",
-	"\"priority\" is not allowed": "\"priority\" is not allowed",
-	"\"components\" must be an array": "\"components\" must be an array",
-	"\"createdAt\" is not allowed": "\"createdAt\" is not allowed",
-	"\"user\" is not allowed": "\"user\" is not allowed"
+  "errorMsg": {
+    "badCredentials": "errorMsg.badCredentials",
+    "serverError": "errorMsg.serverError"
+  },
+  "validation": {
+    "field": {
+      "duplicate": "field is duplicate: {{field}}"
+    }
+  },
+  "issue": {
+    "notCreated": "issue.notCreated",
+    "notFound": "issue.notFound"
+  },
+  "\"version\" is not allowed": "\"version\" is not allowed",
+  "project": {
+    "notFound": "project.notFound"
+  },
+  "board": {
+    "notFound": "board.notFound",
+    "exists": "board.exists"
+  },
+  "release": {
+    "opened": "release.opened"
+  }
 }

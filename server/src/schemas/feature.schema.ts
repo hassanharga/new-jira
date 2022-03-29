@@ -13,6 +13,7 @@ const issueSchema = new Schema<FeatureTableModel>(
       {
         user: { type: Schema.Types.ObjectId, ref: tableNames.USERS, required: true },
         description: { type: String, trim: true },
+        release: { type: Schema.Types.ObjectId, ref: tableNames.ISSUES },
         createdAt: { type: Date, default: new Date() },
       },
     ],
@@ -20,6 +21,7 @@ const issueSchema = new Schema<FeatureTableModel>(
       {
         user: { type: Schema.Types.ObjectId, ref: tableNames.USERS, required: true },
         description: { type: String, trim: true },
+        release: { type: Schema.Types.ObjectId, ref: tableNames.ISSUES },
         createdAt: { type: Date, default: new Date() },
       },
     ],
@@ -30,3 +32,4 @@ const issueSchema = new Schema<FeatureTableModel>(
 const IssueModel = model<FeatureTableModel>(tableNames.FEATURES, issueSchema);
 
 export default IssueModel;
+

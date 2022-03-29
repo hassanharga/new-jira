@@ -22,6 +22,7 @@ const bodyData = {
     Joi.object({
       user: Joi.string().required().empty().messages(messages),
       description: Joi.string().required().empty().messages(messages),
+      release: Joi.string().required().empty().messages(messages),
     }),
   ),
 };
@@ -58,3 +59,4 @@ export const getFeatures: schema = {
     project: Joi.string().empty().messages(messages),
   }).options({ allowUnknown: true }),
 };
+

@@ -4,7 +4,7 @@ import { EMPTY, Subscription, switchMap } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { IssueService } from 'src/app/services/issue.service';
 import { LocalizationService } from 'src/app/services/localization.service';
-import { Issue } from 'src/app/types/issue';
+import { Issue, IssueType } from 'src/app/types/issue';
 
 @Component({
   selector: 'app-backlog',
@@ -13,6 +13,8 @@ import { Issue } from 'src/app/types/issue';
 })
 export class BacklogComponent implements OnInit, OnDestroy {
   issues: Issue[] = [];
+  releaseIssues: Issue[] = [];
+
   sub!: Subscription;
   selectedIssue: Issue | null = null;
 
@@ -54,7 +56,13 @@ export class BacklogComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res) => {
           this.issueService.setIssues(res);
-          this.issues = res;
+          res.forEach((ele) => {
+            if (ele.type === IssueType.release) {
+              this.releaseIssues.push(ele);
+            } else {
+              this.issues.push(ele);
+            }
+          });
         },
       });
   }

@@ -12,6 +12,9 @@ router
   .put(validate(validators.updateIssue), asyncHandler(Controllers.updateIssue))
   .delete(validate(validators.deleteIssue), asyncHandler(Controllers.deleteIssue));
 
-router.route('/:board').get(validate(validators.getIssues), asyncHandler(Controllers.getIssues));
+router.route('/board/:board').get(validate(validators.getIssues), asyncHandler(Controllers.getIssues));
+
+router.route('/:id').get(validate(validators.getIssue), asyncHandler(Controllers.getIssue));
 
 export default router;
+

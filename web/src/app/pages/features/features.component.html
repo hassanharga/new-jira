@@ -28,5 +28,11 @@
   [(visible)]="showFeatureModal && selectedFeature"
   [style]="{ width: '70vw', height: '70vw' }"
 >
-  <app-feature [feature]="selectedFeature" (editFeature)="updateFeature($event)" *ngIf="selectedFeature"></app-feature>
+  <app-feature
+    [releases]="releases"
+    [feature]="selectedFeature"
+    [resetDraft]="resetDraft"
+    (editFeature)="updateFeature($event)"
+    *ngIf="selectedFeature"
+  ></app-feature>
 </p-dialog>

@@ -1,7 +1,9 @@
 import { RequestHandler } from 'express';
 import statusCodes from 'http-status-codes';
 import { isValidObjectId } from 'mongoose';
+import { IssueStatus } from '../constants/issue';
 import FeatureModel from '../schemas/feature.schema';
+import IssueModel from '../schemas/issues.schema';
 import ApiError from '../utils/ApiError';
 
 export const addFeature: RequestHandler = async (req, res) => {
@@ -35,10 +37,16 @@ export const updateFeature: RequestHandler = async (req, res) => {
 
   if (name) feature.name = name;
   if (description) feature.description = description;
+
   if (drafts && drafts.length > 0) feature.drafts.push(drafts[0]);
+
   if (draftId) {
     const draftIdx = feature.drafts.findIndex((ele) => ele._id.toString() === draftId.toString());
     if (draftIdx >= 0) {
+      const releaseData = await IssueModel.findById(feature.drafts[draftIdx].release);
+      if (!releaseData) throw new ApiError('release.notFound', statusCodes.BAD_REQUEST);
+      if (releaseData.status !== IssueStatus.done) throw new ApiError('release.opened', statusCodes.BAD_REQUEST);
+
       const draft = feature.drafts.splice(draftIdx, 1)[0];
       feature.history.push(draft);
     }
@@ -73,3 +81,4 @@ export const getFeatures: RequestHandler = async (req, res) => {
 
   res.send(features);
 };
+

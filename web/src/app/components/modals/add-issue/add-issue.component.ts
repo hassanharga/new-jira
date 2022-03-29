@@ -61,7 +61,7 @@ export class AddIssueComponent implements OnInit {
       assignee: [''],
       priority: ['', [Validators.required]],
       version: ['', [Validators.required]],
-      description: [''],
+      cbuNumber: [''],
     });
   }
 

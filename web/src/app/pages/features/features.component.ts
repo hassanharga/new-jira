@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { EMPTY, switchMap } from 'rxjs';
+import { EMPTY, Subscription, switchMap } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { IssueService } from 'src/app/services/issue.service';
 import { LocalizationService } from 'src/app/services/localization.service';
 import { Feature } from 'src/app/types/feature';
+import { Issue, IssueType } from 'src/app/types/issue';
+import { User } from 'src/app/types/user';
 
 @Component({
   selector: 'app-features',
   templateUrl: './features.component.html',
   styleUrls: ['./features.component.scss'],
 })
-export class FeaturesComponent implements OnInit {
+export class FeaturesComponent implements OnInit, OnDestroy {
   showModal = false;
   showFeatureModal = false;
 
@@ -19,6 +21,11 @@ export class FeaturesComponent implements OnInit {
 
   selectedFeature: Feature | null = null;
   project = '';
+
+  resetDraft = false;
+  releases: Issue[] = [];
+  users: User[] = [];
+  sub!: Subscription;
 
   constructor(
     private api: ApiService,
@@ -62,7 +69,8 @@ export class FeaturesComponent implements OnInit {
     });
   }
 
-  updateFeature({ description, id, type }: any) {
+  updateFeature({ description, id, type, release }: any) {
+    this.resetDraft = false;
     const data: Record<string, any> = {
       id: this.selectedFeature?._id,
     };
@@ -71,7 +79,8 @@ export class FeaturesComponent implements OnInit {
         {
           description,
           // TODO
-          user: '62274cd79bee33b51a6584ee',
+          user: this.users[0]._id,
+          release,
         },
       ];
     }
@@ -82,6 +91,9 @@ export class FeaturesComponent implements OnInit {
         this.selectedFeature = res;
         const featureIdx = this.features.findIndex((ele) => ele._id === res._id);
         this.features[featureIdx] = res;
+        if (type === 'draft') {
+          this.resetDraft = true;
+        }
       },
     });
   }
@@ -91,7 +103,32 @@ export class FeaturesComponent implements OnInit {
     this.showFeatureModal = true;
   }
 
+  getReleases() {
+    this.sub = this.issueService
+      .getBoard()
+      .pipe(
+        switchMap((board) => {
+          if (!board) return EMPTY;
+          return this.api.send<Issue[]>('getBoardIssues', { id: board._id, type: IssueType.release });
+        }),
+      )
+      .subscribe({
+        next: (res) => {
+          this.releases = res;
+        },
+      });
+  }
+
   ngOnInit(): void {
     this.getProjectFeatures();
+    this.getReleases();
+    const userSub = this.issueService.getUsers().subscribe({
+      next: (users) => (this.users = users),
+    });
+    this.sub.add(userSub);
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 }
