@@ -9,7 +9,7 @@
         <div class="mt-2" [innerHTML]="issue.description | sanitizeHtml"></div>
       </div>
       <!-- attachments from board -->
-      <div class="description attachments mt-5">
+      <div class="description attachments mt-5" *ngIf="issue.attachments.length">
         <h3>Attachments</h3>
         <div class="flex flex-wrap mt-2">
           <div class="img mx-2" *ngFor="let item of issue.attachments">
@@ -23,15 +23,26 @@
         <h3>comments</h3>
         <div class="mt-2">
           <div class="input flex flex-column">
-            <app-input
+            <app-editor
               [placeholder]="'write your comment'"
-              (changeHandler)="changeCommit($event)"
-              [resetInput]="resetInput"
-            ></app-input>
-            <app-button [label]="'Add comment'" (handleClick)="addComment()"></app-button>
+              [isComment]="true"
+              (handleDescription)="changeCommit($event)"
+            >
+            </app-editor>
+            <app-button
+              [className]="'p-button-raised'"
+              [label]="'Add comment'"
+              (handleClick)="addComment()"
+            ></app-button>
           </div>
-          <div class="comment">
-            <div class="py-3 px-2" [innerHTML]="comment.comment" *ngFor="let comment of issue.comments"></div>
+          <div class="comments-container my-4">
+            <div class="comment my-5" *ngFor="let comment of issue.comments">
+              <div class="name flex my-3">
+                <p>{{ comment.user.name }}</p>
+                <p class="mx-3">{{ comment.createdAt | date: 'MMMM d, y, h:mm a' }}</p>
+              </div>
+              <div class="px-2" [innerHTML]="comment.comment | sanitizeHtml"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -64,7 +75,7 @@
             <p>
               reporter: <span>{{ issue.reporter ? issue.reporter.name : 'unassigned' }}</span>
             </p>
-            <p>
+            <p *ngIf="issue.components.length">
               components: <span class="component" *ngFor="let comp of issue.components">{{ comp + ' ' }}</span>
             </p>
           </div>

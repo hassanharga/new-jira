@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ValidationError } from 'express-validation';
 import statusCodes from 'http-status-codes';
+import { isDevelopment } from '../constants/constants';
 import ApiError from './ApiError';
 import logger from './logger';
 
@@ -49,6 +50,12 @@ export default (err: any, req: Request, res: Response, _next: NextFunction) => {
     // } else {
     // }
   }
-  logger.error(`error[errorHandler]: ${JSON.stringify({ msg, err }, null, 3)}`);
+
+  if (isDevelopment) {
+    console.log('error[errorHandler]', err);
+  } else {
+    logger.error(`error[errorHandler]: ${JSON.stringify({ msg, err }, null, 3)}`);
+  }
   return res.status(status).json({ msg, err });
 };
+

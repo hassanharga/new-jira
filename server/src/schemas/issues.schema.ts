@@ -9,6 +9,7 @@ const issueSchema = new Schema<IssueTableModel>(
   {
     name: { type: String, required: true, trim: true },
     priority: { type: String, trim: true },
+    key: { type: String, trim: true, unique: true },
     version: { type: String, required: true },
     status: { type: String, enum: Object.values(IssueStatus), default: IssueStatus.design },
     type: { type: String, required: true, enum: Object.values(IssueType) },
@@ -24,8 +25,9 @@ const issueSchema = new Schema<IssueTableModel>(
     comments: {
       type: [
         {
-          user: String,
+          user: { type: Schema.Types.ObjectId, ref: tableNames.USERS, required: true },
           comment: String,
+          createdAt: { type: Date, default: new Date() },
           _id: false,
         },
       ],
@@ -45,3 +47,4 @@ issueSchema.pre('remove', async function (this: any) {
 const IssueModel = model<IssueTableModel>(tableNames.ISSUES, issueSchema);
 
 export default IssueModel;
+

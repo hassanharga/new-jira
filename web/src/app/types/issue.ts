@@ -43,6 +43,7 @@ export interface Issue {
   _id: string;
   name: string;
   version: string;
+  key: string;
   status: keyof typeof issueStatus;
   type: IssueType;
   components: IssueComponents[];
@@ -58,7 +59,8 @@ export interface Issue {
   createdAt: string;
   updatedAt: string;
   comments: {
-    user: string;
+    user: User;
     comment: string;
+    createdAt: number;
   }[];
 }

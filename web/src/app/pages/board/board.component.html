@@ -14,7 +14,7 @@
             </div>
             <div class="details flex justify-content-between align-content-center mt-2">
               <p>{{ issue.type }}</p>
-              <p>{{ issue._id }}</p>
+              <p>{{ issue.key }}</p>
             </div>
           </div>
         </ng-container>
@@ -25,7 +25,7 @@
 
 <p-dialog
   [modal]="true"
-  [header]="selectedIssue?._id || ''"
+  [header]="selectedIssue?.key || ''"
   [(visible)]="showIssueModal"
   [style]="{ width: '70vw', height: '70vw' }"
 >

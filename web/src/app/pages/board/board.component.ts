@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription, switchMap, EMPTY } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { IssueService } from 'src/app/services/issue.service';
@@ -38,7 +39,7 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   sub!: Subscription;
 
-  constructor(private issueService: IssueService, private api: ApiService) {}
+  constructor(private issueService: IssueService, private api: ApiService, private activeRoute: ActivatedRoute) {}
 
   // dragStart(event: any, issue: Issue) {
   //   // console.log('event', event);
@@ -120,6 +121,10 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getBoardIssues();
+
+    this.activeRoute.queryParams.subscribe({
+      next: ({ issue }) => console.log('issue', issue),
+    });
   }
 
   ngOnDestroy(): void {

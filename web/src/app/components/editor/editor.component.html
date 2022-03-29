@@ -1,6 +1,7 @@
 <quill-editor
+  [ngClass]="{ comment: isComment }"
   [(ngModel)]="description"
-  placeholder="Enter Text"
+  [placeholder]="placeholder || 'Enter Text'"
   (ngModelChange)="changeDescripton()"
   [modules]="modules"
 ></quill-editor>

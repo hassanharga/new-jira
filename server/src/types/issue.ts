@@ -4,6 +4,7 @@ import { IssueStatus, IssueType, IssueComponents } from '../constants/issue';
 export interface Issue {
   name: string;
   priority: string;
+  key: string;
   version: string;
   status: IssueStatus;
   type: IssueType;
@@ -18,7 +19,8 @@ export interface Issue {
   board: Schema.Types.ObjectId;
   project: Schema.Types.ObjectId;
   comments: {
-    user: string;
+    user: string | Schema.Types.ObjectId;
     comment: string;
   }[];
 }
+

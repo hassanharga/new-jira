@@ -1,11 +1,16 @@
 import { RequestHandler } from 'express';
 import statusCodes from 'http-status-codes';
 import { isValidObjectId } from 'mongoose';
+import { IssueType } from '../constants/issue';
 import IssueModel, { IssueTableModel } from '../schemas/issues.schema';
+import ProjectModel from '../schemas/project.schema';
 import ApiError from '../utils/ApiError';
 
 export const addIssue: RequestHandler = async (req, res) => {
-  const { releaseId, assignee, reporter, components, ...data } = req.body;
+  const { project, releaseId, assignee, reporter, components, ...data } = req.body;
+
+  const projectData = await ProjectModel.findById(project);
+  if (!projectData) throw new ApiError('project.notFound', statusCodes.NOT_FOUND);
 
   if (!releaseId && !req.body.version) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
 
@@ -25,7 +30,12 @@ export const addIssue: RequestHandler = async (req, res) => {
   if (reporter) data.reporter = reporter;
   if (components) data.components = components;
 
-  const issue = await IssueModel.create(data);
+  const issuesCount = await IssueModel.countDocuments({ project, board: data.board });
+  if (issuesCount < 0) throw new ApiError('issue.notCreated', statusCodes.BAD_REQUEST);
+
+  data.key = `${projectData.key}-${issuesCount + 1}`;
+
+  const issue = await IssueModel.create({ ...data, project });
   if (!issue) throw new ApiError('issue.notCreated', statusCodes.BAD_REQUEST);
 
   if (mainIssue) {
@@ -91,6 +101,7 @@ export const updateIssue: RequestHandler = async (req, res) => {
   let sentIssue = await IssueModel.populate(issue, { path: 'reporter', select: 'name' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'assignee', select: 'name' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'sub', select: 'name' });
+  sentIssue = await IssueModel.populate(sentIssue, { path: 'comments.user', select: 'name' });
 
   res.send(sentIssue);
 };
@@ -102,7 +113,8 @@ export const getIssue: RequestHandler = async (req, res) => {
   const issue = await IssueModel.findById(id)
     .populate('reporter', 'name')
     .populate('assignee', 'name')
-    .populate('sub', 'name');
+    .populate('sub', 'name')
+    .populate('comments.user', 'name');
   if (!issue) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
 
   res.send(issue);
@@ -124,14 +136,16 @@ export const getIssues: RequestHandler = async (req, res) => {
     query.status = status;
   }
   if (type) {
-    query.type = 'release';
+    query.type = IssueType.release;
   }
 
   const issues = await IssueModel.find({ ...query })
     .populate('reporter', 'name')
     .populate('assignee', 'name')
-    .populate('sub', 'name');
+    .populate('sub', 'name')
+    .populate('comments.user', 'name');
   if (!issues) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
 
   res.send(issues);
 };
+

@@ -1,15 +1,22 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { IssueService } from 'src/app/services/issue.service';
 import { Issue, issueStatus } from 'src/app/types/issue';
+import { User } from 'src/app/types/user';
+import { escapeHtml } from 'src/app/utils/excapeHtml';
 
 @Component({
   selector: 'app-issue',
   templateUrl: './issue.component.html',
   styleUrls: ['./issue.component.scss'],
 })
-export class IssueComponent implements OnInit, OnChanges {
+export class IssueComponent implements OnInit, OnChanges, OnDestroy {
   @Input() issue: Issue | null = null;
   @Input() fromBoard: boolean = false;
   @Output() updateIssue = new EventEmitter();
+
+  users: User[] = [];
+  sub!: Subscription;
 
   options: { name: string; value: string }[] = [];
   selectedIssueStatus!: { name: string; value: string };
@@ -17,7 +24,11 @@ export class IssueComponent implements OnInit, OnChanges {
   comment = '';
   resetInput = false;
 
-  constructor() {}
+  constructor(private issueService: IssueService) {}
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['issue'] && this.issue) {
@@ -32,7 +43,7 @@ export class IssueComponent implements OnInit, OnChanges {
 
   addComment() {
     // TODO change user
-    this.updateIssue.emit({ comments: [{ comment: this.comment, user: '12345' }] });
+    this.updateIssue.emit({ comments: [{ comment: escapeHtml(this.comment), user: this.users[0]._id }] });
     this.comment = '';
     this.resetInput = true;
   }
@@ -44,5 +55,8 @@ export class IssueComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.options = Object.entries(issueStatus).map(([key, value]) => ({ name: value, value: key }));
+    this.sub = this.issueService.getUsers().subscribe({
+      next: (users) => (this.users = users),
+    });
   }
 }

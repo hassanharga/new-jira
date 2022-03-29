@@ -1,3 +1,11 @@
-::ng-deep .ql-container.ql-snow {
-  height: 300px;
+::ng-deep {
+  .ql-container.ql-snow {
+    height: 300px;
+  }
+
+  &.comment {
+    .ql-container.ql-snow {
+      height: 100px;
+    }
+  }
 }

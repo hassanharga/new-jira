@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { QuillEditorComponent, QuillModules } from 'ngx-quill';
 import 'quill-mention';
 import { EMPTY, lastValueFrom } from 'rxjs';
@@ -13,6 +13,8 @@ import { User } from 'src/app/types/user';
   styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements OnInit {
+  @Input() isComment = false;
+  @Input() placeholder = '';
   @Output() handleDescription = new EventEmitter<string>();
 
   @ViewChild(QuillEditorComponent, { static: true }) editor!: QuillEditorComponent;
