@@ -26,6 +26,9 @@ export class AddIssueComponent implements OnInit {
   users: User[] = [];
 
   description = '';
+  attachments: { name: string; url: string }[] = [];
+
+  isUploading = false;
 
   constructor(private fb: FormBuilder, private issueService: IssueService) {}
 
@@ -39,7 +42,9 @@ export class AddIssueComponent implements OnInit {
         ...this.form.getRawValue(),
         description: escapeHtml(this.description),
         components: this.form.value.components ? this.form.value.componentsÎ : [],
+        attachments: this.attachments.map((ele) => ele.url),
       };
+      console.log('onSubmit', data);
       if (!this.isRelease) {
         const { version, ...payload } = data;
         data = { ...payload, releaseId: version };
@@ -50,6 +55,10 @@ export class AddIssueComponent implements OnInit {
 
   get formData() {
     return this.form.controls;
+  }
+
+  handleAttahcments(e: any) {
+    this.attachments.push(e);
   }
 
   initForm() {

@@ -19,8 +19,9 @@ const bodyData = {
   project: Joi.string().hex().empty().messages(messages),
   releaseId: Joi.string().allow('').messages(messages),
   reporter: Joi.string().empty().messages(messages),
-  cbuNumber: Joi.string().empty().messages(messages),
+  cbuNumber: Joi.string().allow('').messages(messages),
   description: Joi.string().allow('').messages(messages),
+  attachments: Joi.array().items(Joi.string()).messages(messages),
   labels: Joi.array().items(Joi.string()).messages(messages),
   comments: Joi.array()
     .items(

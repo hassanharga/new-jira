@@ -150,7 +150,10 @@
       <div class="p-fluid p-formgrid grid mt-4">
         <div class="p-field col-12">
           <label class="mb-2" for="components">Attachments</label>
-          <app-file-upload></app-file-upload>
+          <app-file-upload
+            (isUploading)="isUploading = $event"
+            (uploadFile)="handleAttahcments($event)"
+          ></app-file-upload>
         </div>
       </div>
     </form>
@@ -159,7 +162,7 @@
     <app-button
       [label]="isRelease ? 'create release' : 'create issue'"
       icon="pi pi-check"
-      [disabled]="!form.valid"
+      [disabled]="!form.valid || isUploading"
       (handleClick)="onSubmit()"
     ></app-button>
   </ng-template>
