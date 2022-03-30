@@ -1,0 +1,23 @@
+<!-- <p-fileUpload
+  name="files[]"
+  [multiple]="true"
+  accept="image/*,.xlsx,.csv,.doc,.docx,.pdf"
+  [customUpload]="true"
+  (uploadHandler)="uploader($event)"
+></p-fileUpload> -->
+<p-fileUpload
+  name="files[]"
+  [url]="url"
+  [multiple]="true"
+  [customUpload]="true"
+  accept="image/*,.xlsx,.csv,.doc,.docx,.pdf"
+  (uploadHandler)="uploader($event.files)"
+  (onProgress)="progressReport($event)"
+  [maxFileSize]="5000000"
+>
+  <ng-template pTemplate="content">
+    <ul *ngIf="uploadedFiles.length">
+      <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+    </ul>
+  </ng-template>
+</p-fileUpload>

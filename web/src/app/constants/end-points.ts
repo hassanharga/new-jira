@@ -6,6 +6,10 @@ export type ServiceData = {
 export type ServiceKeys = keyof typeof services;
 
 export const services = {
+  getSignedUrl: {
+    url: '/attachments',
+    type: 'GET',
+  },
   getUsers: {
     url: '/users',
     type: 'GET',

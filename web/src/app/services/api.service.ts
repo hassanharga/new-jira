@@ -73,6 +73,12 @@ export class ApiService {
     }
   }
 
+  public uploadImage(file: File, url: string) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.put<null>(url, file, { reportProgress: true, observe: 'events' });
+  }
+
   // private handleError(error: HttpErrorResponse) {
   //   if (error.status === 0) {
   //     // A client-side or network error occurred. Handle it accordingly.

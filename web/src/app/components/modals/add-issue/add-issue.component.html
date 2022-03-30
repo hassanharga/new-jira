@@ -146,6 +146,13 @@
           <app-editor (handleDescription)="handleDescription($event)"> </app-editor>
         </div>
       </div>
+      <!-- attchments -->
+      <div class="p-fluid p-formgrid grid mt-4">
+        <div class="p-field col-12">
+          <label class="mb-2" for="components">Attachments</label>
+          <app-file-upload></app-file-upload>
+        </div>
+      </div>
     </form>
   </div>
   <ng-template pTemplate="footer">

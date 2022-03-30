@@ -17,6 +17,8 @@ import { ImageModule } from 'primeng/image';
 import { EditorModule } from 'primeng/editor';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { FileUploadModule } from 'primeng/fileupload';
+// import {HttpClientModule} from '@angular/common/http';
 
 import { LoaderComponent } from './loader/loader.component';
 import { DropDownComponent } from './drop-down/drop-down.component';
@@ -38,6 +40,7 @@ import { AddFeatureComponent } from './modals/add-feature/add-feature.component'
 import { FeatureComponent } from './feature/feature.component';
 import { EditorCommandsComponent } from './editor-commands/editor-commands.component';
 import { SanitizeHtmlPipe } from '../pipes/sanitize-html.pipe';
+import { FileUploadComponent } from './file-upload/file-upload.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +64,7 @@ import { SanitizeHtmlPipe } from '../pipes/sanitize-html.pipe';
     AddFeatureComponent,
     FeatureComponent,
     SanitizeHtmlPipe,
+    FileUploadComponent,
   ],
   imports: [
     CommonModule,
@@ -80,6 +84,7 @@ import { SanitizeHtmlPipe } from '../pipes/sanitize-html.pipe';
     MultiSelectModule,
     NgsContenteditableModule,
     TabMenuModule,
+    FileUploadModule,
     QuillModule.forRoot(),
   ],
   exports: [
@@ -103,6 +108,7 @@ import { SanitizeHtmlPipe } from '../pipes/sanitize-html.pipe';
     AddFeatureComponent,
     FeatureComponent,
     SanitizeHtmlPipe,
+    FileUploadComponent,
   ],
   providers: [DatePipe],
 })

@@ -99,9 +99,9 @@ export const updateIssue: RequestHandler = async (req, res) => {
 
   await issue.save();
 
+  // publish features draft changes
   if (status === IssueStatus.done && issue.type === IssueType.release) {
     const features = await FeatureModel.find({ 'drafts.release': issue._id });
-    console.log('features', features.length);
     for (const feature of features) {
       const draftIdx = feature.drafts.findIndex((ele) => ele.release.toString() === issue._id.toString());
       if (draftIdx >= 0) {
