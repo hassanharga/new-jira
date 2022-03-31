@@ -30,12 +30,22 @@ export class FeatureComponent implements OnInit, OnChanges {
   description = '';
   release = '';
 
+  attachments: { name: string; url: string }[] = [];
+  uxAttachments: { name: string; url: string }[] = [];
+
+  isUploading = false;
+
   constructor(private datePipe: DatePipe) {}
 
   editPage() {
     if (this.showEditInput) {
       if (!this.release) return;
-      this.editFeature.emit({ description: escapeHtml(this.description), release: this.release });
+      this.editFeature.emit({
+        description: escapeHtml(this.description),
+        release: this.release,
+        attachments: this.attachments.map((ele) => ele.url),
+        uxAttachments: this.uxAttachments.map((ele) => ele.url),
+      });
       this.description = '';
     }
     this.showEditInput = !this.showEditInput;
@@ -58,6 +68,14 @@ export class FeatureComponent implements OnInit, OnChanges {
     this.editFeature.emit({ id: this.selectedDraft._id, type: this.activeItem.id });
   }
 
+  handleAttahcments(e: any) {
+    if (e.type === 'ux') {
+      this.uxAttachments.push(e);
+    } else {
+      this.attachments.push(e);
+    }
+  }
+
   private prepareOptions(drafts: FeatureHistory[], type: 'draft' | 'production') {
     const allDrafts = drafts.map((ele) => ({
       ...ele,
@@ -74,7 +92,6 @@ export class FeatureComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('ngOnChanges', changes);
     if (changes['resetDraft'] && changes['resetDraft'].currentValue) {
       this.selectedDraft = null;
     }

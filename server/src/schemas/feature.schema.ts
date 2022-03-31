@@ -15,6 +15,8 @@ const issueSchema = new Schema<FeatureTableModel>(
         description: { type: String, trim: true },
         release: { type: Schema.Types.ObjectId, ref: tableNames.ISSUES },
         createdAt: { type: Date, default: new Date() },
+        attachments: { type: [String] },
+        uxAttachments: { type: [String] },
       },
     ],
     drafts: [
@@ -23,6 +25,8 @@ const issueSchema = new Schema<FeatureTableModel>(
         description: { type: String, trim: true },
         release: { type: Schema.Types.ObjectId, ref: tableNames.ISSUES },
         createdAt: { type: Date, default: new Date() },
+        attachments: { type: [String] },
+        uxAttachments: { type: [String] },
       },
     ],
   },

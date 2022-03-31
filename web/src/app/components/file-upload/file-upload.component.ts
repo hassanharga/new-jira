@@ -1,5 +1,5 @@
 import { HttpEventType } from '@angular/common/http';
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FileUpload } from 'primeng/fileupload';
 import { switchMap } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
@@ -11,6 +11,8 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class FileUploadComponent implements OnInit {
   @ViewChild('primeFileUpload') primeFileUpload!: FileUpload;
+
+  @Input() type = '';
 
   @Output() uploadFile = new EventEmitter();
   @Output() isUploading = new EventEmitter(false);
@@ -59,7 +61,7 @@ export class FileUploadComponent implements OnInit {
                 this.primeFileUpload.onProgress.emit(Math.round((this.percentDone / this.totalPercent) * 100));
                 const uploadedFile = { url: fileUrl, name: file.name };
                 this.urls.push(uploadedFile);
-                this.uploadFile.emit(uploadedFile);
+                this.uploadFile.emit({ ...uploadedFile, type: this.type });
                 this.uploadedFiles.push(file);
                 // console.log('this.percentDone', this.percentDone);
                 if (this.percentDone >= this.totalPercent) {

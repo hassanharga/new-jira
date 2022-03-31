@@ -12,6 +12,8 @@ export interface Feature {
 export type FeatureHistory = {
   user: User;
   description: string;
+  attachments: string[];
+  uxAttachments: string[];
   _id: string;
   createdAt: string | null | Date;
 };

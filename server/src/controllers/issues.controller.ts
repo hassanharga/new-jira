@@ -6,6 +6,7 @@ import IssueModel, { IssueTableModel } from '../schemas/issues.schema';
 import FeatureModel from '../schemas/feature.schema';
 import ProjectModel from '../schemas/project.schema';
 import ApiError from '../utils/ApiError';
+import { signUrl } from '../utils/signUrl';
 
 export const addIssue: RequestHandler = async (req, res) => {
   const { project, releaseId, assignee, reporter, components, ...data } = req.body;
@@ -47,6 +48,8 @@ export const addIssue: RequestHandler = async (req, res) => {
   let sentIssue = await IssueModel.populate(issue, { path: 'reporter', select: 'name' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'assignee', select: 'name' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'sub', select: 'name' });
+
+  sentIssue.attachments = sentIssue.attachments.map((ele) => signUrl(ele));
 
   res.send(sentIssue);
 };
@@ -117,6 +120,8 @@ export const updateIssue: RequestHandler = async (req, res) => {
   sentIssue = await IssueModel.populate(sentIssue, { path: 'sub', select: 'name' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'comments.user', select: 'name' });
 
+  sentIssue.attachments = sentIssue.attachments.map((ele) => signUrl(ele));
+
   res.send(sentIssue);
 };
 
@@ -131,6 +136,8 @@ export const getIssue: RequestHandler = async (req, res) => {
     .populate('comments.user', 'name');
 
   if (!issue) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
+
+  issue.attachments = issue.attachments.map((ele) => signUrl(ele));
 
   res.send(issue);
 };
@@ -156,12 +163,18 @@ export const getIssues: RequestHandler = async (req, res) => {
     query.type = IssueType.release;
   }
 
-  const issues = await IssueModel.find({ ...query })
+  let issues = await IssueModel.find({ ...query })
     .populate('reporter', 'name')
     .populate('assignee', 'name')
     .populate('sub', 'name')
     .populate('comments.user', 'name');
   if (!issues) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
+
+  issues = issues.map((ele) => {
+    const issue = ele;
+    issue.attachments = issue.attachments.map((att) => signUrl(att));
+    return issue;
+  });
 
   res.send(issues);
 };

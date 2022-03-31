@@ -6,6 +6,8 @@ type History = {
   _id: string;
   release: string | Schema.Types.ObjectId;
   createdAt: Date;
+  attachments: string[];
+  uxAttachments: string[];
 };
 
 export interface Feature {

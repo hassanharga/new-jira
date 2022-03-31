@@ -16,6 +16,9 @@ const bodyData = {
     Joi.object({
       user: Joi.string().required().empty().messages(messages),
       description: Joi.string().required().empty().messages(messages),
+      release: Joi.string().required().empty().messages(messages),
+      attachments: Joi.array().items(Joi.string()).messages(messages),
+      uxAttachments: Joi.array().items(Joi.string()).messages(messages),
     }),
   ),
   drafts: Joi.array().items(
@@ -23,6 +26,8 @@ const bodyData = {
       user: Joi.string().required().empty().messages(messages),
       description: Joi.string().required().empty().messages(messages),
       release: Joi.string().required().empty().messages(messages),
+      attachments: Joi.array().items(Joi.string()).messages(messages),
+      uxAttachments: Joi.array().items(Joi.string()).messages(messages),
     }),
   ),
 };

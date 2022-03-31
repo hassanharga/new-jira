@@ -69,7 +69,7 @@ export class FeaturesComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateFeature({ description, id, type, release }: any) {
+  updateFeature({ description, id, type, release, attachments, uxAttachments }: any) {
     this.resetDraft = false;
     const data: Record<string, any> = {
       id: this.selectedFeature?._id,
@@ -81,6 +81,8 @@ export class FeaturesComponent implements OnInit, OnDestroy {
           // TODO
           user: this.users[0]._id,
           release,
+          attachments,
+          uxAttachments,
         },
       ];
     }
