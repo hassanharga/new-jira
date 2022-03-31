@@ -19,17 +19,13 @@
       <div class="attachments my-3" *ngIf="selectedDraft?.attachments?.length">
         <h3>Attachments</h3>
         <div class="flex flex-wrap mt-2">
-          <div class="img" *ngFor="let item of selectedDraft?.attachments">
-            <app-image-preview [imgSrc]="item" [preview]="true"></app-image-preview>
-          </div>
+          <app-attachments [attachments]="selectedDraft?.attachments || []"></app-attachments>
         </div>
       </div>
       <div class="attachments my-3" *ngIf="selectedDraft?.uxAttachments?.length">
         <h3>UX Attachments</h3>
         <div class="flex flex-wrap mt-2">
-          <div class="img" *ngFor="let item of selectedDraft?.uxAttachments">
-            <app-image-preview [imgSrc]="item" [preview]="true"></app-image-preview>
-          </div>
+          <app-attachments [attachments]="selectedDraft?.uxAttachments || []"></app-attachments>
         </div>
       </div>
       <app-button

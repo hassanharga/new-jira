@@ -41,6 +41,7 @@ import { FeatureComponent } from './feature/feature.component';
 import { EditorCommandsComponent } from './editor-commands/editor-commands.component';
 import { SanitizeHtmlPipe } from '../pipes/sanitize-html.pipe';
 import { FileUploadComponent } from './file-upload/file-upload.component';
+import { AttachmentsComponent } from './attachments/attachments.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
     FeatureComponent,
     SanitizeHtmlPipe,
     FileUploadComponent,
+    AttachmentsComponent,
   ],
   imports: [
     CommonModule,
@@ -109,6 +111,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
     FeatureComponent,
     SanitizeHtmlPipe,
     FileUploadComponent,
+    AttachmentsComponent,
   ],
   providers: [DatePipe],
 })
