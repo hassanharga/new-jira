@@ -2,6 +2,8 @@ export enum IssueType {
   release = 'release',
   story = 'story',
   bug = 'bug',
+  task = 'task',
+  test = 'test',
 }
 
 export enum IssueStatus {
@@ -20,3 +22,4 @@ export enum IssueComponents {
   'UX/UI' = 'UX/UI',
   QA = 'QA',
 }
+

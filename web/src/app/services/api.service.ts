@@ -59,7 +59,10 @@ export class ApiService {
         map(this.getResponseData),
         last(), // return last (completed) message to caller
         tap((data) => console.log(`api[${serviceName}]`, data)), // TODO remove logs,
-        catchError((err) => throwError(() => err.error)),
+        catchError((err) => {
+          console.log('api[err]', err.error);
+          return throwError(() => err.error);
+        }),
       );
   }
 

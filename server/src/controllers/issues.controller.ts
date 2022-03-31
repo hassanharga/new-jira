@@ -4,9 +4,12 @@ import { isValidObjectId } from 'mongoose';
 import { IssueStatus, IssueType } from '../constants/issue';
 import IssueModel, { IssueTableModel } from '../schemas/issues.schema';
 import FeatureModel from '../schemas/feature.schema';
+import TestCaseModel from '../schemas/testCase.schema';
 import ProjectModel from '../schemas/project.schema';
 import ApiError from '../utils/ApiError';
 import { signUrl } from '../utils/signUrl';
+import { BoardNames } from '../constants/board';
+import BoardModel from '../schemas/board.schema';
 
 export const addIssue: RequestHandler = async (req, res) => {
   const { project, releaseId, assignee, reporter, components, ...data } = req.body;
@@ -32,7 +35,7 @@ export const addIssue: RequestHandler = async (req, res) => {
   if (reporter) data.reporter = reporter;
   if (components) data.components = components;
 
-  const issuesCount = await IssueModel.countDocuments({ project, board: data.board });
+  const issuesCount = await IssueModel.countDocuments({ project });
   if (issuesCount < 0) throw new ApiError('issue.notCreated', statusCodes.BAD_REQUEST);
 
   data.key = `${projectData.key}-${issuesCount + 1}`;
@@ -48,6 +51,7 @@ export const addIssue: RequestHandler = async (req, res) => {
   let sentIssue = await IssueModel.populate(issue, { path: 'reporter', select: 'name' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'assignee', select: 'name' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'sub', select: 'name' });
+  sentIssue = await IssueModel.populate(sentIssue, { path: 'testCase' });
 
   sentIssue.attachments = sentIssue.attachments.map((ele) => signUrl(ele));
 
@@ -119,6 +123,7 @@ export const updateIssue: RequestHandler = async (req, res) => {
   sentIssue = await IssueModel.populate(sentIssue, { path: 'assignee', select: 'name' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'sub', select: 'name' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'comments.user', select: 'name' });
+  sentIssue = await IssueModel.populate(sentIssue, { path: 'testCase' });
 
   sentIssue.attachments = sentIssue.attachments.map((ele) => signUrl(ele));
 
@@ -133,7 +138,8 @@ export const getIssue: RequestHandler = async (req, res) => {
     .populate('reporter', 'name')
     .populate('assignee', 'name')
     .populate('sub', 'name')
-    .populate('comments.user', 'name');
+    .populate('comments.user', 'name')
+    .populate('testCase');
 
   if (!issue) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
 
@@ -160,14 +166,15 @@ export const getIssues: RequestHandler = async (req, res) => {
   }
 
   if (type) {
-    query.type = IssueType.release;
+    query.type = type;
   }
 
   let issues = await IssueModel.find({ ...query })
     .populate('reporter', 'name')
     .populate('assignee', 'name')
     .populate('sub', 'name')
-    .populate('comments.user', 'name');
+    .populate('comments.user', 'name')
+    .populate('testCase');
   if (!issues) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
 
   issues = issues.map((ele) => {
@@ -177,5 +184,42 @@ export const getIssues: RequestHandler = async (req, res) => {
   });
 
   res.send(issues);
+};
+
+export const addTestIssue: RequestHandler = async (req, res) => {
+  const { project, board, assignee, modules, ...data } = req.body;
+
+  const projectData = await ProjectModel.findById(project);
+  if (!projectData) throw new ApiError('project.notFound', statusCodes.NOT_FOUND);
+
+  const boardData = await BoardModel.findById(board);
+  if (!boardData || boardData.name !== BoardNames.Test) throw new ApiError('board.notFound', statusCodes.NOT_FOUND);
+
+  const issuesCount = await IssueModel.countDocuments({ project });
+  if (issuesCount < 0) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
+
+  data.key = `${projectData.key}-${issuesCount + 1}`;
+
+  const modulesTestCases = await TestCaseModel.find({ module: { $in: modules } });
+  if (!modulesTestCases) throw new ApiError('testCase.notFound', statusCodes.NOT_FOUND);
+
+  const issuesTobeCreated = modulesTestCases.map((ele, idx) => {
+    const payload = {
+      ...data,
+      name: ele.name,
+      project,
+      board,
+      testCase: ele._id,
+      key: `${projectData.key}-${issuesCount + idx + 1}`,
+    };
+
+    if (assignee) payload.assignee = assignee;
+    return payload;
+  });
+
+  const issues = await IssueModel.insertMany(issuesTobeCreated);
+  if (!issues) throw new ApiError('testCase.notFound', statusCodes.BAD_REQUEST);
+
+  res.json(issues);
 };
 

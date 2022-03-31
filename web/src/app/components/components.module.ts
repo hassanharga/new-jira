@@ -18,7 +18,6 @@ import { EditorModule } from 'primeng/editor';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { FileUploadModule } from 'primeng/fileupload';
-// import {HttpClientModule} from '@angular/common/http';
 
 import { LoaderComponent } from './loader/loader.component';
 import { DropDownComponent } from './drop-down/drop-down.component';
@@ -28,7 +27,6 @@ import { AddProjectComponent } from './modals/add-project/add-project.component'
 import { InputComponent } from './input/input.component';
 import { PadgeComponent } from './padge/padge.component';
 import { IssueComponent } from './issue/issue.component';
-import { AccordionComponent } from './accordion/accordion.component';
 import { ImagePreviewComponent } from './image-preview/image-preview.component';
 import { AddIssueComponent } from './modals/add-issue/add-issue.component';
 import { EditorComponent } from './editor/editor.component';
@@ -42,6 +40,9 @@ import { EditorCommandsComponent } from './editor-commands/editor-commands.compo
 import { SanitizeHtmlPipe } from '../pipes/sanitize-html.pipe';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { AttachmentsComponent } from './attachments/attachments.component';
+import { AddModuleComponent } from './modals/add-module/add-module.component';
+import { AddTestCaseComponent } from './modals/add-test-case/add-test-case.component';
+import { AddTestIssueComponent } from './modals/add-test-issue/add-test-issue.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,6 @@ import { AttachmentsComponent } from './attachments/attachments.component';
     InputComponent,
     PadgeComponent,
     IssueComponent,
-    AccordionComponent,
     ImagePreviewComponent,
     AddIssueComponent,
     EditorComponent,
@@ -67,6 +67,9 @@ import { AttachmentsComponent } from './attachments/attachments.component';
     SanitizeHtmlPipe,
     FileUploadComponent,
     AttachmentsComponent,
+    AddModuleComponent,
+    AddTestCaseComponent,
+    AddTestIssueComponent,
   ],
   imports: [
     CommonModule,
@@ -87,6 +90,7 @@ import { AttachmentsComponent } from './attachments/attachments.component';
     NgsContenteditableModule,
     TabMenuModule,
     FileUploadModule,
+    AccordionModule,
     QuillModule.forRoot(),
   ],
   exports: [
@@ -99,7 +103,6 @@ import { AttachmentsComponent } from './attachments/attachments.component';
     InputComponent,
     PadgeComponent,
     IssueComponent,
-    AccordionComponent,
     ImagePreviewComponent,
     AddIssueComponent,
     EditorComponent,
@@ -112,6 +115,9 @@ import { AttachmentsComponent } from './attachments/attachments.component';
     SanitizeHtmlPipe,
     FileUploadComponent,
     AttachmentsComponent,
+    AddModuleComponent,
+    AddTestCaseComponent,
+    AddTestIssueComponent,
   ],
   providers: [DatePipe],
 })

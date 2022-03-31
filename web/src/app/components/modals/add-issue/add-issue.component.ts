@@ -19,7 +19,7 @@ export class AddIssueComponent implements OnInit {
 
   form!: FormGroup;
 
-  issueTypes = Object.values(IssueType);
+  issueTypes = Object.values(IssueType).filter((ele) => ele !== IssueType.test);
   issuePriority = Object.values(IssuePriority);
   components = Object.values(IssueComponents);
 
@@ -41,10 +41,9 @@ export class AddIssueComponent implements OnInit {
       let data = {
         ...this.form.getRawValue(),
         description: escapeHtml(this.description),
-        components: this.form.value.components ? this.form.value.componentsÎ : [],
+        components: this.form.value.components ? this.form.value.components : [],
         attachments: this.attachments.map((ele) => ele.url),
       };
-      console.log('onSubmit', data);
       if (!this.isRelease) {
         const { version, ...payload } = data;
         data = { ...payload, releaseId: version };

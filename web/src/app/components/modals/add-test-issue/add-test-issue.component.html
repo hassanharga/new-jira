@@ -1,0 +1,88 @@
+<p-dialog
+  (onHide)="closeModal()"
+  [header]="'create test issue'"
+  [(visible)]="showModal"
+  [modal]="true"
+  [style]="{ width: '70vw', height: '42vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="h-full">
+    <form class="h-full" [formGroup]="form" *ngIf="form">
+      <!-- platform and modules -->
+      <div class="p-fluid p-formgrid grid mt-2">
+        <div class="p-field col">
+          <label class="mb-2" for="priority">Platform</label>
+          <p-dropdown
+            class="w-full py-2"
+            name="priority"
+            id="priority"
+            placeholder="platform"
+            [options]="platform"
+            formControlName="platform"
+          ></p-dropdown>
+
+          <div class="mt-1">
+            <small *ngIf="formData['platform'].touched && formData['platform'].invalid" class="p-error"
+              >platform required</small
+            >
+          </div>
+        </div>
+        <div class="p-field col-6">
+          <label class="mb-2" for="components">modules</label>
+          <p-multiSelect
+            [showHeader]="false"
+            [options]="modules"
+            formControlName="modules"
+            defaultLabel="choose modules"
+            optionLabel="name"
+            optionValue="_id"
+            display="chip"
+          ></p-multiSelect>
+          <div class="mt-1">
+            <small *ngIf="formData['modules'].touched && formData['modules'].invalid" class="p-error"
+              >modules required</small
+            >
+          </div>
+        </div>
+      </div>
+      <!-- reporter and assignee -->
+      <div class="p-fluid p-formgrid grid mt-2">
+        <div class="p-field col">
+          <label class="mb-2" for="reporter">reporter</label>
+          <p-dropdown
+            placeholder="reporter"
+            class="w-full py-2"
+            name="reporter"
+            id="reporter"
+            optionLabel="name"
+            optionValue="_id"
+            [options]="users"
+            formControlName="reporter"
+          ></p-dropdown>
+        </div>
+        <div class="p-field col">
+          <label class="mb-2" for="assignee">assignee</label>
+          <p-dropdown
+            placeholder="assignee"
+            class="w-full py-2"
+            name="assignee"
+            id="assignee"
+            optionLabel="name"
+            optionValue="_id"
+            [options]="users"
+            formControlName="assignee"
+          ></p-dropdown>
+        </div>
+      </div>
+    </form>
+  </div>
+  <ng-template pTemplate="footer">
+    <app-button
+      [label]="'create test issue'"
+      icon="pi pi-check"
+      [disabled]="!form.valid"
+      (handleClick)="onSubmit()"
+    ></app-button>
+  </ng-template>
+</p-dialog>

@@ -3,6 +3,7 @@ import projectRouters from './project.routes';
 import boardRouters from './board.routes';
 import issuesRouters from './issues.routes';
 import featuresRouters from './features.routes';
+import testModulesRouters from './testModules.routes';
 import usersRouters from './users.routes';
 import attachmentsRouters from './attachments.routes';
 
@@ -12,7 +13,9 @@ router.use('/projects', projectRouters);
 router.use('/boards', boardRouters);
 router.use('/issues', issuesRouters);
 router.use('/features', featuresRouters);
+router.use('/modules', testModulesRouters);
 router.use('/users', usersRouters);
 router.use('/attachments', attachmentsRouters);
 
 export default router;
+

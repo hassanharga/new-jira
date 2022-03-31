@@ -1,0 +1,49 @@
+<p-dialog
+  (onHide)="closeModal()"
+  [header]="'Add Test Case'"
+  [(visible)]="showModal"
+  [modal]="true"
+  [style]="{ width: '70vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="h-full">
+    <form class="h-full" [formGroup]="form" *ngIf="form">
+      <!-- name and type -->
+      <div class="p-fluid p-formgrid grid">
+        <div class="p-field col-12">
+          <label class="mb-2" for="name">summary</label>
+          <input type="text" pInputText class="w-full px-1 py-2" formControlName="name" name="name" id="name" />
+          <div class="mt-1">
+            <small *ngIf="formData['name'].touched && formData['name'].invalid" class="p-error">required</small>
+          </div>
+        </div>
+      </div>
+      <!-- description -->
+      <div class="p-fluid p-formgrid grid mt-4">
+        <div class="p-field col-12">
+          <label class="mb-2" for="components">Description</label>
+          <app-editor (handleDescription)="handleDescription($event)"> </app-editor>
+        </div>
+      </div>
+      <!-- attchments -->
+      <div class="p-fluid p-formgrid grid mt-4">
+        <div class="p-field col-12">
+          <label class="mb-2" for="components">Attachments</label>
+          <app-file-upload
+            (isUploading)="isUploading = $event"
+            (uploadFile)="handleAttahcments($event)"
+          ></app-file-upload>
+        </div>
+      </div>
+    </form>
+  </div>
+  <ng-template pTemplate="footer">
+    <app-button
+      [label]="'create Test Case'"
+      icon="pi pi-check"
+      [disabled]="!form.valid || isUploading"
+      (handleClick)="onSubmit()"
+    ></app-button>
+  </ng-template>
+</p-dialog>

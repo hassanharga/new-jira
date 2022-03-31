@@ -10,7 +10,10 @@ export interface Issue {
   status: IssueStatus;
   type: IssueType;
   components: IssueComponents[];
+  modules: string[] | Schema.Types.ObjectId[];
+  platform: string;
   description: string;
+  testCase: string | Schema.Types.ObjectId;
   assignee: string | Schema.Types.ObjectId;
   reporter: string | Schema.Types.ObjectId;
   labels: string[];

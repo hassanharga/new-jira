@@ -1,9 +1,12 @@
+import { TestCase } from './testCase';
 import { User } from './user';
 
 export enum IssueType {
   release = 'release',
   story = 'story',
   bug = 'bug',
+  task = 'task',
+  test = 'test',
 }
 
 export enum IssuePriority {
@@ -59,6 +62,7 @@ export interface Issue {
   project: string;
   createdAt: string;
   updatedAt: string;
+  testCase: TestCase;
   comments: {
     user: User;
     comment: string;

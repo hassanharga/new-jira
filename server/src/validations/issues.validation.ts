@@ -21,7 +21,9 @@ const bodyData = {
   reporter: Joi.string().empty().messages(messages),
   cbuNumber: Joi.string().allow('').messages(messages),
   description: Joi.string().allow('').messages(messages),
+  platform: Joi.string().allow('').messages(messages),
   attachments: Joi.array().items(Joi.string()).messages(messages),
+  modules: Joi.array().items(Joi.string()).messages(messages),
   labels: Joi.array().items(Joi.string()).messages(messages),
   comments: Joi.array()
     .items(

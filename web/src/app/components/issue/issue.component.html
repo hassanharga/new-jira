@@ -65,19 +65,21 @@
 
       <!-- deatils -->
       <div class="details mt-3">
-        <app-accordion [header]="'Details'">
-          <div>
-            <p>
-              assigne: <span>{{ issue.assignee ? issue.assignee.name : 'unassigned' }}</span>
-            </p>
-            <p>
-              reporter: <span>{{ issue.reporter ? issue.reporter.name : 'unassigned' }}</span>
-            </p>
-            <p *ngIf="issue.components.length">
-              components: <span class="component" *ngFor="let comp of issue.components">{{ comp + ' ' }}</span>
-            </p>
-          </div>
-        </app-accordion>
+        <p-accordion>
+          <p-accordionTab [transitionOptions]="'300ms'" [header]="'Details'">
+            <div>
+              <p>
+                assigne: <span>{{ issue.assignee ? issue.assignee.name : 'unassigned' }}</span>
+              </p>
+              <p>
+                reporter: <span>{{ issue.reporter ? issue.reporter.name : 'unassigned' }}</span>
+              </p>
+              <p *ngIf="issue.components.length">
+                components: <span class="component" *ngFor="let comp of issue.components">{{ comp + ' ' }}</span>
+              </p>
+            </div>
+          </p-accordionTab>
+        </p-accordion>
       </div>
 
       <!-- time created -->

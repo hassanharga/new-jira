@@ -32,7 +32,9 @@
       "board": "Board",
       "backlog": "BackLog",
       "features": "Features",
-      "roadmap": "Roadmap"
+      "roadmap": "Roadmap",
+      "modules": "Modules",
+      "testCases": "Test Cases"
     },
     "form": {
       "name": "Name",

@@ -17,4 +17,7 @@ export const tableNames = {
   ISSUES: 'issues',
   FEATURES: 'features',
   USERS: 'users',
+  TEST_CASES: 'testCases',
+  MODULES: 'modules',
 };
+

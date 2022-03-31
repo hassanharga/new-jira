@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { EMPTY, Subscription, switchMap } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { LocalizationService } from 'src/app/services/localization.service';
-import { Board } from 'src/app/types/board';
+import { Board, BoardNames, BoardTypes } from 'src/app/types/board';
 import { Project } from 'src/app/types/project';
 import { MessageService } from 'primeng/api';
 import { IssueService } from 'src/app/services/issue.service';
@@ -23,7 +23,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   sub!: Subscription;
 
-  links = [
+  boardLinks = [
     {
       name: this.translate.getTranslatedWrods('boards.links.roadmap'),
       link: 'roadmap',
@@ -42,6 +42,22 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     },
   ];
 
+  testBoardLinks = [
+    {
+      name: this.translate.getTranslatedWrods('boards.links.modules'),
+      link: 'modules',
+    },
+    {
+      name: this.translate.getTranslatedWrods('boards.links.testCases'),
+      link: 'testCases',
+    },
+  ];
+
+  links: {
+    name: any;
+    link: string;
+  }[] = [];
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -54,9 +70,11 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.project = state?.['data'] || null;
   }
 
-  changeBoard(board: Board) {
+  changeBoard(board: Board | undefined) {
+    if (!board) return;
     this.selectedBoard = board;
     this.issueService.setBoard(this.selectedBoard);
+    this.links = board.name === BoardNames.Test ? this.testBoardLinks : this.boardLinks;
   }
 
   handelModal({ data, close }: { data?: any; close: boolean }) {
@@ -71,7 +89,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.api.send<Board>('addBoard', { ...data, project: this.projectId }).subscribe({
       next: (board) => {
         if (this.boards.length === 0) {
-          this.selectedBoard = board;
+          this.changeBoard(board);
         }
         this.boards.push(board);
         this.showModal = !close;
@@ -100,9 +118,14 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
           this.boards = res;
           if (res && res.length > 0) {
             this.project = this.project ? this.project : this.boards[0].project;
-            this.selectedBoard = this.boards[0];
             this.issueService.setProject(this.project);
-            this.issueService.setBoard(this.selectedBoard);
+            if (this.router.url.includes('/module') || this.router.url.includes('/testCases')) {
+              const testBoard = res.find((ele) => ele.name === BoardNames.Test);
+              this.changeBoard(testBoard);
+              return;
+            }
+
+            this.changeBoard(this.boards[0]);
           }
         },
       });

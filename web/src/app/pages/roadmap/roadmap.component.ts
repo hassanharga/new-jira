@@ -4,7 +4,7 @@ import { Subscription, switchMap, EMPTY } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { IssueService } from 'src/app/services/issue.service';
 import { LocalizationService } from 'src/app/services/localization.service';
-import { Issue } from 'src/app/types/issue';
+import { Issue, IssueType } from 'src/app/types/issue';
 
 @Component({
   selector: 'app-roadmap',
@@ -48,7 +48,7 @@ export class RoadmapComponent implements OnInit, OnDestroy {
         switchMap((board) => {
           if (!board) return EMPTY;
           this.boardId = board._id;
-          return this.api.send<Issue[]>('getBoardIssues', { id: board._id, type: 'roadmap' });
+          return this.api.send<Issue[]>('getBoardIssues', { id: board._id, type: IssueType.release });
         }),
       )
       .subscribe({
@@ -68,8 +68,6 @@ export class RoadmapComponent implements OnInit, OnDestroy {
       this.showModal = !close;
       return;
     }
-    console.log('this.projectId', this.projectId);
-    console.log('this.boardId', this.boardId);
     if (!this.boardId || !this.projectId) return;
     const payload = { ...data, board: this.boardId, project: this.projectId };
     this.api.send<Issue>('addIssue', payload).subscribe({
