@@ -34,7 +34,7 @@
       "features": "Features",
       "roadmap": "Roadmap",
       "modules": "Modules",
-      "testCases": "Test Cases"
+      "testCasesBoard": "Board"
     },
     "form": {
       "name": "Name",

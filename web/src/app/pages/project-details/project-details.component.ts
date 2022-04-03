@@ -3,7 +3,7 @@ import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular
 import { EMPTY, Subscription, switchMap } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { LocalizationService } from 'src/app/services/localization.service';
-import { Board, BoardNames, BoardTypes } from 'src/app/types/board';
+import { Board, BoardNames } from 'src/app/types/board';
 import { Project } from 'src/app/types/project';
 import { MessageService } from 'primeng/api';
 import { IssueService } from 'src/app/services/issue.service';
@@ -48,8 +48,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       link: 'modules',
     },
     {
-      name: this.translate.getTranslatedWrods('boards.links.testCases'),
-      link: 'testCases',
+      name: this.translate.getTranslatedWrods('boards.links.testCasesBoard'),
+      link: 'testCasesBoard',
     },
   ];
 
@@ -75,6 +75,9 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.selectedBoard = board;
     this.issueService.setBoard(this.selectedBoard);
     this.links = board.name === BoardNames.Test ? this.testBoardLinks : this.boardLinks;
+    this.router.navigate([`${board.name === BoardNames.Test ? './modules' : './backlog'}`], {
+      relativeTo: this.activatedRoute,
+    });
   }
 
   handelModal({ data, close }: { data?: any; close: boolean }) {

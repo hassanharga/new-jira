@@ -3,4 +3,5 @@ export interface TestCase {
   name: string;
   description: string;
   module: string;
+  attachments: string[];
 }

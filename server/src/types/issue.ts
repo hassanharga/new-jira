@@ -1,5 +1,6 @@
 import { Schema } from 'mongoose';
 import { IssueStatus, IssueType, IssueComponents } from '../constants/issue';
+import { TestCase } from './testCase';
 
 export interface Issue {
   name: string;
@@ -10,10 +11,10 @@ export interface Issue {
   status: IssueStatus;
   type: IssueType;
   components: IssueComponents[];
-  modules: string[] | Schema.Types.ObjectId[];
+  module: string | Schema.Types.ObjectId;
   platform: string;
   description: string;
-  testCase: string | Schema.Types.ObjectId;
+  testCase: string | Schema.Types.ObjectId | TestCase;
   assignee: string | Schema.Types.ObjectId;
   reporter: string | Schema.Types.ObjectId;
   labels: string[];

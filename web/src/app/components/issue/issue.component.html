@@ -6,13 +6,16 @@
       <!-- description from board -->
       <div class="description mt-2">
         <h3>Description</h3>
-        <div class="mt-2" [innerHTML]="issue.description | sanitizeHtml"></div>
+        <div class="mt-2" [innerHTML]="(isTest ? issue.testCase.description : issue.description) | sanitizeHtml"></div>
       </div>
       <!-- attachments from board -->
-      <div class="description attachments mt-5" *ngIf="issue.attachments.length">
+      <div
+        class="description attachments mt-5"
+        *ngIf="issue.attachments.length || (issue.testCase && issue.testCase.attachments.length)"
+      >
         <h3>Attachments</h3>
         <div class="mt-2">
-          <app-attachments [attachments]="issue.attachments || []"></app-attachments>
+          <app-attachments [attachments]="isTest ? issue.testCase.attachments : issue.attachments"></app-attachments>
         </div>
       </div>
 
@@ -45,6 +48,7 @@
         </div>
       </div>
     </div>
+
     <div class="right-side">
       <!-- status -->
       <div class="flex justify-content-around align-content-center px-1 py-3">
@@ -60,13 +64,13 @@
       <!-- description fron backlog -->
       <div class="description px-1 py-3" *ngIf="!fromBoard">
         <h3>Description</h3>
-        <div class="mt-2" [innerHTML]="issue.description | sanitizeHtml"></div>
+        <div class="mt-2" [innerHTML]="(isTest ? issue.testCase.description : issue.description) | sanitizeHtml"></div>
       </div>
 
       <!-- deatils -->
       <div class="details mt-3">
         <p-accordion>
-          <p-accordionTab [transitionOptions]="'300ms'" [header]="'Details'">
+          <p-accordionTab [transitionOptions]="'300ms'" [header]="'Details'" [selected]="true">
             <div>
               <p>
                 assigne: <span>{{ issue.assignee ? issue.assignee.name : 'unassigned' }}</span>
@@ -86,6 +90,9 @@
       <div class="created flex flex-column my-3">
         <span class="my-1">Created: {{ issue.createdAt | date: 'MMMM d, y, h:mm a' }}</span>
         <span class="my-1">Updated: {{ issue.updatedAt | date: 'MMMM d, y, h:mm a' }}</span>
+      </div>
+      <div class="my-3" *ngIf="isTest">
+        <app-button [className]="'p-button-raised'" [label]="'Add Bug'" (handleClick)="addIssue()"></app-button>
       </div>
     </div>
   </div>

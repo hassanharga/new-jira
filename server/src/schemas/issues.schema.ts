@@ -22,6 +22,7 @@ const issueSchema = new Schema<IssueTableModel>(
     labels: { type: [String] },
     attachments: { type: [String] },
     releaseId: { type: Schema.Types.ObjectId, ref: tableNames.ISSUES },
+    module: { type: Schema.Types.ObjectId, ref: tableNames.MODULES },
     testCase: { type: Schema.Types.ObjectId, ref: tableNames.TEST_CASES },
     board: { type: Schema.Types.ObjectId, ref: tableNames.BOARDS, required: true },
     project: { type: Schema.Types.ObjectId, ref: tableNames.PROJECTS, required: true },

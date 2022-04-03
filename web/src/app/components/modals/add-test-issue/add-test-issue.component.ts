@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IssueService } from 'src/app/services/issue.service';
 import { IssueType } from 'src/app/types/issue';
-import { Module, ModulePlatform } from 'src/app/types/module';
+import { TestModule, ModulePlatform } from 'src/app/types/module';
 import { User } from 'src/app/types/user';
 
 @Component({
@@ -13,7 +13,7 @@ import { User } from 'src/app/types/user';
 export class AddTestIssueComponent implements OnInit {
   @Input() showModal = false;
   @Input() isRelease = false;
-  @Input() modules: Module[] = [];
+  @Input() modules: TestModule[] = [];
 
   @Output() addTestIssue = new EventEmitter<{ data?: any; close: boolean }>();
 

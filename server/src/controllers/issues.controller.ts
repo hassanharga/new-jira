@@ -10,6 +10,7 @@ import ApiError from '../utils/ApiError';
 import { signUrl } from '../utils/signUrl';
 import { BoardNames } from '../constants/board';
 import BoardModel from '../schemas/board.schema';
+import { TestCase } from '../types/testCase';
 
 export const addIssue: RequestHandler = async (req, res) => {
   const { project, releaseId, assignee, reporter, components, ...data } = req.body;
@@ -17,7 +18,7 @@ export const addIssue: RequestHandler = async (req, res) => {
   const projectData = await ProjectModel.findById(project);
   if (!projectData) throw new ApiError('project.notFound', statusCodes.NOT_FOUND);
 
-  if (!releaseId && !req.body.version) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
+  // if (!releaseId && !req.body.version) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
 
   let mainIssue: IssueTableModel | null = null;
   if (releaseId) {
@@ -52,6 +53,7 @@ export const addIssue: RequestHandler = async (req, res) => {
   sentIssue = await IssueModel.populate(sentIssue, { path: 'assignee', select: 'name' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'sub', select: 'name' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'testCase' });
+  sentIssue = await IssueModel.populate(sentIssue, { path: 'module' });
 
   sentIssue.attachments = sentIssue.attachments.map((ele) => signUrl(ele));
 
@@ -124,8 +126,15 @@ export const updateIssue: RequestHandler = async (req, res) => {
   sentIssue = await IssueModel.populate(sentIssue, { path: 'sub', select: 'name' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'comments.user', select: 'name' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'testCase' });
+  sentIssue = await IssueModel.populate(sentIssue, { path: 'module' });
 
   sentIssue.attachments = sentIssue.attachments.map((ele) => signUrl(ele));
+
+  if (sentIssue.testCase && typeof sentIssue.testCase === 'object') {
+    const testCase = sentIssue.testCase as TestCase;
+    testCase.attachments = testCase.attachments.map((att) => signUrl(att));
+    sentIssue.testCase = testCase;
+  }
 
   res.send(sentIssue);
 };
@@ -139,11 +148,18 @@ export const getIssue: RequestHandler = async (req, res) => {
     .populate('assignee', 'name')
     .populate('sub', 'name')
     .populate('comments.user', 'name')
+    .populate('module')
     .populate('testCase');
 
   if (!issue) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
 
   issue.attachments = issue.attachments.map((ele) => signUrl(ele));
+
+  if (issue.testCase && typeof issue.testCase === 'object') {
+    const testCase = issue.testCase as TestCase;
+    testCase.attachments = testCase.attachments.map((att) => signUrl(att));
+    issue.testCase = testCase;
+  }
 
   res.send(issue);
 };
@@ -174,12 +190,19 @@ export const getIssues: RequestHandler = async (req, res) => {
     .populate('assignee', 'name')
     .populate('sub', 'name')
     .populate('comments.user', 'name')
+    .populate('module')
     .populate('testCase');
   if (!issues) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
 
   issues = issues.map((ele) => {
     const issue = ele;
     issue.attachments = issue.attachments.map((att) => signUrl(att));
+    if (issue.testCase && typeof issue.testCase === 'object') {
+      const testCase = issue.testCase as TestCase;
+      testCase.attachments = testCase.attachments.map((att) => signUrl(att));
+      issue.testCase = testCase;
+    }
+
     return issue;
   });
 
@@ -209,7 +232,9 @@ export const addTestIssue: RequestHandler = async (req, res) => {
       name: ele.name,
       project,
       board,
+      module: ele.module,
       testCase: ele._id,
+      status: IssueStatus.todo,
       key: `${projectData.key}-${issuesCount + idx + 1}`,
     };
 

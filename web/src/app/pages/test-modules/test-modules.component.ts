@@ -3,7 +3,7 @@ import { EMPTY, switchMap } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { IssueService } from 'src/app/services/issue.service';
 import { Issue } from 'src/app/types/issue';
-import { Module } from 'src/app/types/module';
+import { TestModule } from 'src/app/types/module';
 import { TestCase } from 'src/app/types/testCase';
 
 @Component({
@@ -16,8 +16,8 @@ export class TestModulesComponent implements OnInit {
   showTestCaseModal = false;
   showStartTestingModal = false;
 
-  modules: Module[] = [];
-  selectedModule: Module | null = null;
+  modules: TestModule[] = [];
+  selectedModule: TestModule | null = null;
   selectedTestCase: TestCase | null = null;
   activeAccordionIndex = -1;
   project = '';
@@ -31,7 +31,7 @@ export class TestModulesComponent implements OnInit {
         switchMap((project) => {
           if (!project) return EMPTY;
           this.project = project;
-          return this.api.send<Module[]>('getProjectModules', { project });
+          return this.api.send<TestModule[]>('getProjectModules', { project });
         }),
       )
       .subscribe({
@@ -39,13 +39,13 @@ export class TestModulesComponent implements OnInit {
       });
   }
 
-  addModule({ data, close }: { data?: Partial<Module>; close: boolean }) {
+  addModule({ data, close }: { data?: Partial<TestModule>; close: boolean }) {
     if (!data) {
       this.showModal = !close;
       return;
     }
     if (!this.project) return;
-    this.api.send<Module>('addModule', { ...data, project: this.project }).subscribe({
+    this.api.send<TestModule>('addModule', { ...data, project: this.project }).subscribe({
       next: (module) => {
         this.modules.push(module);
         this.showModal = !close;
@@ -53,7 +53,7 @@ export class TestModulesComponent implements OnInit {
     });
   }
 
-  addTestCaseModule({ data, close }: { data?: Partial<Module>; close: boolean }) {
+  addTestCaseModule({ data, close }: { data?: Partial<TestModule>; close: boolean }) {
     if (!data) {
       this.showTestCaseModal = !close;
       return;

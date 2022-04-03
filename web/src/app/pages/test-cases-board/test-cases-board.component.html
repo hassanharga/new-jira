@@ -1,0 +1,39 @@
+<div class="board-container flex flex-column p-5 h-full">
+  <div class="actions">actions</div>
+  <div class="issues-types flex">
+    <div class="todo flex flex-column" *ngFor="let status of boardIssueStatus">
+      <div class="section-type mb-3 shadow-1 p-1">
+        <span>{{ allIssueStatus[status] }}</span>
+        <span>{{ issues[status] ? issues[status].length : 0 }}</span>
+      </div>
+      <div class="issues">
+        <ng-container *ngIf="issues[status]">
+          <div class="issue shadow-3 mb-3" *ngFor="let issue of issues[status]" (click)="openIssueModal(issue)">
+            <div class="description">
+              <p>{{ issue.cbuNumber || '' + ' ' + issue.name }}</p>
+            </div>
+            <div class="details flex justify-content-between align-content-center mt-2">
+              <p>{{ issue.type }}</p>
+              <p>{{ issue.key }}</p>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-dialog
+  [modal]="true"
+  [header]="selectedIssue?.key || ''"
+  [(visible)]="showIssueModal"
+  [style]="{ width: '70vw', height: '70vw' }"
+>
+  <app-issue
+    [isTest]="true"
+    (updateIssue)="updateIssueData($event)"
+    [fromBoard]="true"
+    [issue]="selectedIssue"
+    (onHide)="selectedIssue = null; showIssueModal = false"
+  ></app-issue>
+</p-dialog>

@@ -4,6 +4,6 @@ export interface TestCase {
   name: string;
   description: string;
   module: string | Schema.Types.ObjectId;
-  attachments: string[] | Schema.Types.ObjectId[];
+  attachments: string[];
 }
 

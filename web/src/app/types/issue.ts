@@ -1,3 +1,4 @@
+import { TestModule } from './module';
 import { TestCase } from './testCase';
 import { User } from './user';
 
@@ -25,6 +26,13 @@ export enum IssueStatusKeys {
   reOpen = 'reOpen',
 }
 
+export enum TestIssueStatusKeys {
+  todo = 'todo',
+  inProgress = 'inProgress',
+  success = 'success',
+  failure = 'failure',
+}
+
 export const issueStatus: Record<string, string> = {
   design: 'Design',
   todo: 'To Do',
@@ -33,6 +41,15 @@ export const issueStatus: Record<string, string> = {
   done: 'Done',
   release: 'Release',
   reOpen: 'Re Open',
+  success: 'Success',
+  failure: 'Failure',
+};
+
+export const testIssueStatus: Record<string, string> = {
+  todo: 'To Do',
+  inProgress: 'In Progress',
+  success: 'Success',
+  failure: 'Failure',
 };
 
 export enum IssueComponents {
@@ -62,6 +79,7 @@ export interface Issue {
   project: string;
   createdAt: string;
   updatedAt: string;
+  module: TestModule;
   testCase: TestCase;
   comments: {
     user: User;

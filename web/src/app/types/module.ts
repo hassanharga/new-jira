@@ -5,7 +5,7 @@ export enum ModulePlatform {
   IOS = 'IOS',
 }
 
-export interface Module {
+export interface TestModule {
   _id: string;
   name: string;
   description: string;

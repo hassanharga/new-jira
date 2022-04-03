@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { IssueService } from 'src/app/services/issue.service';
-import { Issue, issueStatus } from 'src/app/types/issue';
+import { Issue, issueStatus, testIssueStatus } from 'src/app/types/issue';
 import { User } from 'src/app/types/user';
 import { escapeHtml } from 'src/app/utils/excapeHtml';
 
@@ -13,6 +13,7 @@ import { escapeHtml } from 'src/app/utils/excapeHtml';
 export class IssueComponent implements OnInit, OnChanges, OnDestroy {
   @Input() issue: Issue | null = null;
   @Input() fromBoard: boolean = false;
+  @Input() isTest: boolean = false;
   @Output() updateIssue = new EventEmitter();
 
   users: User[] = [];
@@ -53,8 +54,16 @@ export class IssueComponent implements OnInit, OnChanges, OnDestroy {
     this.updateIssue.emit({ status: option.value });
   }
 
+  addIssue() {
+    console.log('add issue');
+  }
+
   ngOnInit(): void {
-    this.options = Object.entries(issueStatus).map(([key, value]) => ({ name: value, value: key }));
+    if (this.isTest) {
+      this.options = Object.entries(testIssueStatus).map(([key, value]) => ({ name: value, value: key }));
+    } else {
+      this.options = Object.entries(issueStatus).map(([key, value]) => ({ name: value, value: key }));
+    }
     this.sub = this.issueService.getUsers().subscribe({
       next: (users) => (this.users = users),
     });
