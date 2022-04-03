@@ -13,7 +13,7 @@ import BoardModel from '../schemas/board.schema';
 import { TestCase } from '../types/testCase';
 
 export const addIssue: RequestHandler = async (req, res) => {
-  const { project, releaseId, assignee, reporter, components, ...data } = req.body;
+  const { createdByTestCase, board, project, releaseId, assignee, reporter, components, ...data } = req.body;
 
   const projectData = await ProjectModel.findById(project);
   if (!projectData) throw new ApiError('project.notFound', statusCodes.NOT_FOUND);
@@ -30,6 +30,12 @@ export const addIssue: RequestHandler = async (req, res) => {
     data.board = mainIssue.board;
     data.releaseId = mainIssue._id;
     data.version = mainIssue.version;
+  } else if (createdByTestCase) {
+    const boardData = await BoardModel.findOne({ name: board, project });
+    if (!board) throw new ApiError('project.notFound', statusCodes.NOT_FOUND);
+    data.board = boardData?._id;
+  } else {
+    data.board = board;
   }
 
   if (assignee) data.assignee = assignee;
@@ -54,6 +60,7 @@ export const addIssue: RequestHandler = async (req, res) => {
   sentIssue = await IssueModel.populate(sentIssue, { path: 'sub', select: 'name' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'testCase' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'module' });
+  sentIssue = await IssueModel.populate(sentIssue, { path: 'linkedIssues' });
 
   sentIssue.attachments = sentIssue.attachments.map((ele) => signUrl(ele));
 
@@ -127,6 +134,7 @@ export const updateIssue: RequestHandler = async (req, res) => {
   sentIssue = await IssueModel.populate(sentIssue, { path: 'comments.user', select: 'name' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'testCase' });
   sentIssue = await IssueModel.populate(sentIssue, { path: 'module' });
+  sentIssue = await IssueModel.populate(sentIssue, { path: 'linkedIssues' });
 
   sentIssue.attachments = sentIssue.attachments.map((ele) => signUrl(ele));
 
@@ -148,6 +156,7 @@ export const getIssue: RequestHandler = async (req, res) => {
     .populate('assignee', 'name')
     .populate('sub', 'name')
     .populate('comments.user', 'name')
+    .populate('linkedIssues')
     .populate('module')
     .populate('testCase');
 
@@ -190,7 +199,14 @@ export const getIssues: RequestHandler = async (req, res) => {
     .populate('assignee', 'name')
     .populate('sub', 'name')
     .populate('comments.user', 'name')
-    .populate('module')
+    .populate('linkedIssues')
+    .populate({
+      path: 'module',
+      populate: {
+        path: 'release',
+        select: 'version name',
+      },
+    })
     .populate('testCase');
   if (!issues) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
 
@@ -205,6 +221,28 @@ export const getIssues: RequestHandler = async (req, res) => {
 
     return issue;
   });
+
+  res.send(issues);
+};
+
+export const searchIssues: RequestHandler = async (req, res) => {
+  const { project } = req.params;
+
+  if (!isValidObjectId(project)) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
+
+  const { search = '', allBoards = false } = req.query;
+
+  const query: Record<string, any> = {
+    project,
+  };
+
+  if (search) query.name = { $regex: search, $options: 'i' };
+
+  if (allBoards) query.type = IssueType.release;
+
+  const issues = await IssueModel.find({ ...query });
+
+  if (!issues) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
 
   res.send(issues);
 };
@@ -246,5 +284,41 @@ export const addTestIssue: RequestHandler = async (req, res) => {
   if (!issues) throw new ApiError('testCase.notFound', statusCodes.BAD_REQUEST);
 
   res.json(issues);
+};
+
+export const createBugIssue: RequestHandler = async (req, res) => {
+  const { testCaseId } = req.body;
+
+  if (!isValidObjectId(testCaseId)) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
+
+  const testCase = await IssueModel.findById(testCaseId);
+  if (!testCase || testCase.type !== IssueType.test) throw new ApiError('board.notFound', statusCodes.NOT_FOUND);
+
+  const project = await ProjectModel.findById(testCase.project);
+  if (!project) throw new ApiError('project.notFound', statusCodes.NOT_FOUND);
+
+  const board = await BoardModel.findOne({ name: testCase.platform, project: testCase.project });
+  if (!board) throw new ApiError('project.notFound', statusCodes.NOT_FOUND);
+
+  const issuesCount = await IssueModel.countDocuments({ project });
+  if (issuesCount < 0) throw new ApiError('issue.notFound', statusCodes.BAD_REQUEST);
+
+  const data: Record<string, any> = {
+    key: `${project.key}-${issuesCount + 1}`,
+    board: board._id,
+    project: project._id,
+    name: testCase.name,
+    description: testCase.description || '',
+    type: IssueType.bug,
+    status: IssueStatus.design,
+    linkedIssues: [testCase._id],
+  };
+
+  if (testCase.assignee) data.reporter = testCase.assignee;
+
+  const issue = await IssueModel.create(data);
+  if (!issue) throw new ApiError('issue.notCreated', statusCodes.BAD_REQUEST);
+
+  res.json(issue);
 };
 

@@ -12,8 +12,11 @@
     </div>
     <div class="right">
       <div class="card">
-        <h2 class="user py-2">{{ selectedDraft?.user?.name }}</h2>
-        <div class="description mb-3" [innerHTML]="selectedDraft?.description | sanitizeHtml"></div>
+        <h2 class="user py-2">Edited By: {{ selectedDraft?.user?.name }}</h2>
+      </div>
+      <div class="mb-3">
+        <h2 class="user py-2">Description</h2>
+        <div class="description" [innerHTML]="selectedDraft?.description | sanitizeHtml"></div>
       </div>
       <!-- attachments  -->
       <div class="attachments my-3" *ngIf="selectedDraft?.attachments?.length">
@@ -59,21 +62,25 @@
         </div>
         <div class="my-3">
           <label for="">Description</label>
-          <app-editor (handleDescription)="handleDescription($event)"> </app-editor>
+          <app-editor [initDescription]="editedDescription" (handleDescription)="handleDescription($event)">
+          </app-editor>
         </div>
         <div class="my-3">
           <label for="">Attachments</label>
           <app-file-upload
+            [uploadedFiles]="attachments"
             (isUploading)="isUploading = $event"
-            (uploadFile)="handleAttahcments($event)"
+            (uploadFile)="handleAttahcments($event, '')"
+            (deleteFile)="deleteAttahcments($event, '')"
           ></app-file-upload>
         </div>
         <div class="my-3">
           <label for="">UX Attachments</label>
           <app-file-upload
-            type="ux"
+            [uploadedFiles]="uxAttachments"
             (isUploading)="isUploading = $event"
-            (uploadFile)="handleAttahcments($event)"
+            (uploadFile)="handleAttahcments($event, 'ux')"
+            (deleteFile)="deleteAttahcments($event, 'ux')"
           ></app-file-upload>
         </div>
       </ng-container>

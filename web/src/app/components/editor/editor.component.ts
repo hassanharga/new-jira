@@ -7,6 +7,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { IssueService } from 'src/app/services/issue.service';
 import { Issue } from 'src/app/types/issue';
 import { User } from 'src/app/types/user';
+import { parseToHtml } from 'src/app/utils/excapeHtml';
 
 // import 'quill-emoji/dist/quill-emoji.js';
 // import Quill from 'quill'
@@ -21,6 +22,7 @@ import { User } from 'src/app/types/user';
 export class EditorComponent implements OnInit {
   @Input() isComment = false;
   @Input() placeholder = '';
+  @Input() initDescription = '';
   @Output() handleDescription = new EventEmitter<string>();
 
   @ViewChild(QuillEditorComponent, { static: true }) editor!: QuillEditorComponent;
@@ -96,7 +98,7 @@ export class EditorComponent implements OnInit {
   }
 
   private mapIssues(issues: Issue[]) {
-    return issues.map((ele) => ({ ...ele, value: ele.name, link: `/projects/${ele.project}/board?issue=${ele._id}` }));
+    return issues.map((ele) => ({ ...ele, value: ele.name, link: `/issues/issue=${ele._id}` }));
   }
 
   changeDescripton() {
@@ -117,5 +119,9 @@ export class EditorComponent implements OnInit {
     return this.api.send<Issue[]>('getBoardIssues', options);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.initDescription) {
+      this.description = parseToHtml(this.initDescription);
+    }
+  }
 }

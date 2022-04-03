@@ -76,10 +76,10 @@ export class ApiService {
     }
   }
 
-  public uploadImage(file: File, url: string) {
+  public uploadImage<T>(file: File, url: string) {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.put<null>(url, file, { reportProgress: true, observe: 'events' });
+    return this.http.put<T>(url, file);
   }
 
   // private handleError(error: HttpErrorResponse) {

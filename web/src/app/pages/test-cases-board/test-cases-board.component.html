@@ -1,3 +1,11 @@
+<app-add-issue
+  *ngIf="showModal"
+  [showModal]="showModal"
+  [isTestIssue]="true"
+  [issue]="testCaseIssue"
+  (addIssue)="addIssue($event)"
+></app-add-issue>
+
 <div class="board-container flex flex-column p-5 h-full">
   <div class="actions">actions</div>
   <div class="issues-types flex">
@@ -9,11 +17,16 @@
       <div class="issues">
         <ng-container *ngIf="issues[status]">
           <div class="issue shadow-3 mb-3" *ngFor="let issue of issues[status]" (click)="openIssueModal(issue)">
-            <div class="description">
-              <p>{{ issue.cbuNumber || '' + ' ' + issue.name }}</p>
+            <div class="description flex align-items-center justify-content-between">
+              <p>{{ (issue.cbuNumber ? 'CBU-' + issue.cbuNumber : '') + ' ' + issue.name }}</p>
             </div>
-            <div class="details flex justify-content-between align-content-center mt-2">
+            <div class="details flex justify-content-between align-items-center mt-2">
               <p>{{ issue.type }}</p>
+              <div class="padges flex justify-content-between align-items-center">
+                <app-padge [label]="issue.module?.release?.version || ''"></app-padge>
+                <app-padge [label]="issue.module.name"></app-padge>
+                <app-padge [label]="issue.platform"></app-padge>
+              </div>
               <p>{{ issue.key }}</p>
             </div>
           </div>
@@ -32,6 +45,7 @@
   <app-issue
     [isTest]="true"
     (updateIssue)="updateIssueData($event)"
+    (addRelatedIssue)="addRelatedIssue($event)"
     [fromBoard]="true"
     [issue]="selectedIssue"
     (onHide)="selectedIssue = null; showIssueModal = false"

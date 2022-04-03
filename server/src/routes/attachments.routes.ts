@@ -6,7 +6,7 @@ const router = Router();
 
 router.route('/').get(asyncHandler(Controllers.createPreSignedUrl));
 
-router.route('/sign').get(asyncHandler(Controllers.signUrl));
+router.route('/signUrl').get(asyncHandler(Controllers.signUrl));
 
 export default router;
 

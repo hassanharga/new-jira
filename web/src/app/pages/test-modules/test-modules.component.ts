@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { EMPTY, switchMap } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { EMPTY, Subscription, switchMap } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { IssueService } from 'src/app/services/issue.service';
-import { Issue } from 'src/app/types/issue';
+import { Issue, IssueType } from 'src/app/types/issue';
 import { TestModule } from 'src/app/types/module';
 import { TestCase } from 'src/app/types/testCase';
 
@@ -11,7 +11,7 @@ import { TestCase } from 'src/app/types/testCase';
   templateUrl: './test-modules.component.html',
   styleUrls: ['./test-modules.component.scss'],
 })
-export class TestModulesComponent implements OnInit {
+export class TestModulesComponent implements OnInit, OnDestroy {
   showModal = false;
   showTestCaseModal = false;
   showStartTestingModal = false;
@@ -21,6 +21,9 @@ export class TestModulesComponent implements OnInit {
   selectedTestCase: TestCase | null = null;
   activeAccordionIndex = -1;
   project = '';
+
+  relaseIssues: Issue[] = [];
+  sub!: Subscription;
 
   constructor(private api: ApiService, private issueService: IssueService) {}
 
@@ -107,7 +110,31 @@ export class TestModulesComponent implements OnInit {
     this.selectedTestCase = testCase;
   }
 
+  private getReleaseIssues() {
+    this.sub = this.issueService
+      .getProjectId()
+      .pipe(
+        switchMap((project) => {
+          if (!project) return EMPTY;
+          return this.api.send<Issue[]>('searchIssues', {
+            allBoards: true,
+            id: project,
+          });
+        }),
+      )
+      .subscribe({
+        next: (res) => {
+          this.relaseIssues = res;
+        },
+      });
+  }
+
   ngOnInit(): void {
     this.getProjectModules();
+    this.getReleaseIssues();
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 }

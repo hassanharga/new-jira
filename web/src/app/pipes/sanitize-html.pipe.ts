@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { parseToHtml } from '../utils/excapeHtml';
 
 @Pipe({
   name: 'sanitizeHtml',
@@ -10,8 +11,7 @@ export class SanitizeHtmlPipe implements PipeTransform {
   transform(value: string = '') {
     if (!value) return 'None';
 
-    const doc = new DOMParser().parseFromString(value, 'text/html');
-    const val = doc.documentElement.textContent || '';
+    const val = parseToHtml(value);
     return this.sanitizer.bypassSecurityTrustHtml(val);
   }
 }

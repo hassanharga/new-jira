@@ -1,27 +1,26 @@
 {
-	"errorMsg": {
-		"badCredentials": "errorMsg.badCredentials",
-		"serverError": "errorMsg.serverError"
-	},
-	"validation": {
-		"field": {
-			"duplicate": "field is duplicate: {{field}}"
-		}
-	},
-	"issue": {
-		"notCreated": "issue.notCreated",
-		"notFound": "issue.notFound"
-	},
-	"\"version\" is not allowed": "\"version\" is not allowed",
-	"project": {
-		"notFound": "project.notFound"
-	},
-	"board": {
-		"notFound": "board.notFound",
-		"exists": "board.exists"
-	},
-	"release": {
-		"opened": "release.opened"
-	},
-	"\"attachments\" is not allowed": "\"attachments\" is not allowed"
+  "errorMsg": {
+    "badCredentials": "errorMsg.badCredentials",
+    "serverError": "errorMsg.serverError"
+  },
+  "validation": {
+    "field": {
+      "duplicate": "field is duplicate: {{field}}"
+    }
+  },
+  "issue": {
+    "notCreated": "issue.notCreated",
+    "notFound": "issue.notFound"
+  },
+  "\"version\" is not allowed": "\"version\" is not allowed",
+  "project": {
+    "notFound": "project.notFound"
+  },
+  "board": {
+    "notFound": "board.notFound",
+    "exists": "board.exists"
+  },
+  "release": {
+    "opened": "release.opened"
+  }
 }

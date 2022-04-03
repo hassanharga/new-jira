@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, Subscription, switchMap } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { LocalizationService } from 'src/app/services/localization.service';
@@ -75,9 +75,9 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.selectedBoard = board;
     this.issueService.setBoard(this.selectedBoard);
     this.links = board.name === BoardNames.Test ? this.testBoardLinks : this.boardLinks;
-    this.router.navigate([`${board.name === BoardNames.Test ? './modules' : './backlog'}`], {
-      relativeTo: this.activatedRoute,
-    });
+    // this.router.navigate([`${board.name === BoardNames.Test ? './modules' : './backlog'}`], {
+    //   relativeTo: this.activatedRoute,
+    // });
   }
 
   handelModal({ data, close }: { data?: any; close: boolean }) {

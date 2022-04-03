@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { IssueService } from 'src/app/services/issue.service';
-import { Issue, issueStatus, testIssueStatus } from 'src/app/types/issue';
+import { Issue, issueStatus, IssueType, testIssueStatus } from 'src/app/types/issue';
 import { User } from 'src/app/types/user';
 import { escapeHtml } from 'src/app/utils/excapeHtml';
 
@@ -14,7 +15,9 @@ export class IssueComponent implements OnInit, OnChanges, OnDestroy {
   @Input() issue: Issue | null = null;
   @Input() fromBoard: boolean = false;
   @Input() isTest: boolean = false;
+
   @Output() updateIssue = new EventEmitter();
+  @Output() addRelatedIssue = new EventEmitter();
 
   users: User[] = [];
   sub!: Subscription;
@@ -25,7 +28,7 @@ export class IssueComponent implements OnInit, OnChanges, OnDestroy {
   comment = '';
   resetInput = false;
 
-  constructor(private issueService: IssueService) {}
+  constructor(private issueService: IssueService, private router: Router) {}
 
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
@@ -55,7 +58,16 @@ export class IssueComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   addIssue() {
-    console.log('add issue');
+    this.addRelatedIssue.emit({ type: IssueType.bug, issue: this.issue });
+  }
+
+  openIssueInNewWindow(issue: Issue) {
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree([`/issues`], {
+        queryParams: { issue: issue._id },
+      }),
+    );
+    window.open(url, '_blank');
   }
 
   ngOnInit(): void {

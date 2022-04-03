@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Issue } from 'src/app/types/issue';
 
 @Component({
   selector: 'app-add-module',
@@ -8,6 +9,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class AddModuleComponent implements OnInit {
   @Input() showModal = false;
+  @Input() relaseIssues: Issue[] = [];
+
   @Output() addModule = new EventEmitter<{ data?: any; close: boolean }>();
 
   form!: FormGroup;
@@ -30,6 +33,7 @@ export class AddModuleComponent implements OnInit {
     this.form = this.fb.group({
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
+      release: ['', [Validators.required]],
     });
   }
 

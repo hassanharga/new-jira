@@ -4,7 +4,9 @@
     *ngIf="showModal"
     [showModal]="showModal"
     [relaseIssues]="releaseIssues"
+    [searchedIssues]="linkedIssues"
     (addIssue)="addIssue($event)"
+    (filterIssues)="filterIssues($event)"
   ></app-add-issue>
   <div class="actions py-3">
     <app-button
@@ -23,7 +25,7 @@
         *ngFor="let issue of issues"
         [ngClass]="selectedIssue && selectedIssue._id === issue._id ? 'tasks-card-active' : ''"
       >
-        <p class="align-self-center">{{ issue.name }}</p>
+        <p class="align-self-center">{{ (issue.cbuNumber ? 'CBU-' + issue.cbuNumber : '') + ' ' + issue.name }}</p>
         <app-padge [label]="issue.type"></app-padge>
       </div>
     </div>

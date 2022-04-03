@@ -1,3 +1,4 @@
+import { Issue } from './issue';
 import { User } from './user';
 
 export interface Feature {
@@ -14,6 +15,7 @@ export type FeatureHistory = {
   description: string;
   attachments: string[];
   uxAttachments: string[];
+  release: Pick<Issue, 'version' | '_id'>;
   _id: string;
   createdAt: string | null | Date;
 };

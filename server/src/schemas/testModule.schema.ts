@@ -13,6 +13,7 @@ const testModuleSchema = new Schema<ModuleTableModel>(
     name: { type: String, required: true, trim: true, unique: true },
     description: { type: String, trim: true },
     project: { type: Schema.Types.ObjectId, ref: tableNames.PROJECTS, required: true },
+    release: { type: Schema.Types.ObjectId, ref: tableNames.ISSUES, required: true },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );

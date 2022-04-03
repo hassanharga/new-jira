@@ -10,7 +10,7 @@
         <ng-container *ngIf="issues[status]">
           <div class="issue shadow-3 mb-3" *ngFor="let issue of issues[status]" (click)="openIssueModal(issue)">
             <div class="description">
-              <p>{{ issue.cbuNumber || '' + ' ' + issue.name }}</p>
+              <p>{{ (issue.cbuNumber ? 'CBU-' + issue.cbuNumber : '') + ' ' + issue.name }}</p>
             </div>
             <div class="details flex justify-content-between align-content-center mt-2">
               <p>{{ issue.type }}</p>

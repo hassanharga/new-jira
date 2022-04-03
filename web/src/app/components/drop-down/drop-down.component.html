@@ -8,6 +8,7 @@
   [optionValue]="optionValue"
   styleClass="app-dropdown"
   (onChange)="handleChange()"
+  (onFilter)="onFilter($event)"
 >
   <ng-template pTemplate="selectedItem">
     <div class="" *ngIf="selectedOption">

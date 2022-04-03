@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EMPTY, Subscription, switchMap } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { IssueService } from 'src/app/services/issue.service';
-import { Issue, testIssueStatus, TestIssueStatusKeys } from 'src/app/types/issue';
+import { Issue, IssueType, testIssueStatus, TestIssueStatusKeys } from 'src/app/types/issue';
 
 @Component({
   selector: 'app-test-cases-board',
@@ -14,6 +14,12 @@ export class TestCasesBoardComponent implements OnInit, OnDestroy {
 
   issues: Record<string, Issue[]> = {};
   unorderedIssues: Issue[] = [];
+
+  testCaseIssue: Issue | null = null;
+
+  projectId = '';
+
+  showModal = false;
 
   boardIssueStatus: string[] = [
     TestIssueStatusKeys.todo,
@@ -58,7 +64,6 @@ export class TestCasesBoardComponent implements OnInit, OnDestroy {
   }
 
   async updateIssueData(data: any) {
-    console.log('updateIssueData', data);
     if (!this.selectedIssue || !this.selectedIssue._id) return;
     this.api.send<Issue>('updateIssue', { id: this.selectedIssue?._id, ...data }).subscribe({
       next: (issue) => {
@@ -81,7 +86,36 @@ export class TestCasesBoardComponent implements OnInit, OnDestroy {
     this.sub?.unsubscribe();
   }
 
+  getProjectId() {
+    const projectSub = this.issueService.getProjectId().subscribe({ next: (val) => (this.projectId = val) });
+    this.sub.add(projectSub);
+  }
+
+  addIssue({ data, close }: { data?: Partial<Issue>; close: boolean }) {
+    if (!data) {
+      this.showModal = !close;
+      return;
+    }
+    if (!this.projectId) return;
+    const payload = { ...data, board: this.testCaseIssue?.platform, createdByTestCase: true, project: this.projectId };
+    this.api.send<Issue>('addIssue', payload).subscribe({
+      next: () => {
+        this.testCaseIssue = null;
+        this.showModal = !close;
+      },
+    });
+  }
+
+  addRelatedIssue({ issue }: { issue: Issue }) {
+    this.testCaseIssue = issue;
+    this.showIssueModal = false;
+    setTimeout(() => {
+      this.showModal = true;
+    }, 20);
+  }
+
   ngOnInit(): void {
     this.getBoardIssues();
+    this.getProjectId();
   }
 }

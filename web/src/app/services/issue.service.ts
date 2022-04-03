@@ -51,7 +51,7 @@ export class IssueService {
     return this.issues.asObservable();
   }
 
-  geProject() {
+  getProject() {
     return this.project.asObservable();
   }
 

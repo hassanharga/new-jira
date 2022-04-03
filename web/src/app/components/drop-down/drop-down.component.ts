@@ -16,6 +16,7 @@ export class DropDownComponent implements OnInit, OnChanges {
   @Input() filterBy!: string;
 
   @Output() changeOption = new EventEmitter();
+  @Output() filterData = new EventEmitter();
 
   selectedOption: any;
 
@@ -30,6 +31,10 @@ export class DropDownComponent implements OnInit, OnChanges {
   handleChange() {
     if (!this.selectedOption) return;
     this.changeOption.emit(this.selectedOption);
+  }
+
+  onFilter(e: any) {
+    this.filterData.emit(e.filter);
   }
 
   ngOnInit(): void {}

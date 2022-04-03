@@ -40,6 +40,26 @@
           />
         </div>
       </div>
+      <div class="p-fluid p-formgrid grid">
+        <div class="p-field col-6">
+          <label class="mb-2" for="name">release</label>
+          <p-dropdown
+            class="w-full py-2"
+            name="release"
+            id="release"
+            placeholder="release"
+            optionLabel="name"
+            optionValue="_id"
+            [options]="relaseIssues"
+            formControlName="release"
+          ></p-dropdown>
+          <div class="mt-2">
+            <small *ngIf="formData['release'].touched && formData['release'].invalid" class="p-error"
+              >release required</small
+            >
+          </div>
+        </div>
+      </div>
     </form>
   </div>
   <ng-template pTemplate="footer">

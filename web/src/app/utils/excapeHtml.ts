@@ -6,3 +6,7 @@ export const escapeHtml = (unsafe: string) => {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
 };
+
+export const parseToHtml = (val: string) => {
+  return new DOMParser().parseFromString(val, 'text/html').documentElement.textContent || '';
+};

@@ -1,5 +1,7 @@
 <div class="issue-container p-2 h-full" *ngIf="issue">
-  <h1 class="title">{{ (issue.cbuNumber ? 'CBU-' + issue.cbuNumber : '') + ' ' + issue.name }}</h1>
+  <h1 class="title" (click)="openIssueInNewWindow(issue)">
+    {{ (issue.cbuNumber ? 'CBU-' + issue.cbuNumber : '') + ' ' + issue.name }}
+  </h1>
 
   <div class="main-issue">
     <div class="left-side px-1 py-3" *ngIf="fromBoard">
@@ -8,6 +10,7 @@
         <h3>Description</h3>
         <div class="mt-2" [innerHTML]="(isTest ? issue.testCase.description : issue.description) | sanitizeHtml"></div>
       </div>
+
       <!-- attachments from board -->
       <div
         class="description attachments mt-5"
@@ -16,6 +19,26 @@
         <h3>Attachments</h3>
         <div class="mt-2">
           <app-attachments [attachments]="isTest ? issue.testCase.attachments : issue.attachments"></app-attachments>
+        </div>
+      </div>
+
+      <!-- sub issues -->
+      <div class="mt-5" *ngIf="issue.sub.length">
+        Sub Issues:
+        <div class="mt-2" *ngFor="let subIssue of issue.sub">
+          <a class="title" (click)="openIssueInNewWindow(subIssue)">
+            - {{ (subIssue.cbuNumber ? 'CBU-' + subIssue.cbuNumber : '') + ' ' + subIssue.name }}
+          </a>
+        </div>
+      </div>
+
+      <!-- linked issues -->
+      <div class="mt-5" *ngIf="issue.linkedIssues.length">
+        Linked Issues:
+        <div *ngFor="let linkedIssue of issue.linkedIssues">
+          <a class="title" (click)="openIssueInNewWindow(linkedIssue)">
+            {{ (linkedIssue.cbuNumber ? 'CBU-' + linkedIssue.cbuNumber : '') + ' ' + linkedIssue.name }}
+          </a>
         </div>
       </div>
 
@@ -67,6 +90,16 @@
         <div class="mt-2" [innerHTML]="(isTest ? issue.testCase.description : issue.description) | sanitizeHtml"></div>
       </div>
 
+      <!-- sub issues -->
+      <div class="mt-5" *ngIf="issue.sub.length">
+        Sub Issues:
+        <div class="mt-2" *ngFor="let subIssue of issue.sub">
+          <a class="title" (click)="openIssueInNewWindow(subIssue)">
+            - {{ (subIssue.cbuNumber ? 'CBU-' + subIssue.cbuNumber : '') + ' ' + subIssue.name }}
+          </a>
+        </div>
+      </div>
+
       <!-- deatils -->
       <div class="details mt-3">
         <p-accordion>
@@ -92,7 +125,7 @@
         <span class="my-1">Updated: {{ issue.updatedAt | date: 'MMMM d, y, h:mm a' }}</span>
       </div>
       <div class="my-3" *ngIf="isTest">
-        <app-button [className]="'p-button-raised'" [label]="'Add Bug'" (handleClick)="addIssue()"></app-button>
+        <app-button [className]="'p-button-raised'" [label]="'Create Bug'" (handleClick)="addIssue()"></app-button>
       </div>
     </div>
   </div>

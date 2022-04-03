@@ -3,6 +3,7 @@ import { RequestHandler } from 'express';
 import * as MimeType from 'mime-types';
 import { aws } from '../constants/constants';
 import { s3 } from '../services/aws';
+import { signUrl as signAwsData } from '../utils/signUrl';
 
 export const signAttachments: RequestHandler = async (req, res) => {
   const { fileType } = req.query;
@@ -51,16 +52,9 @@ export const createPreSignedUrl: RequestHandler = async (req, res) => {
 
 export const signUrl: RequestHandler = async (req, res) => {
   const { url } = req.query as { url: string };
-  const Key = url.split('.com/')[1];
 
-  const params = {
-    Key,
-    Bucket: aws.bucket,
-    Expires: 900000, // 15 minutes
-  };
+  const newUrl = signAwsData(url);
 
-  const newUrl = s3.getSignedUrl('getObject', params);
-
-  res.json({ url: newUrl });
+  res.json(newUrl);
 };
 

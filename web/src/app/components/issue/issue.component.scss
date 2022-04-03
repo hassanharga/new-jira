@@ -1,6 +1,11 @@
 .issue-container {
   min-width: 20rem;
   max-width: 80vw;
+  margin: auto;
+  .title {
+    cursor: pointer;
+    color: var(--blue-500);
+  }
 
   .main-issue {
     display: flex;

@@ -22,8 +22,8 @@ export enum IssueStatusKeys {
   inProgress = 'inProgress',
   inReview = 'inReview',
   done = 'done',
-  release = 'release',
-  reOpen = 'reOpen',
+  // release = 'release',
+  // reOpen = 'reOpen',
 }
 
 export enum TestIssueStatusKeys {
@@ -39,10 +39,8 @@ export const issueStatus: Record<string, string> = {
   inProgress: 'In Progress',
   inReview: 'In Review',
   done: 'Done',
-  release: 'Release',
-  reOpen: 'Re Open',
-  success: 'Success',
-  failure: 'Failure',
+  // release: 'Release',
+  // reOpen: 'Re Open',
 };
 
 export const testIssueStatus: Record<string, string> = {
@@ -73,12 +71,14 @@ export interface Issue {
   reporter: User;
   labels: string[];
   attachments: string[];
+  linkedIssues: Issue[];
   sub: Issue[];
   releaseId: string;
   board: string;
   project: string;
   createdAt: string;
   updatedAt: string;
+  platform: string;
   module: TestModule;
   testCase: TestCase;
   comments: {

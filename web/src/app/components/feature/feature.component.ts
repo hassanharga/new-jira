@@ -1,6 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { lastValueFrom } from 'rxjs';
+import { ApiService } from 'src/app/services/api.service';
 import { Feature, FeatureHistory } from 'src/app/types/feature';
 import { Issue } from 'src/app/types/issue';
 import { escapeHtml } from 'src/app/utils/excapeHtml';
@@ -28,14 +30,15 @@ export class FeatureComponent implements OnInit, OnChanges {
 
   showEditInput = false;
   description = '';
+  editedDescription = '';
   release = '';
 
-  attachments: { name: string; url: string }[] = [];
-  uxAttachments: { name: string; url: string }[] = [];
+  attachments: string[] = [];
+  uxAttachments: string[] = [];
 
   isUploading = false;
 
-  constructor(private datePipe: DatePipe) {}
+  constructor(private datePipe: DatePipe, private api: ApiService) {}
 
   editPage() {
     if (this.showEditInput) {
@@ -43,10 +46,17 @@ export class FeatureComponent implements OnInit, OnChanges {
       this.editFeature.emit({
         description: escapeHtml(this.description),
         release: this.release,
-        attachments: this.attachments.map((ele) => ele.url),
-        uxAttachments: this.uxAttachments.map((ele) => ele.url),
+        attachments: this.attachments.map((ele) => ele.split('?')[0]),
+        uxAttachments: this.uxAttachments.map((ele) => ele.split('?')[0]),
       });
+    } else {
       this.description = '';
+      const newestHistory = this.feature?.history.pop();
+      if (newestHistory) {
+        this.editedDescription = newestHistory.description;
+        this.attachments = newestHistory.attachments;
+        this.uxAttachments = newestHistory.uxAttachments;
+      }
     }
     this.showEditInput = !this.showEditInput;
   }
@@ -68,18 +78,27 @@ export class FeatureComponent implements OnInit, OnChanges {
     this.editFeature.emit({ id: this.selectedDraft._id, type: this.activeItem.id });
   }
 
-  handleAttahcments(e: any) {
-    if (e.type === 'ux') {
-      this.uxAttachments.push(e);
+  async handleAttahcments(e: { name: string; url: string }, type: string) {
+    const url = await lastValueFrom(this.api.send<string>('signUrl', { url: e.url }));
+    if (type === 'ux') {
+      this.uxAttachments.push(url);
     } else {
-      this.attachments.push(e);
+      this.attachments.push(url);
+    }
+  }
+
+  deleteAttahcments(e: any, type: string) {
+    if (type === 'ux') {
+      this.uxAttachments.splice(e, 1);
+    } else {
+      this.attachments.splice(e, 1);
     }
   }
 
   private prepareOptions(drafts: FeatureHistory[], type: 'draft' | 'production') {
     const allDrafts = drafts.map((ele) => ({
       ...ele,
-      createdAt: this.datePipe.transform(ele.createdAt),
+      createdAt: `${this.datePipe.transform(ele.createdAt)} . ${ele.release.version}`,
     }));
     if (type === 'draft') {
       this.draftsHistoy = [...allDrafts] || [];
@@ -96,7 +115,7 @@ export class FeatureComponent implements OnInit, OnChanges {
       this.selectedDraft = null;
     }
 
-    if (!changes['feature'].currentValue) return;
+    if (!changes['feature'] || !changes['feature'].currentValue) return;
     const feature = changes['feature'].currentValue as Feature;
     // console.log('feature[ngOnChanges]', feature);
     this.draftsHistoy = [];

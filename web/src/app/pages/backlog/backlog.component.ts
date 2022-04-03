@@ -14,6 +14,7 @@ import { Issue, IssueType } from 'src/app/types/issue';
 export class BacklogComponent implements OnInit, OnDestroy {
   issues: Issue[] = [];
   releaseIssues: Issue[] = [];
+  linkedIssues: Issue[] = [];
 
   sub!: Subscription;
   selectedIssue: Issue | null = null;
@@ -90,6 +91,12 @@ export class BacklogComponent implements OnInit, OnDestroy {
           summary: msg,
           detail: this.translate.getTranslatedWrods('general.error'),
         }),
+    });
+  }
+
+  filterIssues(e: string) {
+    this.api.send<Issue[]>('searchIssues', { id: this.projectId, search: e }).subscribe({
+      next: (val) => (this.linkedIssues = val),
     });
   }
 

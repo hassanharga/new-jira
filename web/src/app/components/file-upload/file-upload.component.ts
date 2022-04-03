@@ -1,4 +1,3 @@
-import { HttpEventType } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FileUpload } from 'primeng/fileupload';
 import { switchMap } from 'rxjs';
@@ -12,13 +11,11 @@ import { ApiService } from 'src/app/services/api.service';
 export class FileUploadComponent implements OnInit {
   @ViewChild('primeFileUpload') primeFileUpload!: FileUpload;
 
-  @Input() type = '';
+  @Input() uploadedFiles: string[] = [];
 
   @Output() uploadFile = new EventEmitter();
+  @Output() deleteFile = new EventEmitter();
   @Output() isUploading = new EventEmitter(false);
-
-  urls: { url: string; name: string }[] = [];
-  uploadedFiles: any[] = [];
 
   totalPercent = 0;
   percentDone = 0;
@@ -41,35 +38,20 @@ export class FileUploadComponent implements OnInit {
           .pipe(
             switchMap(({ url }) => {
               fileUrl = url.split('?')[0];
-              return this.api.uploadImage(file, url);
+              return this.api.uploadImage<null>(file, url);
             }),
           )
-          .subscribe((event) => {
-            switch (event.type) {
-              // case HttpEventType.UploadProgress:
-              //   let progress = Math.round((event.loaded / (event.total || 0)) * 100);
-              //   console.log(`${file.name}`, progress);
-
-              //   this.percentDone = progress + this.percentDone;
-              //   console.log('this.percentDone', this.percentDone);
-              //   // console.log('emitting: ' + (this.percentDone / this.totalPercent) * 100);
-              //   this.primeFileUpload.onProgress.emit(Math.round((this.percentDone / this.totalPercent) * 100));
-
-              //   break;
-              case HttpEventType.Response:
-                this.percentDone = this.percentDone + 100;
-                this.primeFileUpload.onProgress.emit(Math.round((this.percentDone / this.totalPercent) * 100));
-                const uploadedFile = { url: fileUrl, name: file.name };
-                this.urls.push(uploadedFile);
-                this.uploadFile.emit({ ...uploadedFile, type: this.type });
-                this.uploadedFiles.push(file);
-                // console.log('this.percentDone', this.percentDone);
-                if (this.percentDone >= this.totalPercent) {
-                  this.primeFileUpload.clear();
-                  this.isUploading.emit(false);
-                }
-                break;
-            }
+          .subscribe({
+            next: () => {
+              this.percentDone = this.percentDone + 100;
+              this.primeFileUpload.onProgress.emit(Math.round((this.percentDone / this.totalPercent) * 100));
+              const uploadedFile = { url: fileUrl, name: file.name };
+              this.uploadFile.emit(uploadedFile);
+              if (this.percentDone >= this.totalPercent) {
+                this.primeFileUpload.clear();
+                this.isUploading.emit(false);
+              }
+            },
           });
       }
     }
@@ -77,6 +59,10 @@ export class FileUploadComponent implements OnInit {
 
   progressReport($event: any) {
     this.primeFileUpload.progress = $event;
+  }
+
+  deleteImage(i: number) {
+    this.deleteFile.emit(i);
   }
 
   ngOnInit(): void {}

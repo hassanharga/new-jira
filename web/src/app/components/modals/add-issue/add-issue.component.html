@@ -74,7 +74,6 @@
             [options]="issuePriority"
             formControlName="priority"
           ></p-dropdown>
-
           <div class="mt-1">
             <small *ngIf="formData['priority'].touched && formData['priority'].invalid" class="p-error"
               >priority required</small
@@ -93,7 +92,7 @@
         </div>
       </div>
       <!-- version and cbu number-->
-      <div class="p-fluid p-formgrid grid">
+      <div class="p-fluid p-formgrid grid" *ngIf="!isTestIssue">
         <div class="p-field col-6">
           <label class="mb-2" for="components">{{ isRelease ? 'version' : 'release' }}</label>
           <p-dropdown
@@ -139,6 +138,38 @@
           </div>
         </div>
       </div>
+      <div class="p-fluid p-formgrid grid" *ngIf="!isRelease && !isTestIssue">
+        <div class="p-field col-6">
+          <label class="mb-2">Linked To:</label>
+          <p-multiSelect
+            [options]="searchedIssues"
+            formControlName="linkedIssues"
+            (onFilter)="searchLinkedIssues($event)"
+            defaultLabel="Select"
+            optionLabel="name"
+            display="chip"
+            class="multiselect-custom"
+          >
+            <ng-template let-value pTemplate="selectedItems">
+              <div class="country-item country-item-value" *ngFor="let option of form.controls['linkedIssues'].value">
+                <div>{{ option.name }}</div>
+              </div>
+              <div
+                *ngIf="!form.controls['linkedIssues'].value || form.controls['linkedIssues'].value.length === 0"
+                class="country-placeholder"
+              >
+                Select Issues
+              </div>
+            </ng-template>
+            <ng-template let-issue pTemplate="item">
+              <div class="country-item">
+                <div>{{ issue.name }}</div>
+              </div>
+            </ng-template>
+          </p-multiSelect>
+        </div>
+      </div>
+
       <!-- description -->
       <div class="p-fluid p-formgrid grid mt-4">
         <div class="p-field col-12">
@@ -151,8 +182,10 @@
         <div class="p-field col-12">
           <label class="mb-2" for="components">Attachments</label>
           <app-file-upload
+            [uploadedFiles]="attachments"
             (isUploading)="isUploading = $event"
             (uploadFile)="handleAttahcments($event)"
+            (deleteFile)="deleteAttahcments($event)"
           ></app-file-upload>
         </div>
       </div>

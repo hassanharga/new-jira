@@ -20,6 +20,7 @@ export interface Issue {
   labels: string[];
   attachments: string[];
   sub: Issue[] | Schema.Types.ObjectId[];
+  linkedIssues: Issue[] | Schema.Types.ObjectId[];
   releaseId: string | Schema.Types.ObjectId;
   board: Schema.Types.ObjectId;
   project: Schema.Types.ObjectId;

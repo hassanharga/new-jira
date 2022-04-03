@@ -13,6 +13,11 @@ router
   .delete(validate(validators.deleteIssue), asyncHandler(Controllers.deleteIssue));
 
 router.route('/testIssue').post(validate(validators.addIssue), asyncHandler(Controllers.addTestIssue));
+router
+  .route('/testIssue/createBugIssue')
+  .post(validate(validators.createBugIssue), asyncHandler(Controllers.createBugIssue));
+
+router.route('/project/:project').get(validate(validators.searchIssues), asyncHandler(Controllers.searchIssues));
 
 router.route('/board/:board').get(validate(validators.getIssues), asyncHandler(Controllers.getIssues));
 

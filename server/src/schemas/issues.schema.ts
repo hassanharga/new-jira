@@ -40,6 +40,10 @@ const issueSchema = new Schema<IssueTableModel>(
       type: [Schema.Types.ObjectId],
       ref: tableNames.ISSUES,
     },
+    linkedIssues: {
+      type: [Schema.Types.ObjectId],
+      ref: tableNames.ISSUES,
+    },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
