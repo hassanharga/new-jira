@@ -49,6 +49,7 @@ const bodyData = {
 export const addIssue: schema = {
   body: Joi.object({
     createdByTestCase: Joi.boolean().messages(messages),
+    testCase: Joi.string().messages(messages),
     ...bodyData,
   }),
 };
