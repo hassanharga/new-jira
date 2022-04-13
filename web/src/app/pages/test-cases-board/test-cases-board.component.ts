@@ -97,7 +97,13 @@ export class TestCasesBoardComponent implements OnInit, OnDestroy {
       return;
     }
     if (!this.projectId) return;
-    const payload = { ...data, board: this.testCaseIssue?.platform, createdByTestCase: true, project: this.projectId };
+    const payload = {
+      ...data,
+      testCase: this.testCaseIssue?.testCase._id,
+      board: this.testCaseIssue?.platform,
+      createdByTestCase: true,
+      project: this.projectId,
+    };
     this.api.send<Issue>('addIssue', payload).subscribe({
       next: () => {
         this.testCaseIssue = null;
