@@ -99,7 +99,7 @@ const deleteIssue = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.deleteIssue = deleteIssue;
 const updateIssue = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id, releaseId, name, priority, version, assignee, reporter, description, labels, comments, status, type, components, } = req.body;
+    const { id, releaseId, name, priority, version, assignee, reporter, description, labels, comments, status, type, components, isTestIssue, } = req.body;
     if (releaseId && !(0, mongoose_1.isValidObjectId)(releaseId))
         throw new ApiError_1.default('errorMsg.badCredentials', http_status_codes_1.default.BAD_REQUEST);
     if (!(0, mongoose_1.isValidObjectId)(id))
@@ -117,8 +117,18 @@ const updateIssue = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         issue.assignee = assignee;
     if (reporter)
         issue.reporter = reporter;
-    if (description)
-        issue.description = description;
+    if (description) {
+        if (isTestIssue) {
+            const testCase = yield testCase_schema_1.default.findById(issue.testCase);
+            if (testCase) {
+                testCase.description = description;
+                yield testCase.save();
+            }
+        }
+        else {
+            issue.description = description;
+        }
+    }
     if (labels)
         issue.labels = labels;
     if (status)

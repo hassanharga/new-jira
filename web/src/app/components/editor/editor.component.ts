@@ -98,7 +98,7 @@ export class EditorComponent implements OnInit {
   }
 
   private mapIssues(issues: Issue[]) {
-    return issues.map((ele) => ({ ...ele, value: ele.name, link: `/issues/issue=${ele._id}` }));
+    return issues.map((ele) => ({ ...ele, value: ele.name, link: `/issues?issue=${ele._id}` }));
   }
 
   changeDescripton() {

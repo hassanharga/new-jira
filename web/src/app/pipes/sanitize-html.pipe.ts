@@ -9,7 +9,7 @@ export class SanitizeHtmlPipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
 
   transform(value: string = '') {
-    if (!value) return 'None';
+    if (!value) return 'Add Description...';
 
     const val = parseToHtml(value);
     return this.sanitizer.bypassSecurityTrustHtml(val);

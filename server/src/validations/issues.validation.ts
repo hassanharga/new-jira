@@ -63,6 +63,7 @@ export const createBugIssue: schema = {
 export const updateIssue: schema = {
   body: Joi.object({
     id: Joi.string().required().empty().messages(messages),
+    isTestIssue: Joi.boolean().empty().messages(messages),
     ...bodyData,
   }),
 };

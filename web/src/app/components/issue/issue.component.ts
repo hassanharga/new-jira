@@ -6,6 +6,8 @@ import { Issue, issueStatus, IssueType, testIssueStatus } from 'src/app/types/is
 import { User } from 'src/app/types/user';
 import { escapeHtml } from 'src/app/utils/excapeHtml';
 
+type UpdateIssueType = 'description' | 'comment';
+
 @Component({
   selector: 'app-issue',
   templateUrl: './issue.component.html',
@@ -28,6 +30,9 @@ export class IssueComponent implements OnInit, OnChanges, OnDestroy {
   comment = '';
   resetInput = false;
 
+  editDescription = false;
+  description = '';
+
   constructor(private issueService: IssueService, private router: Router) {}
 
   ngOnDestroy(): void {
@@ -35,21 +40,17 @@ export class IssueComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['issue'] && this.issue) {
-      this.selectedIssueStatus = { name: issueStatus[this.issue.status], value: this.issue.status };
+    if (changes['issue'] && changes['issue'].currentValue) {
+      this.issue = changes['issue'].currentValue;
+      if (this.issue?.status) {
+        this.selectedIssueStatus = { name: issueStatus[this.issue.status], value: this.issue.status };
+      }
     }
   }
 
   changeCommit(data: any) {
     this.comment = data;
     this.resetInput = false;
-  }
-
-  addComment() {
-    // TODO change user
-    this.updateIssue.emit({ comments: [{ comment: escapeHtml(this.comment), user: this.users[0]._id }] });
-    this.comment = '';
-    this.resetInput = true;
   }
 
   changeOption(option: { name: string; value: string }) {
@@ -59,6 +60,46 @@ export class IssueComponent implements OnInit, OnChanges, OnDestroy {
 
   addIssue() {
     this.addRelatedIssue.emit({ type: IssueType.bug, issue: this.issue });
+  }
+
+  prepareEditIssue(type: UpdateIssueType) {
+    if (!this.issue) return;
+    if (type === 'description') {
+      this.description = this.isTest ? this.issue?.testCase.description : this.issue?.description;
+      this.editDescription = true;
+    }
+  }
+
+  editIssue(type: UpdateIssueType) {
+    switch (type) {
+      case 'comment':
+        // TODO change user
+        this.updateIssue.emit({ comments: [{ comment: escapeHtml(this.comment), user: this.users[0]._id }] });
+        this.cancelEdit('comment');
+        break;
+      case 'description':
+        this.updateIssue.emit({ description: escapeHtml(this.description) });
+        this.cancelEdit('description');
+        break;
+      default:
+        break;
+    }
+  }
+
+  cancelEdit(type: UpdateIssueType) {
+    switch (type) {
+      case 'comment':
+        this.comment = '';
+        this.resetInput = true;
+        break;
+      case 'description':
+        this.description = '';
+        this.editDescription = false;
+        break;
+
+      default:
+        break;
+    }
   }
 
   openIssueInNewWindow(issue: Issue) {

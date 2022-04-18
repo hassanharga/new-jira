@@ -75,9 +75,15 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.selectedBoard = board;
     this.issueService.setBoard(this.selectedBoard);
     this.links = board.name === BoardNames.Test ? this.testBoardLinks : this.boardLinks;
-    // this.router.navigate([`${board.name === BoardNames.Test ? './modules' : './backlog'}`], {
-    //   relativeTo: this.activatedRoute,
-    // });
+    const hasLink = this.links.some((ele) => this.router.url.includes(ele.link));
+    if (!hasLink) {
+      this.router.navigate(
+        [`${board.name === BoardNames.Test ? `./${this.testBoardLinks[0].link}` : `./${this.boardLinks[0].link}`}`],
+        {
+          relativeTo: this.activatedRoute,
+        },
+      );
+    }
   }
 
   handelModal({ data, close }: { data?: any; close: boolean }) {

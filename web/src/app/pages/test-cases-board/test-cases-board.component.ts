@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EMPTY, Subscription, switchMap } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { IssueService } from 'src/app/services/issue.service';
-import { Issue, IssueType, testIssueStatus, TestIssueStatusKeys } from 'src/app/types/issue';
+import { Issue, testIssueStatus, TestIssueStatusKeys } from 'src/app/types/issue';
 
 @Component({
   selector: 'app-test-cases-board',
@@ -65,7 +65,7 @@ export class TestCasesBoardComponent implements OnInit, OnDestroy {
 
   async updateIssueData(data: any) {
     if (!this.selectedIssue || !this.selectedIssue._id) return;
-    this.api.send<Issue>('updateIssue', { id: this.selectedIssue?._id, ...data }).subscribe({
+    this.api.send<Issue>('updateIssue', { id: this.selectedIssue?._id, ...data, isTestIssue: true }).subscribe({
       next: (issue) => {
         this.selectedIssue = issue;
         const issueIdx = this.unorderedIssues.findIndex((ele) => ele._id === issue._id);
