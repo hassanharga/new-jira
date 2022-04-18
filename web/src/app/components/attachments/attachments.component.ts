@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { exelExt, imageExt, pdfExt, videoExt, wordExt } from '../../constants/attachmentsExtenstions';
+import { exelExt, pdfExt, wordExt } from '../../constants/attachmentsExtenstions';
 
 @Component({
   selector: 'app-attachments',

@@ -12,7 +12,9 @@
           <div
             class="ql-editor"
             (click)="prepareEditIssue('description')"
-            [innerHTML]="(isTest ? issue.testCase.description : issue.description) | sanitizeHtml"
+            [innerHTML]="
+              (issue.description ? issue.description : isTest ? issue.testCase.description : '') | sanitizeHtml
+            "
           ></div>
         </div>
         <div class="input flex flex-column" *ngIf="editDescription">
@@ -35,7 +37,9 @@
       >
         <h3>Attachments</h3>
         <div class="mt-2">
-          <app-attachments [attachments]="isTest ? issue.testCase.attachments : issue.attachments"></app-attachments>
+          <app-attachments
+            [attachments]="issue.attachments.length ? issue.attachments : isTest ? issue.testCase.attachments : []"
+          ></app-attachments>
         </div>
       </div>
 

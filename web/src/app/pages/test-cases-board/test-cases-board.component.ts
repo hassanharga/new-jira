@@ -65,7 +65,7 @@ export class TestCasesBoardComponent implements OnInit, OnDestroy {
 
   async updateIssueData(data: any) {
     if (!this.selectedIssue || !this.selectedIssue._id) return;
-    this.api.send<Issue>('updateIssue', { id: this.selectedIssue?._id, ...data, isTestIssue: true }).subscribe({
+    this.api.send<Issue>('updateIssue', { id: this.selectedIssue?._id, ...data }).subscribe({
       next: (issue) => {
         this.selectedIssue = issue;
         const issueIdx = this.unorderedIssues.findIndex((ele) => ele._id === issue._id);

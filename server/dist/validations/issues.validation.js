@@ -53,7 +53,7 @@ exports.createBugIssue = {
     }),
 };
 exports.updateIssue = {
-    body: express_validation_1.Joi.object(Object.assign({ id: express_validation_1.Joi.string().required().empty().messages(messages), isTestIssue: express_validation_1.Joi.boolean().empty().messages(messages) }, bodyData)),
+    body: express_validation_1.Joi.object(Object.assign({ id: express_validation_1.Joi.string().required().empty().messages(messages) }, bodyData)),
 };
 exports.deleteIssue = {
     body: express_validation_1.Joi.object({

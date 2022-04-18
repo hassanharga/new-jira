@@ -57,7 +57,9 @@ app.use(sanitize());
 app.use(xss());
 
 // log routes
-
+// if (isDevelopment) {
+//   app.use(morgan('dev'));
+// }
 app.use(morganMiddleware);
 
 // app.use(userAuth);
@@ -68,3 +70,4 @@ app.use(`${process.env.API_URL}`, routes);
 app.use(errorHandler);
 
 export default app;
+

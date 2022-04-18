@@ -93,7 +93,6 @@ export const updateIssue: RequestHandler = async (req, res) => {
     status,
     type,
     components,
-    isTestIssue,
   } = req.body;
 
   if (releaseId && !isValidObjectId(releaseId)) throw new ApiError('errorMsg.badCredentials', statusCodes.BAD_REQUEST);
@@ -107,17 +106,7 @@ export const updateIssue: RequestHandler = async (req, res) => {
   if (version) issue.version = version;
   if (assignee) issue.assignee = assignee;
   if (reporter) issue.reporter = reporter;
-  if (description) {
-    if (isTestIssue) {
-      const testCase = await TestCaseModel.findById(issue.testCase);
-      if (testCase) {
-        testCase.description = description;
-        await testCase.save();
-      }
-    } else {
-      issue.description = description;
-    }
-  }
+  if (description) issue.description = description;
   if (labels) issue.labels = labels;
   if (status) issue.status = status;
   if (type) issue.type = type;
